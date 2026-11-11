@@ -1,6 +1,13 @@
 # 彥彥配對樂園
 
-Release 419 — 2026-11-11 (Asia/Taipei).
+Release 420 — 2026-11-11 (Asia/Taipei).
+
+## Release 420
+
+- Home launches for hide-and-seek and baby care now use the shared routing path and update last-played. Reloading then choosing Continue no longer opens the older game.
+- Added an Together Play category to the full catalogue. Free-play entries do not add completion requirements or medals to the existing passport; existing group IDs and indices are unchanged.
+- Continue reopens the same game; it does not restore a partially uncovered hide-and-seek board or baby-care activity.
+- Completed hide-and-seek at 320×568 and 360×800, all baby-care activities at 390×844 and 844×390, and verified home/category launches, reload, last-played and return. Routing regression tests cover old indices and free-play passport exclusion.
 
 ## Release 419
 
@@ -75,6 +82,7 @@ node verification/speech.cjs
 node verification/timed-speech.cjs
 node verification/delivery.cjs
 node verification/pretend-drag.cjs
+node verification/play-routing.cjs
 ```
 
 Original v411 hashes remain in `verification/production-audit.json`. `check.cjs --snapshot` checks those original hashes with text line-ending normalization; it intentionally rejects modified application files. Normal checks validate current syntax and resource references.

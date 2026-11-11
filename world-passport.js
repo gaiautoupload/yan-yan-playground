@@ -1,7 +1,7 @@
 (()=>{'use strict';
 // v312: One-tap next unplayed challenge after winning. Tap-to-play stamps preserve recognizable icons and completion badges. Five-world adventure passport. No changes to old game progress or photos.
 const sh=window.YanClassicShared,hub=window.YanGameHub;if(!sh||!hub)return;
-const {app,state,persist}=sh,groups=hub.groups;
+const {app,state,persist}=sh,groups=hub.groups.filter(g=>g[0]!=='play'); // Free play has no completion stamp requirement.
 const validGroup=id=>groups.find(g=>g[0]===id);
 function clean(id){
  const g=validGroup(id);if(!g)return [];
@@ -60,7 +60,7 @@ function decorateHub(){
  const cards=el.querySelectorAll('.hub-cat');
  if(cards.length){
   const s=summary(),head=el.querySelector('.hub-head');
-  if(head&&!head.querySelector('.passport-total')){const info=document.createElement('small');info.className='passport-total';info.textContent='📒 冒險護照 '+s.done+'/'+s.total+'　🏅 '+s.medals+'/5';head.appendChild(info)}
+  if(head&&!head.querySelector('.passport-total')){const info=document.createElement('small');info.className='passport-total';info.textContent='📒 冒險護照 '+s.done+'/'+s.total+'　🏅 '+s.medals+'/'+groups.length;head.appendChild(info)}
   cards.forEach(card=>{
    const id=card.dataset.g,p=progress(id);
    if(!p.total||card.querySelector('.passport-count'))return;

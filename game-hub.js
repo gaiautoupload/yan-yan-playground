@@ -1,6 +1,7 @@
 (()=>{'use strict';
 const sh=window.YanClassicShared;if(!sh)return;const {app,state,persist}=sh;
 const groups=[["look","👀","觀察探索","看一看，找出目標",[["👂","聽聲找照片","聽故事認場景","YanPhotoQuiz"],["🔍","照片猜猜看","看局部找全圖","YanPhotoZoom"],["🧺","親子尋寶袋","找到指定物品","YanFamilyTreasure"],["🫧","泡泡抓抓樂","找目標戳泡泡","YanBubbleCatch"]]],["memory","🧠","記憶音樂","記住位置、順序、音高",[["🃏","親子翻翻樂","記住位置配成對","YanMemoryCards"],["📷","照片順序記憶","照順序點照片","YanPhotoSequence"],["🎵","音樂記憶","聽音高重複節奏","YanRhythmGame"]]],["action","🏃","動作反應","按住、放開、點擊、閃躲",[["🚦","123木頭人","紅燈停、綠燈走","YanClassics","wood"],["🐹","打地鼠","快速點出地鼠","YanClassics","mole"],["☄️","躲隕石","左右移動閃避","YanClassics","meteor"]]],["build","🚜","工程冒險","運貨、挖寶、鋪橋、修管",[["🚚","訂單配送","安排裝車，分趟送貨","YanDeliveryGame"],["💎","挖土機尋寶","挖格子找寶藏","YanDigGame"],["🌉","挖土機造橋","按順序鋪橋板","YanBridgeGame"],["💧","水管大救援","旋轉水管連水流","YanPipeGame"],["📦","推箱子工程","推動木箱到指定位置","YanPushBoxGame"]]],["logic","🧩","動腦益智","分類、數數、還原圖片",[["🎨","顏色分類","放入正確顏色籃","YanClassics","colorSort"],["🐰","動物園餵食","選出指定數量","YanFeedGame"],["🖼️","滑塊拼圖","移動方塊還原照片","YanSlidePuzzle"]]]];let active=null,index=0,relay=false,surprise=false,menuGroup=null;
+groups.push(['play','🧸','一起玩','躲貓貓、照顧娃娃，自由玩', [['🙈','躲貓貓','看耳朵，找小動物','YanHideSeek'],['🧸','照顧娃娃','餵飯、洗澡、抱抱、睡覺','YanPretendPlay']]]);
 // v356: one-tap favorites and last-played resume in the classic hub; uses existing unified save.
 function entryFor(id,i){const g=groups.find(x=>x[0]===id);return g&&Number.isInteger(i)&&i>=0&&i<g[4].length?{id,i,item:g[4][i]}:null}
 function favoriteEntries(){
@@ -77,7 +78,7 @@ function show(id){
   const saved=lastPlayed();
   el.innerHTML='<div class="hub-head">選一款，慢慢玩<small>過關繼續同一款，想換再回來選</small></div>'+(saved?'<button class="hub-continue" data-continue="'+saved.id+':'+saved.i+'">▶ 繼續上次：'+saved.item[1]+'</button>':'')+'<div class="hub-cats">'+groups.map(x=>'<button class="hub-cat" data-g="'+x[0]+'"><span class="hub-category-icon">'+x[1]+'</span><b>'+x[2]+'</b><small>'+x[3]+'</small></button>').join('')+'</div>';return;
  }
- const preferred={look:['YanPhotoQuiz','YanFamilyTreasure'],memory:['YanMemoryCards','YanRhythmGame'],action:['YanClassics'],build:['YanPushBoxGame','YanPipeGame','YanParkingGame','YanRailGame'],logic:['YanSlidePuzzle','YanFeedGame']};
+ const preferred={play:['YanHideSeek','YanPretendPlay'],look:['YanPhotoQuiz','YanFamilyTreasure'],memory:['YanMemoryCards','YanRhythmGame'],action:['YanClassics'],build:['YanPushBoxGame','YanPipeGame','YanParkingGame','YanRailGame'],logic:['YanSlidePuzzle','YanFeedGame']};
  const card=(x,i)=>'<div class="hub-mode-wrap"><button class="hub-mode" data-p="'+id+':'+i+'"><span>'+x[0]+'</span><b>'+x[1]+'<small>'+x[2]+'</small></b><span class="hub-open" aria-hidden="true">›</span></button></div>';
  const primary=[],extra=[];
  g[4].forEach((x,i)=>{((preferred[id]||[]).includes(x[3])?primary:extra).push(card(x,i))});

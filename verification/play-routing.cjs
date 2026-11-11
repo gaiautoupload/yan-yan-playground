@@ -1,0 +1,16 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
+const state={yanHubLastPlayed:{id:'build',i:0}},calls=[];
+const app={querySelector:()=>null};
+const window={YanClassicShared:{app,state,persist:()=>calls.push('save')},YanSpeech:{cancel:()=>calls.push('cancel')},YanHideSeek:{start:()=>calls.push('seek')},YanPretendPlay:{start:()=>calls.push('pretend')}};
+const context={window,MutationObserver:class{observe(){}}};
+vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../game-hub.js'),'utf8'),context);
+const hub=window.YanGameHub;
+assert.equal(hub.groups.find(g=>g[0]==='build')[4][0][3],'YanDeliveryGame','old catalogue indices remain stable');
+assert.equal(hub.run('play',0,true),true);assert.equal(hub.lastPlayed().item[3],'YanHideSeek');assert.equal(hub.session().relay,false);
+assert.equal(hub.run('play',1,false),true);assert.equal(hub.lastPlayed().item[3],'YanPretendPlay');
+assert.deepEqual(calls,['cancel','save','seek','cancel','save','pretend']);
+const before=JSON.stringify(state);assert.equal(hub.run('play',99,false),false);assert.equal(JSON.stringify(state),before);
+vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../world-passport.js'),'utf8'),context);
+assert.equal(window.YanWorldPassport.progress('play').total,0,'free play does not require completion');
+assert.equal(window.YanWorldPassport.summary().total,18,'original five groups only');
+console.log('Play routing: last-played, stable old indices, no relay, invalid entry and free-play passport exclusion passed.');
