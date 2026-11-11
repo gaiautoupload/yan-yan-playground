@@ -1,6 +1,13 @@
 # 彥彥配對樂園
 
-Release 414 — 2026-11-11 (Asia/Taipei).
+Release 415 — 2026-11-11 (Asia/Taipei).
+
+## Release 415
+
+- Replaced the repetitive 40 delivery rounds with six authored tasks: two trips, combined delivery, three stops, split large order, mixed loads and final challenge.
+- Each task has a distinct capacity/order combination; tests demonstrate that its advertised minimum trip count is reachable.
+- Existing stars remain unchanged. The equivalent first task and unfinished first-task cargo migrate; changed later tasks restart at task 2 when the first was already completed. Legacy progress fields remain preserved.
+- Browser completed task 2 at 360×800, task 3 at 844×390, task 4 at 320×568 and task 5 at 390×844. Reload advanced to the saved next task. Physical device testing remains outstanding.
 
 ## Release 414
 
