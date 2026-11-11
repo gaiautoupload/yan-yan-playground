@@ -1,6 +1,16 @@
 # 彥彥配對樂園
 
-Release 417 — 2026-11-11 (Asia/Taipei).
+Release 418 — 2026-11-11 (Asia/Taipei).
+
+## Audience
+
+Age 4–5, without reading. Use recognizable pictures, short Taiwan Mandarin prompts, observation and direct manipulation. Preserve free exploration without penalties or forced task sequences.
+
+## Release 418
+
+- Hide-and-seek now highlights the animal to look for and exposes drawn long, pointed or floppy ears above hiding places. Ear shapes are CSS rather than cropped platform emoji.
+- Voice replay and hints follow the current unfound animal. Finding a different animal still counts; the guide skips already-found animals and clears after completion.
+- Completed rounds at 320×568, 360×800, 390×844 and 844×390. Explicitly tested finding the cat before the requested rabbit, then skipping the cat in subsequent guidance. All four layouts stayed within viewport width.
 
 ## Release 417
 
