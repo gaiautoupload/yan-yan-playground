@@ -52,31 +52,45 @@ function play(kind){
 }
 
 function canSpeak(){return !!window.YanSpeech}
-// v18: synchronize red light with the actual end of the spoken chant.
-// Timed fallback prevents the game freezing on devices without Chinese TTS.
-function speakTimed(message,onFinish,fallbackMs=4000){
+let timedSpeech=null;
+function cancelTimed(){timedSpeech?.cancel();timedSpeech=null}
+function speakTimed(message,onFinish,fallbackMs=4000,onStart){
+ cancelTimed();
  const maximum=Math.max(2200,Number(fallbackMs)||4000),minimum=Math.min(2450,maximum-250);
- const began=Date.now();let finished=false,minTimer=null;
- let timeout=null;
+ let finished=false,started=false,began=0,timer=null,speechId=null,spoken=false;
+ const clear=()=>{clearTimeout(timer);timer=null};
+ const cancelOwn=()=>{if(speechId!==null)window.YanSpeech?.cancelIf(speechId)};
+ function start(){if(finished||started)return;started=true;began=Date.now();onStart?.()}
  function finish(){
   if(finished)return;
-  const wait=minimum-(Date.now()-began);
-  if(wait>0){if(minTimer===null)minTimer=setTimeout(()=>{minTimer=null;finish()},wait);return}
-  finished=true;clearTimeout(timeout);if(minTimer!==null)clearTimeout(minTimer);
-  window.YanSpeech?.cancel();
-  if(typeof onFinish==='function')onFinish();
+  const remaining=minimum-(Date.now()-began);
+  if(started&&remaining>0){clear();timer=setTimeout(finish,remaining);return}
+  finished=true;clear();cancelOwn();
+  if(timedSpeech===handle)timedSpeech=null;
+  onFinish?.();
  }
- timeout=setTimeout(finish,shared.state.voice!==false&&canSpeak()?20000:maximum);
- let spoken=false;
+ function fallback(){
+  if(finished)return;
+  clear();cancelOwn();start();timer=setTimeout(finish,maximum);
+ }
+ const handle={get spoken(){return spoken},cancel(){if(finished)return;finished=true;clear();cancelOwn()}};
+ timedSpeech=handle;
  if(shared.state.voice!==false&&canSpeak()){
+  timer=setTimeout(fallback,8000);
   try{
-   window.YanSpeech.speak(message,finish);
-   spoken=true;
-  }catch(_){}
- }
- return {spoken,cancel(){window.YanSpeech?.cancel();finished=true;clearTimeout(timeout);if(minTimer!==null)clearTimeout(minTimer)}};
+   spoken=window.YanSpeech.speak(message,reason=>{
+    if(finished)return;
+    if(reason==='error'){fallback();return}
+    start();finish();
+   },()=>{if(finished)return;clear();start();timer=setTimeout(finish,Math.max(10000,maximum*3))});
+   speechId=window.YanSpeech.id;
+   if(!spoken)fallback();
+  }catch(_){fallback()}
+ }else fallback();
+ return handle;
 }
+
 function voice(s){return shared.state.voice===false?false:shared.say(s)}
 function test(){return {effect:play('test'),voice:voice('彥彥，聽到了嗎？媽媽陪你一起玩！')}}
-window.YanClassicAudio={unlock,play,voice,test,enabled,canSpeak,speakTimed};
+window.YanClassicAudio={unlock,play,voice,test,enabled,canSpeak,speakTimed,cancelTimed};
 })();

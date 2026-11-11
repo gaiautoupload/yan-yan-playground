@@ -1,6 +1,15 @@
 # 彥彥配對樂園
 
-Release 412 — 2026-11-11 (Asia/Taipei).
+Release 413 — 2026-11-11 (Asia/Taipei).
+
+## Release 413
+
+- Red-light/green-light movement now waits for actual Edge TTS playback, with a bounded silent fallback on network failure.
+- Timed speech is explicitly cancelled on pause, restart and navigation. Old timers cannot cancel audio belonging to a newer screen.
+- Replay during the introductory prompt no longer waits for a stale fallback timer. Pause/resume labels match their current action.
+- The home Woodman shortcut now uses the same hub route: last-played, completion stamps and return-to-category work consistently, without forced fullscreen.
+- Phone toolbar controls have 44px minimum height; landscape layout uses smaller parent/prompt decoration.
+- Verified a complete level at 320×568 with zero penalties, next level and pause. Timer regressions cover delayed playback, errors, cancellation, mute and a hung request.
 
 ## Changes
 
@@ -18,6 +27,7 @@ Release 412 — 2026-11-11 (Asia/Taipei).
 node verification/check.cjs
 node verification/save-recovery.cjs
 node verification/speech.cjs
+node verification/timed-speech.cjs
 ```
 
 Original v411 hashes remain in `verification/production-audit.json`. `check.cjs --snapshot` checks those original hashes with text line-ending normalization; it intentionally rejects modified application files. Normal checks validate current syntax and resource references.

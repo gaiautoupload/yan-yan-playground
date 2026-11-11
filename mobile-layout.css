@@ -42,3 +42,14 @@
 .push-help-buttons small{display:block;font-size:11px}
 .push-restart{width:100%;background:#fff0d0}
 .push-message{font-weight:600;line-height:1.4}
+.wood-toolbar button{min-height:44px}
+.wood-signal.loading{background:#fff0bc;color:#806532;animation:none}
+@media(orientation:landscape) and (max-height:450px){
+ .wood-game{gap:3px}
+ .wood-parent{min-height:45px;flex:0}
+ .wood-mom{width:44px;height:44px}
+ #wood-words{font-size:20px}
+ .wood-signal{font-size:22px;padding:4px}
+ .wood-field{min-height:64px;padding:5px}
+ .wood-hold{min-height:54px}
+}

@@ -5,7 +5,7 @@ const audio=window.YanClassicAudio;
 if(!audio)throw Error('Classic sound engine missing');
 let timers=[],session=0;
 const later=(fn,ms)=>{const id=setTimeout(()=>{timers=timers.filter(t=>t!==id);fn()},ms);timers.push(id);return id};
-function clean(){session++;timers.forEach(clearTimeout);timers=[];window.YanSpeech?.cancel()}
+function clean(){session++;timers.forEach(clearTimeout);timers=[];audio.cancelTimed();window.YanSpeech?.cancel()}
 function menu(){
  clean();audio.unlock();audio.play('welcome');
  app.innerHTML='<section class="screen game classic-screen">'+bg('play')+'<header class="bar"><button class="iconbtn" id="classic-back">⌂</button><span class="chip">🎮 遊戲分類</span><span class="chip">👩‍👦</span></header><main class="classic-menu"><div class="classic-family"><img src="./assets/mom.webp"><span>🎈 一起來玩！</span><img src="./assets/kid.webp"></div><button class="classic-tile wood-tile" id="wood-entry"><span class="classic-big">🚦🏃</span><strong>123 木頭人</strong><span>🟢 👆 ➜ 🔴 ✋</span><small>⭐ '+state.woodLevel+' / 60</small></button><button class="classic-tile mole-tile" id="mole-entry"><span class="classic-big">🐹🌼</span><strong>打地鼠</strong><span>👀 👉 🐹 ⭐</span><small>⭐ '+state.moleLevel+' / 60</small></button><button class="classic-tile color-tile" id="color-entry"><span class="classic-big">🔴🟡🔵</span><strong>顏色分類</strong><span>🍎 ➜ 🧺</span><small>⭐ '+state.colorLevel+' / 60</small></button><button class="classic-tile meteor-tile" id="meteor-entry" aria-label="開始彥彥躲隕石"><span class="classic-big">☄️🏃</span><strong>躲隕石</strong><span>⬅️ 🏃 ➡️　❤️×5</span><small>🏆 '+(Number(state.meteorBest)||0)+' 次閃避</small></button><div class="classic-audio-controls"><button id="classic-sfx-toggle" aria-pressed="'+(audio.enabled()?'true':'false')+'">'+(audio.enabled()?'🔊 音效':'🔇 音效')+'</button><button id="classic-voice-toggle" aria-pressed="'+(state.voice?'true':'false')+'">'+(state.voice?'🗣️ 語音':'🔇 語音')+'</button><button class="classic-test-sound" id="classic-test-sound">🎧 試聲音</button></div></main></section>';
@@ -17,7 +17,7 @@ function menu(){
  app.querySelector('#classic-sfx-toggle').onclick=()=>{state.classicSound=!audio.enabled();persist();menu()};
  app.querySelector('#classic-voice-toggle').onclick=()=>{state.voice=!state.voice;persist();menu();if(state.voice)audio.voice('彥彥，語音開啟囉！')};
  app.querySelector('#classic-test-sound').onclick=()=>{state.classicSound=true;state.voice=true;persist();const result=audio.test();const toast=document.createElement('div');toast.className='classic-audio-result';toast.textContent=result.effect?'🎵 音效已播放，台灣中文語音載入中。':'⚠️ 請開啟手機媒體音量，再點一次';app.querySelector('.screen')?.appendChild(toast);setTimeout(()=>toast.remove(),2600);app.querySelector('#classic-sfx-toggle').textContent='🔊 音效';app.querySelector('#classic-voice-toggle').textContent='🗣️ 語音';};
- say('彥彥，來和媽媽玩一二三木頭人，或是打地鼠吧！');
+ say('彥彥，選一款喜歡的遊戲，我們一起玩！');
 }
 function header(title,level){
  return '<header class="bar topbar classic-top"><button class="iconbtn" id="classic-back">⌂</button><span class="chip">'+title+'</span><span class="chip">⭐ '+level+'/60</span><button class="iconbtn" id="classic-speak">🔊</button></header>';
@@ -55,7 +55,7 @@ function wood(){
  speed=app.querySelector('#wood-speed'),pause=app.querySelector('#wood-pause'),restart=app.querySelector('#wood-restart'),status=app.querySelector('#wood-status');
  function paint(){
   if(!live())return;
-  const ready=phase==='ready',paused=phase==='paused';
+  const ready=phase==='ready'||phase==='loading',paused=phase==='paused';
   signal.className='wood-signal '+phase;
   signal.textContent=paused?'⏸ 暫停中，按繼續！':ready?'🎧 聽口令，準備！':phase==='green'?'🟢 一、二、三！':'🔴 木頭人！停！';
   mom.classList.toggle('turned',phase==='red');
@@ -66,7 +66,7 @@ function wood(){
   kid.style.left=Math.min(86,progress*.86)+'%';meter.style.width=progress+'%';
   speed.textContent=practice()?'🐇 正常速度':'🐢 慢慢玩';
   speed.setAttribute('aria-pressed',String(practice()));
-  pause.textContent=paused?'▶️ 繼續':'⏸ 暫停';
+  pause.textContent=paused?'▶️ 繼續':'⏸ 暫停';pause.setAttribute('aria-label',paused?'繼續遊戲':'暫停遊戲');
   status.textContent='🏁 '+Math.floor(progress)+'%　'+(practice()?'🐢 練習':'🚦 挑戰')+'　'+(misses?'💛 再試 '+misses:'⭐ 加油');
  }
  function forward(n){
@@ -95,12 +95,12 @@ function wood(){
  }
  function green(){
   if(!live()||phase==='paused')return;
-  phase='green';penalized=false;round++;paint();audio.play('go');
-  const cue=round,began=Date.now();
+  phase='loading';hold=false;penalized=false;round++;paint();
+  const cue=round;let began=Date.now();
   audio.speakTimed('一、二、三，木頭人！',()=>{
    const wait=practice()?Math.max(0,4700-(Date.now()-began)):0;
    later(()=>{if(live()&&phase==='green'&&cue===round)red()},wait);
-  },practice()?6200:level>25?3300:3900);
+  },practice()?6200:level>25?3300:3900,()=>{if(live()&&phase==='loading'&&cue===round){began=Date.now();phase='green';paint();audio.play('go')}});
  }
  function tick(){
   if(!live()||phase==='paused')return;
@@ -119,16 +119,16 @@ function wood(){
  pause.onclick=()=>{
   if(!live())return;hold=false;
   if(phase==='paused'){phase='ready';paint();later(green,550);later(tick,95);return}
-  phase='paused';round++;timers.forEach(clearTimeout);timers=[];window.YanSpeech?.cancel();
+  phase='paused';round++;timers.forEach(clearTimeout);timers=[];audio.cancelTimed();window.YanSpeech?.cancel();
   saveCheckpoint(true);paint();
  };
  restart.onclick=()=>{state.woodCheckpoint=null;persist();wood()};
  app.querySelector('#classic-speak').onclick=()=>{
   audio.unlock();state.voice=true;persist();
   if(phase==='paused')audio.voice('現在暫停了，按繼續再開始！');
-  else if(phase==='green')green();
+  else if(phase==='green'||phase==='loading')green();
   else if(phase==='red')audio.voice('木頭人！不可以動！');
-  else audio.voice('彥彥，聽好口令！一、二、三，木頭人！');
+  else{audio.cancelTimed();green()}
  };
  paint();
  const introRound=round;
@@ -147,7 +147,7 @@ function mole(){
  +'<div class="mole-grid">'+Array.from({length:9},(_,i)=>'<button class="mole-hole" data-hole="'+i+'" aria-label="洞口'+(i+1)+'"><span>🌱</span></button>').join('')+'</div><div class="classic-instructions mole-message" id="mole-message" aria-live="polite">'+message+'</div></main></section>';
  app.querySelector('#classic-back').onclick=()=>{save();menu()};app.querySelector('#classic-speak').onclick=()=>{audio.unlock();audio.play('test');say('找到鼴鼠就點一下。金色鼴鼠加兩分，蝴蝶不要碰喔！')};
  const holes=[...app.querySelectorAll('[data-hole]')],points=app.querySelector('#mole-points'),time=app.querySelector('#mole-time'),pause=app.querySelector('#mole-pause'),msg=app.querySelector('#mole-message');
- function paint(){holes.forEach((h,i)=>{const on=i===active;h.classList.toggle('up',on);h.classList.toggle('gold',on&&kind==='gold');h.classList.toggle('butterfly',on&&kind==='butterfly');h.querySelector('span').textContent=on?(kind==='gold'?'🐹✨':kind==='butterfly'?'🦋':'🐹'):'🌱';h.setAttribute('aria-label',on?(kind==='gold'?'金色鼴鼠':kind==='butterfly'?'蝴蝶不要碰':'鼴鼠'):'洞口'+(i+1))});points.textContent='⭐ '+Math.min(score,goal)+'/'+goal;time.textContent='⏳ '+seconds;pause.textContent=paused?'▶️ 繼續':'⏸ 暫停';msg.textContent=paused?'⏸ 休息一下，按繼續！':message}
+ function paint(){holes.forEach((h,i)=>{const on=i===active;h.classList.toggle('up',on);h.classList.toggle('gold',on&&kind==='gold');h.classList.toggle('butterfly',on&&kind==='butterfly');h.querySelector('span').textContent=on?(kind==='gold'?'🐹✨':kind==='butterfly'?'🦋':'🐹'):'🌱';h.setAttribute('aria-label',on?(kind==='gold'?'金色鼴鼠':kind==='butterfly'?'蝴蝶不要碰':'鼴鼠'):'洞口'+(i+1))});points.textContent='⭐ '+Math.min(score,goal)+'/'+goal;time.textContent='⏳ '+seconds;pause.textContent=paused?'▶️ 繼續':'⏸ 暫停';pause.setAttribute('aria-label',paused?'繼續遊戲':'暫停遊戲');msg.textContent=paused?'⏸ 休息一下，按繼續！':message}
  function success(){done=true;clean();state.moleCheckpoint=null;state.moleLevel=Math.min(60,level+1);const first=level<60||state.moleMaxAwarded!==true;if(first){state.stars+=3;state.complete++;if(level===60)state.moleMaxAwarded=true}persist();audio.play('win');fx('win');vib([25,40,25]);win('🐹 找到全部了！','媽媽說：彥彥好厲害，連金色鼴鼠都找到了！',mole);say('彥彥好棒！全部小鼴鼠都被你找到了！')}
  function fail(){done=true;clean();state.moleCheckpoint=null;persist();audio.play('lose');const cover=document.createElement('div');cover.className='overlay';cover.innerHTML='<div class="popup"><div class="stars">🐹 💛 🐹</div><h2>再玩一次！</h2><p>媽媽陪你一起找！</p><button class="primary" id="mole-retry">🔄 再玩一次</button><button class="classic-secondary" id="mole-other">🎲 其他遊戲</button></div>';app.querySelector('.screen').appendChild(cover);cover.querySelector('#mole-retry').onclick=mole;cover.querySelector('#mole-other').onclick=menu;say('好努力！我們再一起找找小鼴鼠吧！')}
  function pop(){if(!live()||paused)return;let i=Math.floor(Math.random()*8);if(i>=previous)i++;active=i;previous=i;spawns++;kind=level>=8&&spawns%7===0?'butterfly':level>=3&&spawns%4===0?'gold':'normal';paint();audio.play(kind==='gold'?'yay':'pop');later(pop,Math.max(580,980-level*7))}
