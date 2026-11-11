@@ -1,0 +1,10 @@
+const assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
+const window={YanClassicShared:{},YanClassicAudio:{}};
+vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../hide-seek.js'),'utf8'),{window});
+const restore=window.YanHideSeek.checkpoint;
+const good={version:1,deck:[2,-1,0,1],opened:[0,2]};
+assert.equal(JSON.stringify(restore(good)),JSON.stringify(good));
+const copy=restore(good);copy.deck[0]=9;copy.opened.push(1);assert.deepEqual(good.deck,[2,-1,0,1]);assert.deepEqual(good.opened,[0,2]);
+for(const bad of [null,{}, {...good,version:2},{...good,deck:[0,0,1,2]},{...good,deck:[-1,0,1,'2']},{...good,deck:[0,1,2]},{...good,opened:[0,0]},{...good,opened:[4]},{...good,opened:[1.5]},{...good,opened:'0'}])assert.equal(restore(bad),null);
+assert(restore({...good,opened:[0,1,2,3]}),'completed board remains resumable');
+console.log('Hide-and-seek saves: round-trip, copy isolation, completed board and malformed checkpoint rejection passed.');

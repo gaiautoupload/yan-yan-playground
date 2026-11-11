@@ -1,6 +1,13 @@
 # 彥彥配對樂園
 
-Release 420 — 2026-11-11 (Asia/Taipei).
+Release 421 — 2026-11-11 (Asia/Taipei).
+
+## Release 421
+
+- Hide-and-seek saves hiding positions and opened spots in the existing unified local save. Returning home or reloading resumes the same board and target animal.
+- Completed boards stay completed; only Replay clears found animals and shuffles a new board. Restoring the board does not replay each discovery sound or victory sound.
+- Checkpoint validation rejects duplicate/missing animals, invalid opened spots and unknown versions; corrupt checkpoints safely start a fresh board without changing other game progress.
+- At all four phone sizes, resumed after leaving and completed the round. Also verified partial reload, completed reload and explicit replay reset. Baby-care activity persistence remains separate future work.
 
 ## Release 420
 
@@ -83,6 +90,7 @@ node verification/timed-speech.cjs
 node verification/delivery.cjs
 node verification/pretend-drag.cjs
 node verification/play-routing.cjs
+node verification/seek-save.cjs
 ```
 
 Original v411 hashes remain in `verification/production-audit.json`. `check.cjs --snapshot` checks those original hashes with text line-ending normalization; it intentionally rejects modified application files. Normal checks validate current syntax and resource references.
