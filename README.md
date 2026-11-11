@@ -1,6 +1,13 @@
 # 彥彥配對樂園
 
-Release 416 — 2026-11-11 (Asia/Taipei).
+Release 417 — 2026-11-11 (Asia/Taipei).
+
+## Release 417
+
+- Added picture-led pretend play: choose feeding, bathing, hugging or sleeping in any order, then tap the baby. Food choices, bubbles, hearts and day/night changes provide visual feedback; Taiwan Mandarin uses existing Edge TTS.
+- No task sequence, score, timer or reading is required. Home now has four large entries including the baby room; other games remain collapsed.
+- Played all four activities at 320×568, 360×800, 390×844 and 844×390. Tested food selection, waking the baby, switching activities and returning home with audio paused and cleared. This is browser emulation, not physical phone testing.
+- Hourly follow-up now prioritizes preschool real-world play and pauses expansion of cargo puzzles.
 
 ## Release 416
 

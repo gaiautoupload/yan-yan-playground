@@ -1,0 +1,18 @@
+.pretend-screen{background:#fff0dc!important;gap:8px;color:#664c42}
+.pretend-room{flex:1;min-height:0;border:4px solid white;border-radius:28px;position:relative;display:flex;flex-direction:column;align-items:center;background:linear-gradient(#ffe5df 0 72%,#e8cda6 72%);overflow:hidden}
+.pretend-window{position:absolute;top:14px;left:14px;background:#c7edff;border:5px solid white;border-radius:15px;padding:8px;font-size:24px}
+.pretend-hearts{position:absolute;right:15px;top:24px;font-size:20px;max-width:40px;line-height:1.5}
+.pretend-baby{position:relative;margin:auto 0;min-height:150px;width:64%;flex:1;max-height:330px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;touch-action:manipulation;z-index:1}
+.pretend-face{font-size:clamp(100px,32vw,160px);filter:drop-shadow(0 8px 0 #c0927133)}
+.pretend-effect{position:absolute;bottom:12%;right:0;font-size:55px}.pretend-hand{position:absolute;bottom:5%;left:15%;font-size:28px}
+.pretend-bed{position:absolute;bottom:15%;font-size:100px;opacity:.3}.pretend-food{display:flex;gap:16px;padding:8px;z-index:2;flex:none}.pretend-food[hidden]{display:none}
+.pretend-food button{min-width:65px;min-height:60px;border:3px solid white;background:#fff8d3;border-radius:18px;font-size:36px;touch-action:manipulation}
+.pretend-tools{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;flex:none}.pretend-tools button{min-width:0;min-height:70px;border:3px solid white;border-radius:20px;background:#ffe5b3;font-size:38px;touch-action:manipulation}
+.pretend-tools [aria-pressed=true],.pretend-food [aria-pressed=true]{border-color:#bc7838;background:#fff9dc;box-shadow:inset 0 0 0 2px white}
+.pretend-status{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.pretend-screen.is-asleep .pretend-room{background:linear-gradient(#566583 0 72%,#797394 72%)}.pretend-screen.is-asleep .pretend-window{background:#303d69}.pretend-screen.is-asleep .pretend-hand{opacity:.4}
+.pretend-bounce .pretend-face{animation:pretend-happy .4s ease-in-out}.home .kid-favorites{grid-template-columns:repeat(2,minmax(0,1fr))}.home .kid-favorites .game-launch{min-height:98px}.home .kid-favorites .game-launch-icon{font-size:42px}
+@keyframes pretend-happy{50%{transform:translateY(-10px) rotate(-5deg)}}
+@media(max-height:600px){.pretend-tools button{min-height:58px;font-size:32px}.pretend-window{font-size:20px;padding:3px}.pretend-food button{min-height:50px}.home .kid-favorites .game-launch{min-height:80px}.home .kid-favorites .game-launch-icon{font-size:34px}}
+@media(orientation:landscape) and (max-height:500px){.pretend-face{font-size:100px}.pretend-baby{min-height:80px;max-width:230px}.pretend-effect{font-size:40px}.pretend-food{position:absolute;right:20px;top:30%;flex-direction:column;gap:3px}.pretend-food button{min-height:45px;font-size:26px}.pretend-tools button{min-height:48px;font-size:30px}.pretend-hearts{right:110px}.pretend-bed{font-size:70px;bottom:0}.home .kid-favorites{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){.pretend-bounce .pretend-face{animation:none}}
