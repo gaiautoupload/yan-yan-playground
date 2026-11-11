@@ -1,270 +1,72 @@
-(()=>{
-'use strict';
-// v31: two-step cargo matching + destination delivery. Additive; original progress untouched.
-const sh=window.YanClassicShared,audio=window.YanClassicAudio,photos=window.YanFamilyPhotos||[];
-if(!sh||!audio)return;
-const {app,state,persist,say,fx,vib,bg,renderHome}=sh;
-const MAX=40,ROUNDS=3;
-const STATIONS=[
- {id:'site',name:'工地',icon:'🏗️',goods:[['🧱','磚塊'],['🚧','交通錐'],['🧰','工具箱']]},
- {id:'garden',name:'花園',icon:'🌷',goods:[['🌱','小樹苗'],['🪴','盆栽'],['🌻','向日葵']]},
- {id:'zoo',name:'動物園',icon:'🦁',goods:[['🥕','紅蘿蔔'],['🐟','小魚'],['🦴','骨頭']]}
-];
-function shuffle(items,rng=Math.random){const a=items.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function makeTask(level,round,previous=null,rng=Math.random){
- const candidates=STATIONS.filter(s=>s.id!==previous),station=candidates[Math.floor(rng()*candidates.length)];
- const good=station.goods[Math.floor(rng()*station.goods.length)];
- const others=STATIONS.flatMap(s=>s.goods).filter(g=>g[0]!==good[0]);
- const count=level<=10?3:level<=25?4:5;
- const choices=shuffle([good,...shuffle(others,rng).slice(0,count-1)],rng);
- return {station,good,choices,destinations:shuffle(STATIONS,rng),photo:photos[(level+round)%Math.max(photos.length,1)]||null};
-}
-let generation=0,pending=null,previous=null;
-function stop(){generation++;if(pending!==null){clearTimeout(pending);pending=null}}
-function menu(){stop();window.YanClassics.menu()}
+(()=>{'use strict';
+const sh=window.YanClassicShared,audio=window.YanClassicAudio,rules=window.YanDeliveryRules;
+if(!sh||!audio||!rules)return;
+const {app,state,persist,say,bg,renderHome}=sh;
+let generation=0;
+function stop(){generation++;window.YanSpeech?.cancel()}
 function start(requested){
- stop();audio.unlock();
- const level=Math.max(1,Math.min(MAX,Number(requested)||Number(state.deliveryLevel)||1));
- let round=requested===undefined&&Number(state.deliveryCheckpointLevel)===level?Math.max(0,Math.min(ROUNDS-1,Number(state.deliveryRound)||0)):0;
- state.deliveryCheckpointLevel=level;state.deliveryRound=round;persist();
- const token=generation;let task=null,phase='cargo',locked=false,drag=null,suppressCargoClickUntil=0,reverseDrag=null,suppressStationClickUntil=0,selectedStation=null;
- app.innerHTML='<section class="screen game classic-screen delivery-screen">'+bg('play')+
- '<header class="bar topbar"><button class="iconbtn" id="delivery-back" aria-label="返回經典遊戲">⌂</button><span class="chip">🚜 彥彥運貨大隊</span><span class="chip">⭐ '+level+'/'+MAX+'</span><button class="iconbtn" id="delivery-speak" aria-label="重播語音">🔊</button></header>'+
- '<main class="delivery-stage"><div class="delivery-status"><span id="delivery-progress">🌟 '+(round+1)+' / '+ROUNDS+'</span><span id="delivery-step">① 選貨物</span></div>'+
- '<div class="delivery-scene"><div class="delivery-family"><img id="delivery-photo" alt="媽媽和彥彥的生活照片"></div><div class="delivery-order"><span id="delivery-order-icon">🧱</span><strong id="delivery-order-text">選貨物</strong></div></div>'+
- '<div class="delivery-track"><span class="delivery-road">➖ ➖ ➖ ➖</span><img src="./assets/excavator.webp" alt="挖土機" class="delivery-truck" id="delivery-truck"><span class="delivery-load" id="delivery-load">📦</span><span class="delivery-goal" id="delivery-goal">🏗️</span></div>'+
- '<div class="delivery-cargo" id="delivery-cargo" role="group" aria-label="選擇要搬運的貨物"></div>'+
- '<div class="delivery-destinations" id="delivery-destinations" role="group" aria-label="選擇送貨地點"></div>'+
- '<div class="delivery-guide" id="delivery-guide" aria-live="polite">👆 選出一樣的貨物！</div>'+
- '<div class="delivery-actions"><button type="button" class="delivery-hint" id="delivery-hint">💡 提示</button><button type="button" class="delivery-assist" id="delivery-assist" aria-label="媽媽幫我完成下一步送貨">👩 幫我送一步</button><button type="button" class="delivery-undo" id="delivery-undo" aria-label="取消已選貨物或地點，重新挑選" disabled>↶ 改選</button></div></main>'+
- '<footer class="bottombar"><button class="footbtn blue" id="delivery-home">⌂ 首頁</button><button class="footbtn yellow" id="delivery-retry">🔄 重玩</button></footer></section>';
- const cargo=app.querySelector('#delivery-cargo'),dest=app.querySelector('#delivery-destinations'),guide=app.querySelector('#delivery-guide'),truck=app.querySelector('#delivery-truck');
- function cue(){if(!task)return;say(phase==='cargo'?'彥彥，幫媽媽開挖土機！先找出'+task.good[1]+'。':'好棒！現在把'+task.good[1]+'送到'+task.station.name+'！')}
- function draw(){
-  if(token!==generation)return;
-  locked=false;phase='cargo';selectedStation=null;app.querySelector('#delivery-assist').disabled=false;app.querySelector('#delivery-undo').disabled=true;truck.classList.remove('delivery-driving');
-  task=makeTask(level,round,previous);previous=task.station.id;
-  app.querySelector('#delivery-progress').textContent='🌟 '+(round+1)+' / '+ROUNDS;
-  app.querySelector('#delivery-step').textContent='① 選貨物';
-  app.querySelector('#delivery-order-icon').textContent=task.good[0]+' ➜ '+task.station.icon;
-  app.querySelector('#delivery-order-text').textContent=task.good[1]+' 送到 '+task.station.name;
-  app.querySelector('#delivery-load').textContent='📦';app.querySelector('#delivery-goal').textContent=task.station.icon;
-  const img=app.querySelector('#delivery-photo');img.onerror=()=>{img.onerror=null;img.src='./assets/family-home.webp'};img.src=task.photo?task.photo.scene:'./assets/family-home.webp';
-  cargo.innerHTML=task.choices.map(g=>'<button type="button" class="delivery-item" data-item="'+g[0]+'" aria-label="'+g[1]+'"><span>'+g[0]+'</span></button>').join('');
-  dest.innerHTML=task.destinations.map(s=>'<button type="button" class="delivery-station" data-station="'+s.id+'" aria-label="'+s.name+'"><span>'+s.icon+'</span><small>'+s.name+'</small></button>').join('');
-  dest.classList.remove('delivery-ready');guide.textContent='👆 點貨物或拖曳送貨；按住貨物 0.5 秒可聽名稱 🔊';cue();
+ stop();audio.unlock();const token=generation;
+ const level=rules.plan(requested===undefined?state.deliveryLevel:requested).level,plan=rules.plan(level);
+ let session=requested===undefined?rules.restore(state.deliveryRouteSession,level):rules.fresh(level);
+ let message='看看兩張訂單。車廂有限，要分趟送貨！';
+ if(plan.orders.length>2)message='先看訂單，再安排每一趟的貨物！';
+ const live=()=>token===generation;
+ const save=()=>{state.deliveryRouteSession=session;persist()};
+ function menu(){stop();window.YanClassics.menu()}
+ function hint(){
+  const remaining=plan.orders.map((o,i)=>({...o,left:o.quantity-session.delivered[i]})).filter(o=>o.left>0);
+  let text;
+  if(session.location!=='depot')text=session.load.length?'看看車上還有什麼，再選需要這些貨物的地點。':'車上空了，先回倉庫裝貨。';
+  else if(session.load.length>=plan.capacity)text='車裝滿了！看看哪一張訂單需要車上的貨物。';
+  else text=remaining.map(o=>o.station.name+'還需要'+o.left+'份'+o.good.name).join('，')+'。一車只能放'+plan.capacity+'份。';
+  message=text;draw();say(text);
  }
- function finish(){
-  if(token!==generation)return;
-  state.deliveryLevel=Math.max(Number(state.deliveryLevel)||1,Math.min(MAX,level+1));
-  state.deliveryCheckpointLevel=state.deliveryLevel;state.deliveryRound=0;
-  state.deliveryWins=(Number(state.deliveryWins)||0)+1;
-  state.stars=(Number(state.stars)||0)+3;state.complete=(Number(state.complete)||0)+1;persist();
-  audio.play('win');fx('win');vib([15,30,15]);say('彥彥好厲害！三趟貨物都送到了！');
-  const overlay=document.createElement('div');overlay.className='overlay';
-  overlay.innerHTML='<div class="popup"><div class="stars">⭐⭐⭐</div><h2>🎉 運貨成功！</h2><p>🚜 三趟都完成了！</p><button class="primary" id="delivery-next">▶️ 下一關</button><button class="classic-secondary" id="delivery-again">🔄 再玩一次</button><button class="classic-secondary" id="delivery-menu">🎲 其他遊戲</button></div>';
-  app.querySelector('.screen').appendChild(overlay);
-  overlay.querySelector('#delivery-next').onclick=()=>start(level>=MAX?1:level+1);
-  overlay.querySelector('#delivery-again').onclick=()=>start(level);
-  overlay.querySelector('#delivery-menu').onclick=menu;
+ function award(){
+  const awards=Array.isArray(state.deliveryRouteAwards)?state.deliveryRouteAwards.filter(n=>Number.isInteger(n)&&n>=1&&n<=40):[];
+  if(awards.includes(level))return false;
+  state.deliveryRouteAwards=[...awards,level];state.deliveryLevel=Math.max(Number(state.deliveryLevel)||1,Math.min(40,level+1));
+  state.deliveryWins=(Number(state.deliveryWins)||0)+1;state.stars=(Number(state.stars)||0)+3;state.complete=(Number(state.complete)||0)+1;persist();return true;
  }
- function wrong(button){audio.play('wrong');vib(15);button.classList.remove('delivery-wrong');void button.offsetWidth;button.classList.add('delivery-wrong');guide.textContent='💗 再試一次！';}
- // v208: preschool-friendly destination-first two-tap path, without removing either drag direction.
- function selectStation(b){
-  if(!b||locked||phase!=='cargo'||token!==generation)return false;
-  audio.unlock();
-  if(b.dataset.station!==task.station.id){wrong(b);guide.textContent='💗 再找正確的送貨地點！';return false;}
-  if(selectedStation&&selectedStation!==b){selectedStation.classList.remove('delivery-station-selected');selectedStation.setAttribute('aria-pressed','false')}
-  selectedStation=b;b.classList.add('delivery-station-selected');b.setAttribute('aria-pressed','true');app.querySelector('#delivery-undo').disabled=false;
-  guide.textContent='👍 找到 '+task.station.icon+'！再點 '+task.good[0]+'！';audio.play('hit');vib(10);return true;
+ function dispatch(action){
+  if(!live())return;
+  const result=rules.act(session,action);
+  if(result.error){message={full:'車裝滿了！先出發，或點車上的貨物放回。',empty:'先回倉庫裝貨，再出發吧。',depot:'要回倉庫才能裝貨、放回貨物。',same:'我們已經在這裡了。'}[result.error]||'再試一次吧。';draw();audio.play('wrong');return}
+  session=result.state;save();
+  if(result.complete){const first=award();draw();audio.play('win');say(first?'訂單都完成了！你會安排送貨了！':'訂單又完成了！真棒！');return}
+  message=action.type==='load'?'裝好了！還有 '+(plan.capacity-session.load.length)+' 個空位。':action.type==='remove'?'貨物放回倉庫了。':action.to==='depot'?'回到倉庫，可以重新裝貨。':result.delivered?'送到 '+result.delivered+' 份！看看還有哪張訂單沒完成。':'這裡不需要車上的貨物。貨物還在，換個地方送吧！';
+  draw(action.type==='travel');audio.play(result.delivered?'hit':'tap');
+  if(action.type==='travel')say(message);
  }
- function chooseCargo(b,autoComplete=true){
-  if(!b||locked||phase!=='cargo'||token!==generation)return false;
-  audio.unlock();
-  if(b.dataset.item!==task.good[0]){wrong(b);return false;}
-  phase='destination';b.classList.add('delivery-correct');cargo.querySelectorAll('button').forEach(x=>x.disabled=true);app.querySelector('#delivery-undo').disabled=false;
-  app.querySelector('#delivery-load').textContent=task.good[0];app.querySelector('#delivery-step').textContent='② 選地點';
-  dest.classList.add('delivery-ready');guide.textContent='👆 送到 '+task.station.icon+'！';audio.play('hit');fx('yay');vib(12);cue();
-  if(selectedStation&&autoComplete)deliver(selectedStation);
-  return true;
- }
- function deliver(b){
-  if(!b||locked||phase!=='destination'||token!==generation)return false;
-  audio.unlock();
-  if(b.dataset.station!==task.station.id){wrong(b);return false;}
-  locked=true;app.querySelector('#delivery-assist').disabled=true;app.querySelector('#delivery-undo').disabled=true;b.classList.add('delivery-correct');dest.querySelectorAll('button').forEach(x=>x.disabled=true);
-  truck.classList.add('delivery-driving');guide.textContent='🎉 送到了！';audio.play('hit');fx('yay');vib([12,20,12]);
-  round++;state.deliveryRound=round;state.deliveryCheckpointLevel=level;persist();
-  pending=setTimeout(round>=ROUNDS?finish:draw,750);return true;
- }
- // v209: one-button, one-step assistance for preschoolers; reuse normal game scoring and checkpoint path.
- function assistStep(){
-  if(token!==generation||locked||!task)return false;
-  audio.unlock();
-  if(phase==='cargo'){
-   const b=[...cargo.querySelectorAll('[data-item]')].find(x=>x.dataset.item===task.good[0]);
-   if(!b)return false;
-   return chooseCargo(b);
+ function draw(resetScroll=false){
+  if(!live())return;
+  const scroll=resetScroll?0:(app.querySelector('.route-stage')?.scrollTop||0);
+  const focused=document.activeElement?.dataset?.load;
+  const atDepot=session.location==='depot',place=rules.stations.find(s=>s.id===session.location),done=rules.complete(session);
+  app.innerHTML='<section class="screen game classic-screen route-delivery-screen">'+bg('play')+
+   '<header class="bar topbar"><button class="iconbtn" id="delivery-back" aria-label="返回工程分類">‹</button><span class="chip">🚚 訂單配送</span><span class="chip">'+level+'/40</span><button class="iconbtn" id="delivery-speak" aria-label="聽送貨提示">🔊</button></header>'+
+   '<main class="route-stage allow-scroll"><div class="route-intro"><b>先看訂單，再安排裝車</b><small>一車 '+plan.capacity+' 份 · 已出發 '+session.trips+' 趟</small></div>'+
+   '<section class="route-orders" aria-label="送貨訂單">'+plan.orders.map((o,i)=>'<div class="route-order '+(session.delivered[i]===o.quantity?'is-done':'')+'"><strong>'+o.station.icon+' '+o.station.name+'</strong><span>'+o.good.icon+' '+o.good.name+' × '+o.quantity+'</span><small>已送 '+session.delivered[i]+'/'+o.quantity+(session.delivered[i]===o.quantity?' ✓':'')+'</small></div>').join('')+'</section>'+
+   '<section class="route-truck"><div class="route-location">'+(atDepot?'🏠 倉庫':place.icon+' '+place.name)+' <small>車上 '+session.load.length+'/'+plan.capacity+'</small></div><div class="route-slots" aria-label="車上貨物">'+Array.from({length:plan.capacity},(_,i)=>{const g=rules.goods.find(g=>g.id===session.load[i]);return g?'<button data-remove="'+i+'" '+(!atDepot?'disabled':'')+' aria-label="放回'+g.name+'">'+g.icon+'<small>'+g.name+'</small></button>':'<span class="route-empty" aria-label="空位">＋</span>'}).join('')+'</div><small>'+(atDepot?'點貨物裝車；點車上的貨物可放回':'貨物會留在車上，回倉庫才能改裝')+'</small></section>'+
+   (atDepot?'<section class="route-stock" aria-label="倉庫貨物">'+rules.goods.map(g=>'<button data-load="'+g.id+'" aria-label="裝上一份'+g.name+'">'+g.icon+'<span>'+g.name+'</span><small>＋ 裝車</small></button>').join('')+'</section>':'')+
+   '<section class="route-destinations" aria-label="選擇下一站">'+(atDepot?'':'<button data-travel="depot">🏠 回倉庫裝貨</button>')+plan.orders.filter(o=>o.station.id!==session.location).map(o=>'<button data-travel="'+o.station.id+'" '+(!session.load.length?'disabled':'')+'>前往 '+o.station.icon+' '+o.station.name+'</button>').join('')+'</section>'+
+   '<p class="route-message" role="status">'+message+'</p><details class="route-help"><summary>玩法與提示</summary><p>看清楚每個地點要的貨物和數量。裝好車後選下一站，到站會自動交付正確的貨物；車空了就回倉庫。</p><button id="delivery-hint">💡 給我一個提示</button></details></main>'+
+   '<footer class="bottombar"><button class="footbtn blue" id="delivery-home">⌂ 首頁</button><button class="footbtn yellow" id="delivery-retry">🔄 重新安排</button></footer></section>';
+  app.querySelector('#delivery-back').onclick=menu;
+  app.querySelector('#delivery-home').onclick=()=>{stop();renderHome()};
+  app.querySelector('#delivery-speak').onclick=hint;app.querySelector('#delivery-hint').onclick=hint;
+  app.querySelector('#delivery-retry').onclick=()=>{session=rules.fresh(level);save();message='重新安排這一關，看看怎麼裝車。';draw()};
+  app.querySelectorAll('[data-load]').forEach(b=>b.onclick=()=>dispatch({type:'load',good:b.dataset.load}));
+  app.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>dispatch({type:'remove',index:Number(b.dataset.remove)}));
+  app.querySelectorAll('[data-travel]').forEach(b=>b.onclick=()=>dispatch({type:'travel',to:b.dataset.travel}));
+  app.querySelector('.route-stage').scrollTop=scroll;
+  if(focused&&!resetScroll)app.querySelector('[data-load="'+focused+'"]')?.focus({preventScroll:true});
+  if(done){
+   const overlay=document.createElement('div');overlay.className='overlay';
+   overlay.innerHTML='<div class="popup"><div class="stars">⭐⭐⭐</div><h2>🎉 訂單全部送達！</h2><p>你安排了 '+session.trips+' 趟配送。<br>這一關最少可以用 '+plan.minimumTrips+' 趟完成。</p><button class="primary" id="delivery-next">'+(level<40?'▶ 下一關':'🔄 再挑戰這一關')+'</button><button class="classic-secondary" id="delivery-menu">返回工程分類</button></div>';
+   app.querySelector('.screen').appendChild(overlay);overlay.querySelector('#delivery-next').onclick=()=>start(Math.min(40,level+1));overlay.querySelector('#delivery-menu').onclick=menu;
   }
-  if(phase==='destination'){
-   const b=[...dest.querySelectorAll('[data-station]')].find(x=>x.dataset.station===task.station.id);
-   return b?deliver(b):false;
-  }
-  return false;
  }
- // v260: undo either selection before delivery; never decrement a completed trip or change stars.
- function undoSelection(){
-  if(token!==generation||locked||!task)return false;
-  if(phase==='cargo'&&!selectedStation)return false;
-  clearDrag();clearReverseDrag();
-  // A previous destination touch may still suppress clicks for 450ms; undo starts a fresh choice.
-  suppressCargoClickUntil=0;suppressStationClickUntil=0;
-  if(selectedStation){selectedStation.classList.remove('delivery-station-selected');selectedStation.setAttribute('aria-pressed','false');selectedStation=null;}
-  if(phase==='destination'){
-   phase='cargo';
-   cargo.querySelectorAll('[data-item]').forEach(b=>{b.disabled=false;b.classList.remove('delivery-correct')});
-   dest.classList.remove('delivery-ready');
-   app.querySelector('#delivery-load').textContent='📦';
-   app.querySelector('#delivery-step').textContent='① 選貨物';
-  }
-  app.querySelector('#delivery-undo').disabled=true;
-  guide.textContent='↶ 已取消選擇，重新挑貨物或地點！';
-  audio.play('tap');vib(8);cue();
-  return true;
- }
- // Drag a cargo icon straight to its destination, without changing the two-tap path.
- function stationAt(x,y){
-  return [...dest.querySelectorAll('[data-station]')].find(b=>{
-   const r=b.getBoundingClientRect();return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom;
-  })||null;
- }
- function clearDrag(){
-  if(!drag)return;
-  if(drag.holdTimer!==null){clearTimeout(drag.holdTimer);drag.holdTimer=null;}
-  drag.button.classList.remove('delivery-speaking');
-  if(drag.ghost)drag.ghost.remove();
-  if(drag.target)drag.target.classList.remove('delivery-drop-target');
-  drag.button.classList.remove('delivery-dragging');drag=null;
- }
- // v207: reverse drag, from the chosen destination to the matching cargo.
- function cargoAt(x,y){
-  return [...cargo.querySelectorAll('[data-item]')].find(b=>{
-   const r=b.getBoundingClientRect();return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom;
-  })||null;
- }
- function clearReverseDrag(){
-  if(!reverseDrag)return;
-  if(reverseDrag.ghost)reverseDrag.ghost.remove();
-  if(reverseDrag.target)reverseDrag.target.classList.remove('delivery-reverse-target');
-  reverseDrag.button.classList.remove('delivery-reverse-dragging');
-  reverseDrag=null;
- }
- dest.addEventListener('pointerdown',e=>{
-  const b=e.target.closest('[data-station]');
-  if(!b||reverseDrag||locked||phase!=='cargo'||token!==generation||e.isPrimary===false)return;
-  reverseDrag={pointerId:e.pointerId,button:b,x:e.clientX,y:e.clientY,moved:false,ghost:null,target:null};
-  try{dest.setPointerCapture(e.pointerId)}catch(_){}
- });
- dest.addEventListener('pointermove',e=>{
-  if(!reverseDrag||e.pointerId!==reverseDrag.pointerId||token!==generation)return;
-  if(!reverseDrag.moved&&Math.hypot(e.clientX-reverseDrag.x,e.clientY-reverseDrag.y)<10)return;
-  if(!reverseDrag.moved){
-   reverseDrag.moved=true;reverseDrag.button.classList.add('delivery-reverse-dragging');
-   const ghost=document.createElement('div');ghost.className='delivery-drag-ghost delivery-reverse-ghost';
-   ghost.textContent=reverseDrag.button.querySelector('span')?.textContent||'📍';
-   app.appendChild(ghost);reverseDrag.ghost=ghost;
-  }
-  reverseDrag.ghost.style.left=e.clientX+'px';reverseDrag.ghost.style.top=e.clientY+'px';
-  const target=cargoAt(e.clientX,e.clientY);
-  if(reverseDrag.target!==target){
-   if(reverseDrag.target)reverseDrag.target.classList.remove('delivery-reverse-target');
-   reverseDrag.target=target;if(target)target.classList.add('delivery-reverse-target');
-  }
- });
- dest.addEventListener('pointerup',e=>{
-  if(!reverseDrag||e.pointerId!==reverseDrag.pointerId)return;
-  const b=reverseDrag.button,moved=reverseDrag.moved,target=moved?cargoAt(e.clientX,e.clientY):null;
-  clearReverseDrag();suppressStationClickUntil=Date.now()+450;
-  if(!moved){selectStation(b);return;}
-  if(token!==generation||locked||phase!=='cargo')return;
-  if(!target){guide.textContent='👆 把地點拖到上面的貨物！';return;}
-  if(b.dataset.station!==task.station.id){wrong(b);guide.textContent='💗 先找對送貨地點！';return;}
-  if(target.dataset.item!==task.good[0]){wrong(target);guide.textContent='💗 再找對的貨物！';return;}
-  if(chooseCargo(target,false))deliver(b);
- });
- dest.addEventListener('pointercancel',e=>{if(reverseDrag&&e.pointerId===reverseDrag.pointerId)clearReverseDrag()});
- dest.addEventListener('lostpointercapture',e=>{if(reverseDrag&&e.pointerId===reverseDrag.pointerId)clearReverseDrag()});
- cargo.addEventListener('pointerdown',e=>{
-  const b=e.target.closest('[data-item]');
-  if(!b||drag||locked||phase!=='cargo'||token!==generation||e.isPrimary===false)return;
-  drag={pointerId:e.pointerId,button:b,x:e.clientX,y:e.clientY,moved:false,spoken:false,holdTimer:null,ghost:null,target:null};
-  // v218: preschool audio labels on a stationary long press; never count as an answer.
-  const active=drag;
-  active.holdTimer=setTimeout(()=>{
-   if(drag!==active||drag.moved||locked||phase!=='cargo'||token!==generation)return;
-   active.holdTimer=null;active.spoken=true;
-   audio.unlock();const name=b.getAttribute('aria-label')||'貨物';say('這是'+name+'。');
-   b.classList.add('delivery-speaking');guide.textContent='🔊 這是 '+name+'！放開後可以再點或拖曳送貨。';
-   vib(10);suppressCargoClickUntil=Date.now()+700;
-  },500);
-  try{cargo.setPointerCapture(e.pointerId)}catch(_){}
- });
- cargo.addEventListener('pointermove',e=>{
-  if(!drag||e.pointerId!==drag.pointerId||token!==generation)return;
-  if(!drag.moved&&Math.hypot(e.clientX-drag.x,e.clientY-drag.y)<10)return;
-  if(drag.holdTimer!==null){clearTimeout(drag.holdTimer);drag.holdTimer=null;}
-  if(drag.spoken)return; // keep a long-press audio gesture separate from delivery
-  if(!drag.moved){
-   drag.moved=true;drag.button.classList.add('delivery-dragging');
-   const ghost=document.createElement('div');ghost.className='delivery-drag-ghost';
-   ghost.textContent=drag.button.dataset.item;app.appendChild(ghost);drag.ghost=ghost;
-  }
-  drag.ghost.style.left=e.clientX+'px';drag.ghost.style.top=e.clientY+'px';
-  const target=stationAt(e.clientX,e.clientY);
-  if(drag.target!==target){
-   if(drag.target)drag.target.classList.remove('delivery-drop-target');
-   drag.target=target;if(target)target.classList.add('delivery-drop-target');
-  }
- });
- cargo.addEventListener('pointerup',e=>{
-  if(!drag||e.pointerId!==drag.pointerId)return;
-  const b=drag.button,moved=drag.moved,spoken=drag.spoken,target=moved?stationAt(e.clientX,e.clientY):null;
-  clearDrag();suppressCargoClickUntil=Date.now()+(spoken?700:450);
-  if(token!==generation||locked||phase!=='cargo'||spoken)return;
-  if(!moved){chooseCargo(b);return;}
-  if(b.dataset.item!==task.good[0]){wrong(b);return;}
-  if(!target){guide.textContent='👆 把貨物拖到下面的地點！';return;}
-  if(target.dataset.station!==task.station.id){wrong(target);guide.textContent='💗 再找正確的送貨地點！';return;}
-  if(chooseCargo(b,false))deliver(target);
- });
- cargo.addEventListener('pointercancel',e=>{if(drag&&e.pointerId===drag.pointerId)clearDrag()});
- cargo.addEventListener('lostpointercapture',e=>{if(drag&&e.pointerId===drag.pointerId)clearDrag()});
- cargo.addEventListener('click',e=>{
-  if(Date.now()<suppressCargoClickUntil)return;
-  const b=e.target.closest('[data-item]');chooseCargo(b);
- });
- dest.addEventListener('click',e=>{
-  if(Date.now()<suppressStationClickUntil)return;
-  const b=e.target.closest('[data-station]');if(phase==='cargo')selectStation(b);else deliver(b);
- });
- app.querySelector('#delivery-back').onclick=menu;
- app.querySelector('#delivery-home').onclick=()=>{stop();renderHome()};
- app.querySelector('#delivery-retry').onclick=()=>start(level);
- app.querySelector('#delivery-speak').onclick=()=>{audio.unlock();cue()};
- app.querySelector('#delivery-assist').onclick=assistStep;
- app.querySelector('#delivery-undo').onclick=undoSelection;
- app.querySelector('#delivery-hint').onclick=()=>{audio.unlock();cue();const selector=phase==='cargo'?'[data-item]':'[data-station]';const value=phase==='cargo'?task.good[0]:task.station.id;const b=[...app.querySelectorAll(selector)].find(x=>x.dataset[phase==='cargo'?'item':'station']===value);if(b){b.classList.add('delivery-highlight');setTimeout(()=>b.classList.remove('delivery-highlight'),1200)}};
- draw();
+ save();draw();if(!rules.complete(session))say('看看訂單。一車只能放'+plan.capacity+'份貨物，你想先送哪裡？');
 }
-function enhance(){
- const classic=app.querySelector('.classic-menu');
- if(classic&&!classic.querySelector('#delivery-entry')){
-  const b=document.createElement('button');b.id='delivery-entry';b.className='classic-tile delivery-tile';b.setAttribute('aria-label','開始彥彥運貨大隊');
-  b.innerHTML='<span class="classic-big">🚜📦</span><strong>挖土機運貨</strong><span>📦 ➜ 🏗️ 🌷 🦁</span><small>⭐ '+(Number(state.deliveryLevel)||1)+' / '+MAX+'</small>';
-  classic.insertBefore(b,classic.querySelector('.classic-audio-controls'));b.onclick=()=>start();
- }
-
-}
-const observer=new MutationObserver(enhance);observer.observe(app,{childList:true,subtree:true});enhance();
-window.YanDeliveryGame={start,stop,makeTask,enhance};
+window.YanDeliveryGame={start,stop};
 })();

@@ -1,6 +1,14 @@
 # 彥彥配對樂園
 
-Release 413 — 2026-11-11 (Asia/Taipei).
+Release 414 — 2026-11-11 (Asia/Taipei).
+
+## Release 414
+
+- Rebuilt delivery around orders, limited truck capacity, multiple stops and return trips to the depot. Wrong destinations retain cargo; goods can be removed at the depot.
+- Persist each loading/travel action. Reload restores unfinished orders, cargo and trip count. Completion awards are granted once per level.
+- Phone layout has a scrollable play area and separate navigation. Loading preserves scroll position. Return goes to Engineering; next stays in Delivery.
+- Completed level 1 at 320×568, including full-truck rejection, wrong destination and reload/resume. Inspected 360×800, 390×844 and 844×390 layouts without horizontal overflow; verified next level and category return.
+- Pure rule tests cover all 40 existing levels, checkpoint validation and completion locking. These are not 40 manually played levels.
 
 ## Release 413
 
@@ -28,6 +36,7 @@ node verification/check.cjs
 node verification/save-recovery.cjs
 node verification/speech.cjs
 node verification/timed-speech.cjs
+node verification/delivery.cjs
 ```
 
 Original v411 hashes remain in `verification/production-audit.json`. `check.cjs --snapshot` checks those original hashes with text line-ending normalization; it intentionally rejects modified application files. Normal checks validate current syntax and resource references.

@@ -1,0 +1,24 @@
+.route-delivery-screen{background:#eaf6f2}
+.route-stage{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;touch-action:pan-y;overscroll-behavior:contain;display:flex;flex-direction:column;gap:12px;padding:4px 2px 20px;color:#374f55}
+.route-stage>*{flex-shrink:0}
+.route-intro{display:flex;flex-direction:column;gap:5px;padding:12px;border-radius:16px;background:#fffdf1;text-align:center}
+.route-intro b{font-size:20px}.route-intro small{font-size:14px}
+.route-orders{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.route-order{display:flex;flex-direction:column;gap:8px;border:2px solid #fff;border-radius:16px;background:#fff7d9;padding:12px;font-size:16px}
+.route-order small{font-size:13px}.route-order.is-done{background:#d4f3d7}.route-order:nth-child(3){grid-column:1/-1}
+.route-truck{border:3px solid white;border-radius:18px;padding:12px;background:#dbeef7;display:flex;flex-direction:column;gap:10px;text-align:center}
+.route-location{font-size:19px;font-weight:800;display:flex;justify-content:space-between;gap:8px}.route-location small{font-size:14px}
+.route-slots{display:flex;justify-content:center;gap:10px}
+.route-slots button,.route-empty{flex:1;max-width:100px;min-width:0;min-height:74px;border:2px dashed #92b1b9;border-radius:13px;background:#fffdf6;font-size:32px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.route-slots button small{font-size:13px}.route-slots button:disabled{opacity:1;color:inherit}.route-empty{color:#8da9ad;background:#ffffff66}
+.route-truck>small{font-size:12px;line-height:1.5}
+.route-stock{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.route-stock button{border:2px solid white;border-radius:16px;background:#fffdf2;padding:10px 4px;font-size:30px;display:flex;flex-direction:column;gap:4px;align-items:center}
+.route-stock span{font-size:15px;font-weight:800}.route-stock small{font-size:12px;color:#397456}
+.route-destinations{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.route-destinations button,.route-help button{min-height:52px;border-radius:14px;background:#bfe7d0;color:#254e40;padding:10px;font-size:16px;font-weight:800;border:2px solid white}
+.route-destinations button:disabled{background:#e4eae6;color:#737d78}
+.route-message{margin:0;padding:12px;background:#fffdf1;border-radius:14px;font-size:15px;line-height:1.5}
+.route-help{padding:4px 12px;border-radius:14px;background:#ffffffbf}.route-help summary{min-height:44px;padding:12px 0;font-weight:800;touch-action:manipulation}.route-help p{font-size:14px;line-height:1.6}
+.route-stage button{touch-action:manipulation}.route-stage button:focus-visible{outline:3px solid #b36c1b;outline-offset:2px}
+@media(min-width:650px){.route-stage{display:grid;grid-template-columns:1fr 1fr;align-content:start;align-items:start}.route-intro,.route-message,.route-help{grid-column:1/-1}.route-stock{grid-column:1}.route-destinations{grid-column:2}.route-orders{grid-template-columns:1fr}.route-order:nth-child(3){grid-column:auto}}
