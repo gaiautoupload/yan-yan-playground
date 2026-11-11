@@ -1,0 +1,73 @@
+/* v52: responsive touch garden, 320px phones supported without sideways overflow. */
+.garden-screen .garden-stage{flex:1;min-height:0;width:100%;max-width:620px;margin:0 auto;box-sizing:border-box;display:flex;flex-direction:column;gap:clamp(5px,1dvh,10px);padding:6px 9px 12px;overflow-y:auto;overflow-x:hidden;touch-action:pan-y}
+.garden-banner{flex:none;border:3px solid white;border-radius:18px;background:linear-gradient(135deg,#d5f5b7,#d5f8ff);text-align:center;padding:9px 3px;color:#45623e;font-size:clamp(14px,4vw,19px);white-space:nowrap}
+.garden-banner strong{font-weight:1000}
+.garden-progress{flex:none;text-align:center;background:#fffdf0;border:2px solid white;border-radius:14px;padding:5px;font-weight:900;color:#66556b;font-size:clamp(13px,3.8vw,18px)}
+.garden-beds{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(7px,2vw,12px);flex:none}
+.garden-bed{min-width:0;min-height:clamp(99px,19dvh,155px);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;border:3px solid white;border-radius:22px;background:linear-gradient(#bfefff 0%,#ddfaff 50%,#9fdb9a 51%,#c5a578 100%);box-shadow:0 4px 0 #88a97988;touch-action:manipulation;cursor:pointer}
+.garden-target{position:absolute;top:5px;right:9px;font-size:clamp(23px,6vw,31px);opacity:.8;background:#fff9;border-radius:12px;padding:0 4px}
+.garden-grown{font-size:clamp(42px,12vw,66px);line-height:1.1}
+.garden-step{position:absolute;bottom:3px;left:8px;font-size:clamp(18px,5vw,24px)}
+.garden-highlight{outline:5px solid #ffb728;outline-offset:0;animation:garden-glow .65s ease-in-out infinite alternate}
+.garden-caption{flex:none;text-align:center;color:#584b62;font-weight:900;background:#fffce9dd;border-radius:12px;padding:5px 2px;font-size:clamp(11px,3.2vw,16px)}
+.garden-seeds{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;flex:none}
+.garden-seed,.garden-tool{min-width:0;min-height:55px;border:3px solid white;border-radius:14px;background:#fff8e5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;touch-action:manipulation;color:#58466a;cursor:pointer}
+.garden-seed span,.garden-tool span{font-size:clamp(25px,7vw,37px);line-height:1.1}
+.garden-seed small,.garden-tool small{font-size:clamp(10px,2.8vw,14px);font-weight:900}
+.garden-tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;flex:none}
+.garden-tool{min-height:54px;background:#e4f4ff}
+.garden-active{background:#fff2a4!important;border-color:#ffc449!important;box-shadow:0 0 0 2px #e6a723}
+.garden-message{flex:none;min-height:28px;border-radius:13px;background:#fffdf1;color:#5a4b69;font-size:clamp(13px,3.8vw,18px);font-weight:900;text-align:center;padding:6px 4px}
+.garden-hint{flex:none;min-height:44px;border:3px solid white;border-radius:15px;background:#ffe5ad;color:#604b64;font-size:clamp(14px,4vw,19px);font-weight:900;touch-action:manipulation}
+@keyframes garden-glow{to{filter:brightness(1.12);box-shadow:0 0 0 4px #ffd878,0 4px 0 #88a97988}}
+@media(max-height:620px){.garden-screen .garden-stage{gap:4px;padding-top:3px}.garden-banner{padding:4px 2px}.garden-bed{min-height:89px}.garden-seed,.garden-tool{min-height:48px}.garden-message{padding:3px}}
+@media(prefers-reduced-motion:reduce){.garden-highlight{animation:none}}
+/* v53: big accessible rain-cloud drag control */
+.garden-rain{flex:none;min-height:48px;border:3px solid #fff;border-radius:16px;background:linear-gradient(100deg,#c8eaff,#e4e2ff);color:#385578;font-size:clamp(13px,3.7vw,18px);font-weight:950;touch-action:none;cursor:grab}
+.garden-rain:disabled{opacity:.55;cursor:not-allowed}
+.garden-rain-active{outline:3px solid #4a9ff3;outline-offset:-4px;background:linear-gradient(100deg,#b0ddff,#a8f5e5)}
+.garden-rain:focus-visible{outline:4px solid #2257ae}
+@media(max-height:620px){.garden-rain{min-height:43px}}
+
+/* v140: one-gesture seed planting with visible, non-blocking drag feedback. */
+.garden-seed{touch-action:none}
+.garden-seed-ghost{position:fixed;z-index:9999;pointer-events:none;transform:translate(-50%,-50%);font-size:46px;line-height:1;background:#fff9dc;border:3px solid #fff;border-radius:50%;padding:9px;box-shadow:0 8px 24px #263b5360}
+.garden-drop-ready{outline:5px solid #20b65d;outline-offset:-3px;filter:brightness(1.08)}
+.garden-drop-wrong{outline:5px solid #ff8b66;outline-offset:-3px}
+@media(max-width:360px){.garden-seed-ghost{font-size:38px;padding:6px}}
+
+/* v141: direct care-tool drag; prevent touch scrolling while dragging. */
+.garden-tool{touch-action:none}
+.garden-tool-ghost{background:#e4f7ff;border-color:#a6e9ff}
+
+/* v156: keep visited care targets visibly highlighted during one continuous sweep. */
+.garden-beds .garden-drop-ready{box-shadow:0 0 0 3px #66e9a0,0 4px 0 #88a97988}
+
+/* v204: large single-step help control for early readers, without hiding existing hint/undo. */
+.garden-auto-step{min-height:48px;background:linear-gradient(110deg,#c7f9d8,#d6edff);border-color:#fff;color:#235e56;box-shadow:0 3px 0 #8ac7b1}
+.garden-auto-step:disabled{opacity:.55;box-shadow:none}
+@media(max-width:360px),(max-height:620px){.garden-auto-step{min-height:44px}}
+
+/* v264: one-tap easy-care mode, explicit pressed state and large child-sized target. */
+.garden-easy{flex:none;width:100%;min-height:48px;border:3px solid white;border-radius:16px;background:linear-gradient(110deg,#fff2c8,#d9ecff);color:#57496d;font-size:clamp(14px,3.9vw,19px);font-weight:950;touch-action:manipulation;cursor:pointer}
+.garden-easy[aria-pressed="true"]{background:linear-gradient(110deg,#c8f7d4,#c6f4ff);border-color:#fff;box-shadow:0 0 0 3px #43b87b;color:#205f4b}
+.garden-easy:focus-visible{outline:4px solid #2759c2;outline-offset:2px}
+.garden-easy:disabled{opacity:.55}
+@media(max-height:620px){.garden-easy{min-height:44px}}
+
+/* v265: highlighted pots never move under a finger or automated click. */
+
+/* v309: easy-care finger sweep highlights visited pots without changing normal scrolling. */
+.garden-beds.garden-easy-sweep .garden-bed{touch-action:none}
+.garden-beds .garden-sweep-visited{outline:4px solid #21b88a;outline-offset:-3px;box-shadow:0 0 0 4px #b6ffe5,0 5px 0 #6eae8a88;filter:brightness(1.08)}
+@media(max-width:360px){.garden-beds .garden-sweep-visited{outline-width:3px}}
+
+/* v354: visible 650ms hold feedback only while touching a pot in easy-care mode. */
+.garden-beds .garden-bed.garden-hold-progress{animation:garden-hold-progress .65s linear forwards}
+@keyframes garden-hold-progress{from{box-shadow:inset 0 0 0 0 #ffe270,0 4px 0 #88a97988}to{box-shadow:inset 0 0 0 8px #ffe270,0 4px 0 #88a97988}}
+@media(prefers-reduced-motion:reduce){.garden-beds .garden-bed.garden-hold-progress{animation:none;outline:4px solid #e4aa20}}
+
+/* v404: redo remains a full-width, child-sized control, distinct from undo. */
+.garden-redo{background:linear-gradient(110deg,#e1e9ff,#e7d8ff);color:#493c77;min-height:46px}
+.garden-redo:disabled{opacity:.45;filter:grayscale(.35)}
+.garden-redo:focus-visible{outline:4px solid #426ac5;outline-offset:2px}

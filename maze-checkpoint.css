@@ -1,0 +1,12 @@
+/* v77: maze checkpoint, single-step undo and touch targets */
+.maze-guide-tools{gap:4px}
+.maze-guide-tools button{min-height:44px;line-height:1.1;font-size:clamp(10px,2.8vw,14px);white-space:normal;padding:4px 2px}
+.maze-guide-tools #maze-undo{background:#dceeff;border-color:#85b6f5;color:#23588d}
+.maze-guide-tools #maze-undo:disabled{opacity:.48;filter:grayscale(.45);box-shadow:none}
+@media(max-height:640px){.maze-guide-tools button{min-height:44px;font-size:10px;padding:2px 1px}.maze-guide-tools{gap:3px}.maze-shell{gap:2px}}
+@media(orientation:landscape) and (max-height:500px){.maze-guide-tools button{min-height:36px}}
+
+/* v86: tactile feedback while dragging the excavator along the maze */
+.maze-grid.maze-dragging{cursor:grabbing;outline:3px solid #f9c45c;outline-offset:2px}
+.maze-grid.maze-dragging .maze-player{background:#fff1aa;box-shadow:inset 0 0 0 3px #ffb92b}
+@media(prefers-reduced-motion:reduce){.maze-grid.maze-dragging .maze-player{transition:none}}

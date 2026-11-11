@@ -1,0 +1,83 @@
+/* v54: bee finger-drawing game, preschool-size targets and responsive layout */
+.bee-screen .bee-stage{flex:1;min-height:0;box-sizing:border-box;width:100%;max-width:620px;margin:0 auto;padding:5px 10px 10px;display:flex;flex-direction:column;gap:8px;align-items:center;overflow-y:auto;overflow-x:hidden;touch-action:pan-y}
+.bee-banner{width:100%;box-sizing:border-box;text-align:center;border:3px solid white;border-radius:18px;background:linear-gradient(110deg,#e6f9c5,#c9f4ff);color:#49684b;font-size:clamp(15px,4vw,21px);font-weight:950;padding:8px 3px}
+.bee-progress{width:100%;box-sizing:border-box;background:#fffdf0;border:2px solid white;border-radius:14px;padding:7px;text-align:center;color:#63566a;font-weight:900;font-size:clamp(13px,3.6vw,18px)}
+.bee-board{position:relative;flex:none;box-sizing:border-box;width:min(100%,min(50dvh,390px));aspect-ratio:1;border:4px solid white;border-radius:22px;background:radial-gradient(circle at 25% 35%,#fff8d5 0 5%,transparent 6%),linear-gradient(#c5efff 0%,#d9f8f0 48%,#b7e8a0 49%,#8acb83 100%);box-shadow:0 5px 0 #91a87e;touch-action:none;user-select:none;overflow:hidden}
+.bee-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.bee-start{position:absolute;transform:translate(-50%,-50%);font-size:clamp(26px,8vw,42px);pointer-events:none;filter:drop-shadow(0 2px 2px #fff)}
+.bee-flower{position:absolute;transform:translate(-50%,-50%);width:clamp(46px,15%,58px);height:clamp(46px,15%,58px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;border:3px solid white;border-radius:50%;background:#fff8e9;box-shadow:0 3px 0 #8ab878;touch-action:none;cursor:pointer;padding:0;color:#574b69}
+.bee-flower span{font-size:clamp(23px,7vw,32px);line-height:1}
+.bee-flower b{font-size:13px;line-height:1.1}
+.bee-next{background:#fff1a1;border-color:#ffb32e;outline:3px solid #ffda62;animation:bee-pulse .8s ease-in-out infinite alternate}
+.bee-done{background:#b6f6cd;border-color:#7dd4a2}
+.bee-wait{opacity:.7}
+.bee-message{width:100%;box-sizing:border-box;min-height:40px;border-radius:14px;padding:7px 5px;text-align:center;background:#fffdf0;color:#5b4c69;font-weight:900;font-size:clamp(13px,3.6vw,18px)}
+.bee-actions{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bee-actions button{min-height:48px;border:3px solid white;border-radius:16px;background:#ffe8ac;color:#59476a;font-size:clamp(14px,4vw,18px);font-weight:950;touch-action:manipulation}
+.bee-actions button:last-child{background:#d8edff}
+@keyframes bee-pulse{to{filter:brightness(1.12);transform:translate(-50%,-50%) scale(1.08)}}
+@media(max-height:620px){.bee-screen .bee-stage{gap:4px}.bee-banner{padding:4px 2px}.bee-progress{padding:3px}.bee-message{min-height:32px;padding:3px}.bee-actions button{min-height:42px}}
+@media(prefers-reduced-motion:reduce){.bee-next{animation:none}}
+/* v55: Real finger-flight mode with live path and bee following the finger */
+.bee-ink{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}
+.bee-flyer{position:absolute;transform:translate(-50%,-50%);font-size:clamp(27px,8vw,40px);filter:drop-shadow(0 2px 2px white);pointer-events:none;z-index:4;display:none}
+.bee-drawing .bee-flyer{display:block}
+.bee-drawing .bee-start{display:none}
+.bee-draw-toggle{width:100%;box-sizing:border-box;min-height:44px;border:3px solid #fff;border-radius:15px;background:#d6f8d3;color:#4b5364;font-size:clamp(14px,4vw,18px);font-weight:950;touch-action:manipulation}
+.bee-draw-toggle[aria-pressed="true"]{background:#ffe4ac;box-shadow:inset 0 0 0 2px #f8a23e}
+
+/* v56: optional storm obstacle course, large toddler-friendly toggle */
+.bee-storm-toggle{width:100%;box-sizing:border-box;min-height:44px;border:3px solid white;border-radius:15px;background:#e7ecff;color:#4b5364;font-size:clamp(14px,4vw,18px);font-weight:950;touch-action:manipulation}
+.bee-storm-toggle[aria-pressed="true"]{background:#c9dcff;box-shadow:inset 0 0 0 2px #7892e7}
+.bee-clouds{position:absolute;inset:0;pointer-events:none}
+.bee-cloud{position:absolute;z-index:2;transform:translate(-50%,-50%);font-size:clamp(36px,12vw,49px);line-height:1;filter:drop-shadow(0 2px 1px #687f9c);pointer-events:none}
+.bee-draw-toggle:disabled{opacity:.65;cursor:default}
+@media(max-height:620px){.bee-storm-toggle{min-height:38px}.bee-draw-toggle{min-height:38px}}
+
+/* v56.1: two side-by-side mode controls and short-screen touch-safe layout */
+.bee-mode-row{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.bee-mode-row button{min-width:0;white-space:nowrap;font-size:clamp(12px,3.5vw,17px)}
+@media(max-height:700px){
+ .bee-screen .bee-stage{gap:4px;padding:2px 8px 4px}
+ .bee-board{width:min(100%,min(38dvh,310px))}
+ .bee-banner{padding:3px 2px}
+ .bee-progress{padding:3px}
+ .bee-message{min-height:28px;padding:3px}
+ .bee-actions button{min-height:38px}
+ .bee-mode-row button{min-height:38px}
+}
+
+/* v173: undo is a full-size third action, including 320px phones. */
+.bee-actions{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.bee-actions button{min-width:0;font-size:clamp(12px,3.45vw,17px);min-height:46px;padding:4px 2px}
+.bee-actions #bee-undo{background:#f7e3ff}
+.bee-actions #bee-undo:disabled{opacity:.48;cursor:default}
+@media(max-height:700px){.bee-actions button{min-height:42px}}
+
+/* v178: preschool-friendly 2x2 controls and non-scoring guided bee flight. */
+.bee-actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.bee-actions #bee-demo{background:#c9f5ff}
+.bee-demoing .bee-flyer{display:block}
+@media(prefers-reduced-motion:reduce){.bee-demoing .bee-flyer{transition:none}}
+
+/* v193: keep five bee actions in two short rows on 320px phones; full-size touch targets. */
+.bee-actions{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+.bee-actions button{font-size:clamp(11px,3.3vw,16px);min-height:46px}
+.bee-actions #bee-assist{background:#ffe0ef}
+@media(max-height:700px){.bee-actions button{min-height:42px}}
+
+/* v280: completed flowers are tappable rewind checkpoints, without shrinking preschool touch targets. */
+.bee-flower.bee-rewindable{box-shadow:0 3px 0 #63b98a,0 0 0 2px #e8fff2}
+.bee-rewindable::after{content:'↩';position:absolute;top:-7px;right:-5px;display:grid;place-items:center;width:20px;height:20px;border:2px solid white;border-radius:50%;background:#467fce;color:white;font-size:14px;font-weight:900;pointer-events:none}
+.bee-rewindable:focus-visible{outline:4px solid #3465b4;outline-offset:3px}
+
+/* v375: accessible listening mode button. */
+.bee-actions #bee-listen{background:#e2f5ff;border-color:#fff}
+.bee-actions #bee-listen[aria-pressed="true"]{background:#ffe5a6;box-shadow:inset 0 0 0 2px #edab3e}
+.bee-actions #bee-listen:focus-visible{outline:3px solid #276a9b;outline-offset:2px}
+
+/* v406: safe route guide stays behind the moving bee; no automatic scoring. */
+.bee-route-guide{fill:none;stroke:#2467c7;stroke-width:2.7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:3.2 2.5;opacity:.95;filter:drop-shadow(0 1px 1px white)}
+.bee-actions #bee-route{background:#d5e8ff;border-color:#fff}
+.bee-actions #bee-route[aria-pressed="true"]{background:#b7d8ff;box-shadow:inset 0 0 0 2px #4a85d4}
+.bee-actions #bee-route:focus-visible{outline:3px solid #23569b;outline-offset:2px}

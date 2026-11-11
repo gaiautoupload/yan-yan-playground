@@ -1,0 +1,7 @@
+/* v75: story sequencing has a real one-step undo and validated resume checkpoint. */
+.order-checkpoint{display:flex;align-items:center;justify-content:center;gap:8px;width:min(96vw,650px);min-height:44px;flex:0 0 auto}
+#order-undo{min-height:44px;min-width:118px;border:3px solid #fff7c9;border-radius:15px;background:linear-gradient(180deg,#ffe6a5,#ffc36c);color:#694522;font-weight:950;font-size:clamp(13px,3.7vw,18px);box-shadow:0 3px 0 #c99453;touch-action:manipulation}
+#order-undo:disabled{background:#d9e1e5;color:#89939a;box-shadow:none;opacity:.8}
+#order-save-indicator{min-width:0;max-width:180px;font-size:clamp(11px,3.1vw,15px);font-weight:850;color:#34626c;background:#e9faffdf;padding:7px 9px;border-radius:12px;text-align:center;white-space:nowrap}
+@media(max-height:650px){.order-shell{gap:3px}.order-track{height:clamp(84px,18dvh,125px)}.order-progress{font-size:clamp(16px,4vw,23px);padding:3px 9px}.order-checkpoint{min-height:44px;gap:5px}}
+@media(orientation:landscape) and (max-height:500px){.order-checkpoint{min-height:40px}#order-undo{min-height:40px}.order-track{height:39dvh}}

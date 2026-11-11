@@ -1,0 +1,7 @@
+/* v74: jigsaw progress, limited parent assist and checkpoints. */
+.puzzle-tools{width:min(95vw,49dvh,510px);display:flex;align-items:center;justify-content:space-between;gap:7px;flex:0 0 auto;min-height:44px}
+.puzzle-tools .puzzle-below{white-space:nowrap;font-size:clamp(11px,3vw,15px);padding:5px 8px}
+.puzzle-assist{flex:1;min-width:0;max-width:210px;min-height:44px;padding:5px 9px;border-radius:15px;border:3px solid #fff6c7;background:linear-gradient(180deg,#ffdf94,#ffb85e);color:#76501f;font-size:clamp(12px,3.6vw,17px);font-weight:950;box-shadow:0 4px 0 #c78b4e;white-space:nowrap}
+.puzzle-assist:disabled{background:#e7e4df;color:#8e8b87;border-color:#f5f4f2;box-shadow:none;opacity:.75}
+@media(max-height:650px){.puzzle-tools{width:min(94vw,44dvh,510px);gap:4px}.puzzle-tools .puzzle-below{padding:3px 5px;font-size:11px}.puzzle-assist{font-size:12px;min-height:44px;padding:4px 5px}}
+@media(orientation:landscape) and (max-height:460px){.puzzle-tools{min-height:40px}.puzzle-assist{min-height:40px}.puzzle-shell{gap:3px}}

@@ -1,0 +1,54 @@
+/* v42: touch-drawing, vector SVG paint studio, compact mobile layout */
+.paint-screen .paint-stage{z-index:2;flex:1;min-height:0;width:100%;max-width:640px;margin:0 auto;padding:4px 7px 10px;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;display:flex;flex-direction:column;gap:7px;align-items:center}
+.paint-family{width:100%;display:flex;align-items:center;justify-content:center;gap:7px;font-size:clamp(12px,3.6vw,17px);text-align:center;color:#3a5b74}.paint-family img{width:clamp(30px,8vw,44px);height:clamp(30px,8vw,44px);object-fit:contain}.paint-family b{flex:1}
+.paint-paper{width:100%;max-width:540px;aspect-ratio:1000/650;flex:none;background:#fffdf2;border:5px solid white;border-radius:19px;overflow:hidden;box-shadow:0 5px 0 #8fa6bc77}
+#paint-board{width:100%;height:100%;display:block;touch-action:none;user-select:none;-webkit-user-select:none}
+.paint-guide{width:100%;text-align:center;background:#fffbea;border-radius:13px;padding:5px;color:#3c5d77;font-size:clamp(12px,3.4vw,16px);font-weight:900}
+.paint-palette{width:100%;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.paint-color{height:clamp(34px,6.5dvh,46px);min-width:0;border-radius:14px;background:var(--paint-color);border:3px solid white;box-shadow:0 3px 0 #a0a9b977;touch-action:manipulation}
+.paint-color.selected{outline:3px solid #324d74;outline-offset:-2px;transform:translateY(-2px)}
+.paint-tools{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.paint-tools button{min-width:0;min-height:clamp(40px,7dvh,51px);border:2px solid white;border-radius:14px;background:#e5f4ff;color:#36536e;font-weight:900;font-size:clamp(12px,3.3vw,16px);touch-action:manipulation}
+.paint-tools button.selected{background:#ffe6a1}.paint-tools #paint-save{background:#c7f3b4}.paint-tools button:disabled{opacity:.45}
+.paint-stamps{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));width:100%;gap:5px}.paint-stamps[hidden]{display:none}
+.paint-stamps button{background:#fff7d4;border:2px solid white;border-radius:13px;min-height:42px;font-size:clamp(23px,6vw,32px)}
+.paint-entry{width:100%;min-height:77px;display:flex;align-items:center;gap:12px;text-align:left;padding:10px 13px;background:linear-gradient(140deg,#d9f9c8,#ffe3a9);border:3px solid white;border-radius:20px;box-shadow:0 4px 0 #b0a28088;color:#4c5c6b;touch-action:manipulation}
+.paint-entry>span{font-size:39px}.paint-entry b{font-size:clamp(17px,4.5vw,22px)}.paint-entry small{display:block;font-size:clamp(11px,3vw,14px)}
+@media(max-height:620px){.paint-screen .paint-stage{gap:4px;padding:2px 4px 8px}.paint-family img{width:27px;height:27px}.paint-paper{max-width:min(420px,100%)}.paint-tools button{min-height:37px}.paint-color{height:32px}.paint-guide{padding:3px}}
+@media(max-width:350px){.paint-tools{gap:4px}.paint-tools button{font-size:11px}.paint-paper{border-width:3px}}
+@media(prefers-reduced-motion:reduce){.paint-color{transition:none}}
+
+/* v145: redo remains an easy-to-tap action on narrow phones */
+.paint-tools #paint-redo{background:#f3e8ff}.paint-tools #paint-redo:disabled{opacity:.42}
+
+/* v237: responsive, scrollable picture-save preview; long-press remains available on mobile */
+.paint-tools #paint-export{background:#d7f1ff}
+.paint-export-panel{width:min(94vw,640px);max-height:90dvh;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y}
+.paint-export-panel h2{font-size:clamp(19px,5vw,26px)}
+.paint-export-panel p{font-size:clamp(13px,3.5vw,16px);margin:4px 0 8px}
+.paint-export-preview{display:block;width:100%;height:auto;max-height:54dvh;object-fit:contain;background:#fffdf2;border:3px solid #fff;border-radius:13px;touch-action:auto;-webkit-touch-callout:default;user-select:auto;-webkit-user-select:auto}
+.paint-export-actions{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:10px}
+.paint-export-actions>a,.paint-export-actions>button{min-height:46px;display:inline-flex;align-items:center;justify-content:center;padding:8px 14px;border-radius:14px;text-decoration:none;font-weight:900}
+
+/* v241: child-friendly rainbow pen with clear active state */
+.paint-tools #paint-rainbow{background:linear-gradient(110deg,#ffd1d8,#ffe9a7,#c5f3cc,#c8e9ff,#e2d2ff);color:#364264}
+.paint-tools #paint-rainbow.selected{outline:3px solid #6651b9;outline-offset:-4px;box-shadow:inset 0 0 0 2px #fff}
+
+/* v340: accessible 12-page gallery, scrollable on 320x568 without covering close button. */
+.paint-tools #paint-choose{grid-column:span 3;background:linear-gradient(110deg,#ffebbd,#d7efff);min-height:44px;font-size:clamp(15px,4vw,19px)}
+.paint-gallery{width:min(94vw,580px);max-height:min(86dvh,740px);overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;padding:14px}
+.paint-gallery h2{font-size:clamp(18px,5vw,25px);margin:0 0 8px}
+.paint-gallery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0}
+.paint-gallery-choice{min-width:0;min-height:89px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:7px 3px;border:2px solid #cbdff1;border-radius:14px;background:#f5fbff;color:#35516b;font-weight:900;touch-action:manipulation}
+.paint-gallery-emoji{font-size:clamp(26px,8vw,39px);line-height:1.1}
+.paint-gallery-choice small{font-size:11px;color:#526e89}
+.paint-gallery-choice.paint-gallery-current{border-color:#f6a641;background:#fff1d0}
+.paint-gallery-choice:focus-visible{outline:3px solid #2d83ed;outline-offset:2px}
+@media(max-width:359px){.paint-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.paint-gallery-choice{min-height:78px}}
+
+/* v389: paper-color picker stays in the 3-column touch grid on 320px phones. */
+.paint-tools #paint-background{background:linear-gradient(110deg,#fff4e4,#e1f5ff,#e6f8e9,#f0e8ff);color:#314b69}
+
+/* v405: child-friendly single-gesture shapes, visible selected tool on narrow phones. */
+.paint-tools #paint-shape{background:#e3f4ff;min-height:44px}
+.paint-tools #paint-shape.selected{background:#c5edff;outline:3px solid #276eaa;outline-offset:-4px}

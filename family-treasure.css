@@ -1,0 +1,77 @@
+/* v29 family treasure hunt: accessible touch targets and no image alterations */
+.treasure-tile{background:linear-gradient(135deg,#fff0c8,#ffe2e5)}
+.treasure-screen .treasure-stage{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;gap:clamp(3px,.6dvh,9px);padding:clamp(4px,.7dvh,9px) 8px;overflow-y:auto}
+.treasure-progress{width:min(100%,540px);display:flex;justify-content:space-between;gap:8px;font-size:clamp(13px,3.5vw,18px);font-weight:900;color:#57426d}
+.treasure-progress span{background:#fff;border-radius:14px;padding:4px 9px}
+.treasure-photo{width:min(100%,500px);height:clamp(94px,24dvh,220px);overflow:hidden;border:4px solid white;border-radius:22px;box-shadow:0 4px 15px #6b559c44;background:#ffebd9;display:flex;align-items:center;justify-content:center}
+.treasure-photo img{width:100%;height:100%;object-fit:contain}
+.treasure-photo span{font-size:64px}
+.treasure-prompt{display:flex;align-items:center;justify-content:center;gap:12px;width:min(100%,500px);border:3px solid #fff;border-radius:20px;background:#fff9db;padding:5px 12px;font-size:clamp(18px,5vw,26px);font-weight:900;color:#694877}
+#treasure-emoji{font-size:clamp(27px,7vw,40px)}
+.treasure-choices{width:min(100%,540px);display:flex;justify-content:center;gap:clamp(7px,2vw,14px)}
+.treasure-item{flex:1;max-width:122px;min-width:0;min-height:68px;height:clamp(68px,13dvh,110px);border:3px solid white;border-radius:22px;background:#fefaff;box-shadow:0 4px 0 #c9b1e3;display:grid;place-items:center;touch-action:manipulation;cursor:pointer}
+.treasure-item span{font-size:clamp(32px,10vw,58px);line-height:1}
+.treasure-item:active{transform:translateY(3px)}
+.treasure-item.treasure-correct{background:#d9ffdc;border-color:#40bb7a;transform:scale(1.07)}
+.treasure-item.treasure-wrong{animation:treasure-shake .3s}
+.treasure-item.treasure-hinted{animation:treasure-hint 1s ease-in-out infinite;border-color:#ffa522}
+.treasure-basket{width:min(100%,540px);display:flex;align-items:center;justify-content:space-around;gap:10px;background:#fff9ef;border-radius:18px;padding:4px 10px;font-size:clamp(17px,5vw,25px);font-weight:900;color:#6d5685}
+#treasure-hint{border:2px solid #fff;border-radius:15px;background:#ffe179;padding:8px 14px;font-weight:900;font-size:clamp(14px,4vw,18px);min-height:44px}
+.treasure-guide{text-align:center;margin:0;font-size:clamp(13px,3.7vw,18px);font-weight:900;color:#5e4577}
+@keyframes treasure-shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+@keyframes treasure-hint{50%{transform:scale(1.1);box-shadow:0 0 0 6px #ffd56699}}
+@media(max-height:620px){.treasure-screen .treasure-stage{gap:2px;padding:2px 6px}.treasure-photo{height:20dvh;min-height:80px}.treasure-item{height:65px;min-height:60px}.treasure-prompt{padding:2px 8px}.treasure-guide{font-size:12px}.treasure-basket{padding:2px 8px}}
+@media(prefers-reduced-motion:reduce){.treasure-item{animation:none!important}}
+
+/* v123: finger-drag treasure into basket; preserves tap controls. */
+.treasure-item{touch-action:none}
+.treasure-item.treasure-drag-source{opacity:.55}
+.treasure-basket.treasure-drop-ready{outline:4px solid #38b978;background:#e4ffe9;box-shadow:0 0 0 5px #fff9ef}
+.treasure-drag-ghost{position:fixed;left:0;top:0;transform:translate(-50%,-50%);pointer-events:none;z-index:9999;font-size:clamp(42px,13vw,68px);filter:drop-shadow(0 5px 5px #5a467088)}
+
+/* v164: actual photo zoom on narrow screens, independent of game answers. */
+.treasure-photo{position:relative}
+#treasure-zoom{position:absolute;right:7px;bottom:6px;min-width:76px;min-height:44px;border:2px solid #fff;border-radius:14px;background:#fff8dded;color:#4e336d;font-size:16px;font-weight:900;box-shadow:0 2px 7px #38265755;touch-action:manipulation;cursor:pointer}
+.treasure-preview[hidden]{display:none!important}
+.treasure-preview{position:fixed;inset:0;z-index:10050;display:flex;align-items:center;justify-content:center;background:#1b1638e8;padding:calc(12px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom))}
+.treasure-preview-panel{width:min(100%,700px);max-height:100%;display:flex;flex-direction:column;align-items:center;gap:12px;padding:12px;border:3px solid #fff;border-radius:20px;background:#fff8e7;box-shadow:0 15px 40px #0006}
+#treasure-preview-close{min-height:48px;min-width:170px;border:0;border-radius:15px;background:#ffe077;color:#51376b;font-size:18px;font-weight:900;cursor:pointer;touch-action:manipulation}
+#treasure-preview-img{display:block;width:100%;max-height:min(72dvh,640px);object-fit:contain;border-radius:12px}
+#treasure-preview-fallback{font-size:clamp(50px,15vw,100px);padding:30px}
+@media(max-height:620px){.treasure-preview-panel{gap:5px;padding:6px}#treasure-preview-img{max-height:65dvh}}
+
+/* v184: wrong treasure choices are retired for this round, not counted again. */
+.treasure-item.treasure-eliminated{opacity:.38;filter:grayscale(.85);box-shadow:none;cursor:not-allowed;transform:scale(.94)}
+.treasure-item.treasure-eliminated:disabled{border-color:#aaa;background:#e8e5ea}
+
+/* v290: non-scoring 450ms hold-to-hear for children who cannot read. */
+.treasure-item.treasure-speaking{background:#dff4ff;border-color:#138bd6;box-shadow:0 0 0 5px #9fe6ff88,0 4px 0 #76b6d5;transform:scale(1.045)}
+@media(prefers-reduced-motion:reduce){.treasure-item.treasure-speaking{transform:none}}
+
+/* v308: change scene without consuming a round, touch-friendly at 320px. */
+.treasure-basket{flex-wrap:wrap;justify-content:center;gap:6px}
+.treasure-basket>span:nth-child(2){flex:1 1 62px;text-align:center;white-space:nowrap}
+#treasure-change{border:2px solid #fff;border-radius:15px;background:#d9f1ff;color:#3d456f;padding:8px 10px;min-height:44px;font-weight:900;font-size:clamp(13px,3.6vw,17px);touch-action:manipulation;cursor:pointer}
+#treasure-change:disabled{opacity:.55;cursor:default}
+@media(max-width:360px){#treasure-hint,#treasure-change{padding:6px 8px;font-size:13px}}
+
+/* v311: listening mode has a real 44px touch target and distinct pressed state. */
+#treasure-listen{border:2px solid #fff;border-radius:15px;background:#e8f7f0;color:#26584c;padding:8px 10px;min-height:44px;font-weight:900;font-size:clamp(13px,3.6vw,17px);touch-action:manipulation;cursor:pointer}
+#treasure-listen[aria-pressed="true"]{background:#345eab;color:white;border-color:#a8d5ff;box-shadow:0 0 0 2px #d9eaff}
+#treasure-listen:disabled{opacity:.55;cursor:default}
+@media(max-width:360px){#treasure-listen{padding:6px 8px;font-size:13px}}
+
+/* v360: reverse basket-to-treasure gesture with a large finger target. */
+#treasure-scoop{min-height:48px;min-width:92px;padding:6px 9px;border:2px solid white;border-radius:15px;background:#ffe8b2;color:#6c4662;font-weight:900;font-size:clamp(13px,3.5vw,16px);touch-action:none;cursor:grab;user-select:none}
+#treasure-scoop.treasure-scooping{background:#ffcc74;cursor:grabbing;box-shadow:0 0 0 4px #fff4c6}
+.treasure-item.treasure-scoop-target:not(:disabled){outline:5px solid #2cae6d;outline-offset:1px;background:#dcffe9;transform:scale(1.06)}
+.treasure-scoop-ghost{position:fixed;left:0;top:0;transform:translate(-50%,-50%);pointer-events:none;z-index:9999;font-size:clamp(40px,11vw,60px);filter:drop-shadow(0 5px 5px #5a467088)}
+@media(max-width:360px){#treasure-scoop{min-width:82px;padding:6px;font-size:13px}}
+
+/* v390: hold-to-assist is visible, cancel-safe, and sized for small phones. */
+#treasure-hint{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;min-height:48px;touch-action:none;user-select:none;overflow:hidden;cursor:pointer}
+#treasure-hint small{display:block;font-size:10px;line-height:1.2;white-space:nowrap;font-weight:800}
+#treasure-hint.treasure-assist-holding{background:#ffce67;outline:3px solid #fff1ae}
+#treasure-hint.treasure-assist-holding::after{content:'';position:absolute;left:0;bottom:0;height:5px;background:#28a65f;animation:treasure-assist-progress 650ms linear forwards}
+@keyframes treasure-assist-progress{from{width:0}to{width:100%}}
+@media(prefers-reduced-motion:reduce){#treasure-hint.treasure-assist-holding::after{animation:none;width:100%}}

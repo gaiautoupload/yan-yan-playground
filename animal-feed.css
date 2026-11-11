@@ -1,0 +1,105 @@
+/* v35: touch-friendly 40-level animal-feeding and counting */
+.feed-tile{background:linear-gradient(145deg,#dcffda,#fff0b8)}
+.feed-screen .feed-stage{flex:1;min-height:0;width:100%;max-width:590px;margin:auto;display:flex;flex-direction:column;justify-content:space-evenly;align-items:center;gap:clamp(3px,1dvh,10px);padding:5px 8px 9px;box-sizing:border-box;overflow-y:auto;touch-action:pan-y}
+.feed-hero{width:100%;min-height:59px;display:flex;align-items:center;justify-content:space-between;gap:5px;background:#fffdf0ed;border:3px solid #fff;border-radius:18px;padding:3px 8px;box-sizing:border-box}
+.feed-hero img{width:clamp(56px,17vw,90px);height:clamp(45px,9dvh,70px);object-fit:contain;border-radius:10px;flex:none}
+.feed-hero strong{font-size:clamp(15px,4.4vw,22px);text-align:center;color:#5a4b3e}
+.feed-status{display:flex;width:100%;justify-content:space-between;gap:8px;color:#604f62;font-size:clamp(16px,4.5vw,21px);font-weight:900}
+.feed-status span{background:#fffbe9;border:2px solid white;border-radius:13px;padding:3px 10px}
+.feed-animal-box{position:relative;width:100%;height:clamp(115px,23dvh,200px);border:4px solid white;border-radius:24px;background:linear-gradient(#a9e8ff,#e4f8ff 62%,#a6e8a5 63%,#81d487);display:flex;align-items:center;justify-content:center;box-sizing:border-box;overflow:hidden;flex:none}
+.feed-animal{font-size:clamp(74px,22vw,120px);line-height:1;filter:drop-shadow(0 7px 2px #56855c55)}
+.feed-speech{position:absolute;right:5%;top:7%;background:#fffdf4;border:3px solid #fff;border-radius:20px;padding:5px 12px;color:#614563;font-weight:900;font-size:clamp(22px,6vw,33px);box-shadow:0 3px 0 #75b99b55}
+.feed-bowl{position:absolute;bottom:2px;left:3%;right:3%;min-height:32px;background:#ffffffd9;border:2px solid white;border-radius:16px;text-align:center;font-size:clamp(18px,5.3vw,28px);white-space:nowrap;overflow:hidden}
+.feed-message{width:100%;min-height:30px;box-sizing:border-box;text-align:center;background:#fffdeb;border-radius:14px;padding:5px;color:#634b6b;font-size:clamp(15px,4.3vw,20px);font-weight:900}
+.feed-choices{display:grid;width:100%;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(4px,1.5vw,9px)}
+.feed-food{min-width:0;min-height:clamp(62px,11dvh,88px);border:3px solid white;border-radius:19px;background:linear-gradient(#fffdf4,#ffefbf);box-shadow:0 4px 0 #cba46c8a;display:flex;align-items:center;justify-content:center;touch-action:manipulation;cursor:pointer}
+.feed-food span{font-size:clamp(34px,10vw,53px);line-height:1.1}
+.feed-food.feed-used{opacity:.45;box-shadow:none;transform:scale(.96)}
+.feed-food.feed-hinted{outline:5px solid #fbd94b;outline-offset:1px;animation:feed-pulse .55s ease-in-out infinite alternate}
+.feed-food.feed-wrong{animation:feed-shake .2s linear}
+.feed-actions{display:flex;gap:8px;width:100%}
+.feed-actions button{flex:1;min-width:0;min-height:44px;border:3px solid white;border-radius:16px;background:#ffe5a1;color:#5c4267;font-size:clamp(14px,4vw,18px);font-weight:900;touch-action:manipulation}
+@keyframes feed-pulse{to{filter:brightness(1.15);transform:scale(1.04)}}
+@keyframes feed-shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+@media(max-height:620px){.feed-screen .feed-stage{gap:2px;padding:2px 6px}.feed-hero{min-height:47px}.feed-hero img{height:42px}.feed-animal-box{height:115px}.feed-food{min-height:59px}.feed-message{padding:3px}.feed-actions button{min-height:38px}}
+@media(prefers-reduced-motion:reduce){.feed-food.feed-hinted,.feed-food.feed-wrong{animation:none}}
+/* v101: finger-draggable food with a visible drop target */
+.feed-food{touch-action:none;user-select:none;-webkit-user-select:none}
+.feed-drag-ghost{position:fixed;z-index:90;pointer-events:none;transform:translate(-50%,-50%);font-size:clamp(46px,14vw,70px);filter:drop-shadow(0 5px 6px #50402b66);line-height:1}
+.feed-animal-box.feed-drop-ready{outline:5px solid #ffd54b;outline-offset:-6px;box-shadow:inset 0 0 0 6px #fff8a9;filter:brightness(1.05)}
+@media(max-height:620px){.feed-actions button{min-height:44px}}
+
+/* v102: undo action, 44px touch target on narrow phones. */
+.feed-actions #feed-undo:disabled{opacity:.48;filter:grayscale(.45);cursor:default}
+@media(max-width:360px){.feed-actions{gap:4px}.feed-actions button{font-size:clamp(12px,3.7vw,16px);padding:4px 1px;min-height:44px}}
+
+/* v128: four large, two-column feeding controls on phones. */
+.feed-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+.feed-actions button{width:100%;min-height:44px;padding:5px 3px;font-size:clamp(14px,4vw,18px)}
+.feed-actions #feed-help{background:linear-gradient(145deg,#f8e2ff,#ffe7b8)}
+.feed-actions #feed-help:disabled{opacity:.48;filter:grayscale(.35);cursor:default}
+@media(max-height:620px){.feed-actions{gap:3px}.feed-actions button{min-height:42px;padding:2px 3px}}
+
+/* v133: the animal and food bowl are direct, accessible gameplay controls. */
+.feed-animal-box button.feed-animal{border:0;background:transparent;padding:0;min-width:96px;min-height:96px;display:grid;place-items:center;cursor:pointer;touch-action:manipulation;user-select:none;-webkit-tap-highlight-color:transparent}
+.feed-animal-box button.feed-animal:active:not(:disabled){transform:scale(.92)}
+.feed-animal-box button.feed-animal:focus-visible,.feed-animal-box button.feed-bowl:focus-visible{outline:4px solid #efac26;outline-offset:2px}
+.feed-animal-box button.feed-animal:disabled{opacity:.8;cursor:default}
+.feed-animal-box button.feed-bowl{cursor:pointer;color:#634b6b;font-weight:800;touch-action:manipulation}
+.feed-animal-box button.feed-bowl:disabled{cursor:default}
+@media(max-height:620px){.feed-animal-box button.feed-animal{min-height:72px;min-width:72px}}
+
+/* v168: visible feedback while holding the animal to feed multiple bites. */
+.feed-animal-box button.feed-animal.feed-holding{outline:5px solid #ffcf47;outline-offset:-3px;border-radius:28px;background:#fff7b599;box-shadow:0 0 0 8px #fff8a455;animation:feed-hold-pulse .38s ease-in-out infinite alternate}
+@keyframes feed-hold-pulse{to{transform:scale(1.06);filter:drop-shadow(0 7px 5px #e8a53799)}}
+@media(prefers-reduced-motion:reduce){.feed-animal-box button.feed-animal.feed-holding{animation:none}}
+
+/* v176: swipe across food choices to feed several bites. */
+.feed-choices.feed-swiping{outline:4px solid #ffcc47;outline-offset:2px;border-radius:18px;background:#fff4bd77;touch-action:none}
+.feed-choices.feed-swiping .feed-food:not(:disabled){box-shadow:0 0 0 2px #f6ba4d,inset 0 0 0 2px #fff}
+
+/* v186: food-name listening on a 520ms hold; no answer is consumed. */
+.feed-food.feed-inspecting{outline:5px solid #ffbb32;outline-offset:-3px;background:#fff1b1;box-shadow:0 0 0 4px #ffe6a9;transform:scale(1.035)}
+@media(prefers-reduced-motion:reduce){.feed-food.feed-inspecting{transition:none}}
+
+/* v219: animal-to-food drag target feedback */
+.feed-animal.feed-animal-dragging{transform:scale(1.06);filter:drop-shadow(0 0 12px #ffb700);touch-action:none}
+.feed-choices .feed-food.feed-animal-target{outline:5px solid #ffb700;outline-offset:2px;box-shadow:0 0 0 8px #fff6b3,0 6px 20px #ad7c22;transform:scale(1.08);z-index:2}
+
+/* v220: prevent browser touch scrolling from canceling animal-to-food gestures before pointermove. */
+.feed-animal{touch-action:none}
+
+/* v221: match original selector specificity so mobile touch drag is not canceled by scrolling. */
+.feed-animal-box button.feed-animal{touch-action:none}
+
+/* v228: visible hold-to-undo feedback and safe touch behavior on the food bowl. */
+.feed-animal-box button.feed-bowl{touch-action:none;user-select:none;-webkit-user-select:none;min-height:44px}
+.feed-animal-box button.feed-bowl.feed-bowl-holding{background:#ffe5ad;outline:4px solid #ffa934;outline-offset:-3px;box-shadow:0 0 0 5px #fff6baaa;animation:feed-bowl-pulse .28s ease-in-out infinite alternate}
+@keyframes feed-bowl-pulse{to{filter:brightness(1.09);transform:scale(1.015)}}
+@media(prefers-reduced-motion:reduce){.feed-animal-box button.feed-bowl.feed-bowl-holding{animation:none}}
+
+/* v263: previously fed food remains a large tap target for undoing that specific bite. */
+.feed-choices .feed-food.feed-used{position:relative;opacity:.68;border-color:#67b7aa;background:linear-gradient(#eafff2,#d4f5e8);box-shadow:0 3px 0 #80bdac;transform:none}
+.feed-choices .feed-food.feed-used::after{content:'↶';position:absolute;right:2px;top:1px;border-radius:50%;width:23px;height:23px;display:grid;place-items:center;background:#fff;color:#217768;font-size:18px;font-weight:900;box-shadow:0 1px 3px #446b5c55}
+.feed-choices .feed-food.feed-used:focus-visible{outline:4px solid #137e6a;outline-offset:2px}
+
+/* v310: clearly indicate the precise undo drop target on mobile. */
+.feed-bowl.feed-return-ready{outline:4px solid #22b96e;outline-offset:4px;box-shadow:0 0 0 8px #b9ffcf,0 8px 20px #17683b55;transform:scale(1.08);transition:transform .12s ease,box-shadow .12s ease}
+
+/* v355: restart just this animal without losing completed rounds; full-width 44px+ touch target. */
+.feed-actions #feed-reset-round{grid-column:1/-1;min-height:44px;background:linear-gradient(145deg,#e1f9ff,#d7f6dc);color:#285c50}
+.feed-actions #feed-reset-round:disabled{opacity:.5;cursor:default}
+
+/* v357: hold-to-feed-all feedback; cancellation does not consume a bite. */
+.feed-actions #feed-help{touch-action:none;user-select:none;-webkit-user-select:none}
+.feed-actions #feed-help.feed-help-armed{background:linear-gradient(135deg,#fff3a0,#ffd16e);outline:4px solid #e69a22;outline-offset:1px;box-shadow:0 0 0 5px #fff2b7;transform:scale(1.025)}
+@media(prefers-reduced-motion:reduce){.feed-actions #feed-help.feed-help-armed{transition:none}}
+
+/* v358: large, explicit long-press hint; reveals all unselected correct foods without scoring. */
+.feed-actions #feed-hint{touch-action:none;user-select:none;-webkit-user-select:none;background:linear-gradient(145deg,#fff8b8,#ffe4a1)}
+.feed-actions #feed-hint.feed-hint-holding{outline:4px solid #d68d12;outline-offset:1px;box-shadow:0 0 0 5px #fff2ae;background:#ffd56e;transform:scale(1.02)}
+@media(prefers-reduced-motion:reduce){.feed-actions #feed-hint.feed-hint-holding{transition:none}}
+
+/* v393: listen-only food challenge is a large, reachable mobile control. */
+.feed-actions #feed-listen{grid-column:1/-1;min-height:48px;background:linear-gradient(135deg,#d6f2ff,#e7ddff);color:#254a76;font-weight:900;touch-action:manipulation}
+.feed-actions #feed-listen[aria-pressed="true"]{background:linear-gradient(135deg,#ffe6a2,#ffd1b4);outline:3px solid #e9a94d;outline-offset:-3px}

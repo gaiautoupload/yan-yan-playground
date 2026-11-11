@@ -1,0 +1,1 @@
+.diff-scene-name{max-width:42%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:clamp(11px,3.1vw,17px)}.diff-art{background-color:#c8e8fa}.diff-spot{width:clamp(32px,10vw,46px);height:clamp(32px,10vw,46px);font-size:clamp(24px,7.3vw,35px)}@media(max-height:650px){.diff-spot{width:clamp(30px,9vw,40px);height:clamp(30px,9vw,40px)}}

@@ -1,0 +1,92 @@
+
+/* v14: large touch targets, responsive fixed-screen classic games */
+.hero-actions .classic-entry{background:linear-gradient(#ffda8e,#ffaa99);color:#653a51;box-shadow:0 5px 0 #c98377}
+.classic-screen{overflow:hidden;overscroll-behavior:none}
+.classic-top .chip{font-size:clamp(11px,3.2vw,15px)}
+.classic-menu{flex:1;min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr) minmax(0,1fr);gap:clamp(5px,1.2dvh,13px)}
+.classic-family,.mole-family{display:flex;align-items:center;justify-content:center;gap:10px;font-size:clamp(17px,5vw,25px);font-weight:1000;color:#735073;background:#fffcf0ed;border:3px solid white;border-radius:20px;padding:4px}
+.classic-family img,.mole-family img{width:clamp(37px,9vw,60px);height:clamp(37px,9vw,60px);object-fit:cover;border-radius:50%;border:3px solid white}
+.classic-tile{display:flex;flex-direction:column;justify-content:space-around;align-items:center;gap:2px;min-height:0;border:4px solid white;border-radius:26px;box-shadow:0 7px 0 #8b94a488;color:#603d5c;font-weight:1000}
+.classic-tile .classic-big{font-size:clamp(40px,10dvh,75px);line-height:1}
+.classic-tile strong{font-size:clamp(23px,6vw,34px)}
+.classic-tile span{font-size:clamp(18px,5vw,28px)}.classic-tile small{font-size:15px;background:#fff9;padding:3px 18px;border-radius:99px}
+.wood-tile{background:linear-gradient(#ebffd6,#a6e9ae)}.mole-tile{background:linear-gradient(#ffedd0,#ffc8d5)}
+.wood-game,.mole-game{flex:1;min-height:0;display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:clamp(5px,1.1dvh,12px)}
+.wood-signal{flex:none;border:4px solid #fff;border-radius:23px;background:#a9edab;box-shadow:0 5px 0 #50895144;text-align:center;padding:clamp(6px,1.8dvh,15px) 5px;font-weight:1000;font-size:clamp(24px,7.5vw,40px);color:#2b7443}
+.wood-signal.red{background:#ffbac1;color:#a03c4c;animation:woodFlash .5s infinite alternate}
+@keyframes woodFlash{to{filter:brightness(1.1)}}
+.wood-parent{display:flex;flex:.7;min-height:58px;align-items:center;justify-content:center;gap:18px}
+.wood-mom{width:min(18dvh,120px);height:min(18dvh,120px);min-width:55px;min-height:55px;border:5px solid white;border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 6px 10px #1234}
+.wood-mom img{width:100%;height:100%;object-fit:cover;transform:rotateY(180deg);transition:transform .3s;filter:saturate(.7)}
+.wood-mom.turned img{transform:rotateY(0deg);filter:none}
+#wood-words{font-weight:1000;font-size:clamp(27px,8vw,48px);background:#fff9;padding:8px;border-radius:20px}
+.wood-field{flex:1;min-height:87px;background:linear-gradient(#e9fff5,#c3e7a4);border:4px solid white;border-radius:24px;padding:12px 8px 8px;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.wood-path{position:relative;min-height:64px;flex:1;border-radius:20px;background:repeating-linear-gradient(90deg,#ffefd0,#ffefd0 28px,#f5dfbb 28px,#f5dfbb 37px);border-bottom:5px solid #80b589}
+.wood-house{position:absolute;right:0;top:0;font-size:clamp(35px,13vw,70px)}
+.wood-kid{position:absolute;left:0;bottom:3px;width:clamp(45px,13vw,78px);height:clamp(45px,13vw,78px);border:4px solid white;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 3px 8px #2234;transition:left .1s}
+.wood-kid img{width:100%;height:100%;object-fit:cover}
+.wood-progress{height:13px;background:#fff;border:2px solid #8ba;border-radius:99px;overflow:hidden;flex:none}.wood-progress div{height:100%;width:0;background:linear-gradient(90deg,#6bd8e7,#9fe88b,#ffe07c)}
+.wood-hold{flex:none;min-height:clamp(80px,17dvh,130px);border:5px solid white;border-radius:25px;background:linear-gradient(#ffda8e,#ffb178);color:#76472e;font-size:clamp(25px,8vw,42px);font-weight:1000;box-shadow:0 7px 0 #ba8155;touch-action:none;user-select:none;-webkit-user-select:none}
+.wood-hold.stop{background:linear-gradient(#ffdadc,#ff9baa);color:#853e52}
+.classic-instructions{font-size:clamp(19px,5.5vw,27px);font-weight:1000;text-align:center;color:#73537d;background:#fff9;border-radius:18px;padding:6px;flex:none}
+.mole-stats{display:flex;justify-content:space-between;align-items:center;background:#fff9;border:3px solid white;border-radius:20px;padding:6px 14px;font-size:clamp(23px,6vw,34px);font-weight:1000;color:#6e4c7b}
+.mole-grid{flex:1;min-height:0;width:min(94vw,53dvh,480px);height:min(94vw,53dvh,480px);max-height:53dvh;align-self:center;display:grid;grid-template:repeat(3,minmax(0,1fr))/repeat(3,minmax(0,1fr));gap:clamp(5px,1.5vw,12px)}
+.mole-hole{min-width:0;min-height:0;border:4px solid #fff;border-radius:clamp(14px,4vw,25px);background:radial-gradient(#a88762 0%,#b18a69 62%,#93be74 65%,#b4e9a2 100%);box-shadow:0 5px 0 #7baf66;font-size:clamp(37px,12.5vw,65px);display:flex;justify-content:center;align-items:center;touch-action:manipulation}
+.mole-hole.up{background:radial-gradient(#fff1c4 0%,#e1daa9 58%,#99cc85 64%,#b4e9a2 100%);border-color:#ffe286}
+.mole-hole span{transform:scale(.75);transition:transform .13s}.mole-hole.up span{transform:scale(1.17)}
+/* v70: special mole targets and pause */
+.mole-hole.gold{background:radial-gradient(#fff7a1 0%,#ffd65a 55%,#d5b750 65%,#f8e3a1 100%);border-color:#fff0a4;box-shadow:0 5px 0 #c68b24}
+.mole-hole.butterfly{background:radial-gradient(#e5e2ff 0%,#c4e8ff 58%,#9fd4ba 65%,#d5f7c4 100%);border-color:#d7dcff}
+#mole-pause{min-width:74px;min-height:42px;padding:4px 8px;font-size:clamp(14px,3.7vw,20px);font-weight:1000;border:3px solid #fff;border-radius:14px;background:#c9f2ff;color:#326383;touch-action:manipulation}
+.mole-message{font-size:clamp(14px,3.8vw,21px);line-height:1.25;text-align:center;min-height:35px}
+@media(max-width:340px){.mole-stats{padding:4px 6px;gap:4px;font-size:20px}#mole-pause{min-width:65px;font-size:13px}}
+
+.classic-secondary{display:block;margin:12px auto 0;border:3px solid white;background:#ddf3ff;border-radius:15px;padding:8px 15px;font-weight:1000;font-size:17px}
+@media(max-height:670px){
+ .home-bottom{gap:4px}.hero-actions .primary{min-height:37px;padding:4px 2px;font-size:clamp(11px,3.5vw,16px);border-width:2px}
+ .brand{padding:4px 12px;font-size:clamp(18px,5vw,25px)}.progress{padding:4px 8px}.mode-grid{gap:4px}.mode{min-height:56px;padding:2px}.mode .em{font-size:23px}.smallbtn{padding:5px 4px}
+ .wood-game{gap:4px}.wood-signal{padding:5px}.wood-mom{height:65px;width:65px}.wood-hold{min-height:70px}.wood-field{min-height:80px}
+ .mole-grid{width:min(90vw,47dvh);height:min(90vw,47dvh);max-height:47dvh}.mole-family img{height:36px;width:36px}
+}
+
+/* v15: 60-level color sorting, icon-first instructions */
+.classic-menu{grid-template-rows:auto repeat(3,minmax(0,1fr));gap:clamp(4px,1dvh,9px)}
+.classic-menu .classic-big{font-size:clamp(31px,7.2dvh,55px)}
+.classic-menu .classic-tile strong{font-size:clamp(21px,5.5vw,29px)}
+.classic-menu .classic-tile span:not(.classic-big){font-size:clamp(16px,4.5vw,23px)}
+.color-tile{background:linear-gradient(#f0d5ff,#c9c7ff)}
+.sort-game{flex:1;min-height:0;display:flex;flex-direction:column;align-items:stretch;gap:clamp(5px,1.2dvh,11px);justify-content:space-between}
+.sort-family{display:flex;align-items:center;justify-content:center;gap:10px;background:#fff9;border:3px solid white;border-radius:18px;min-height:44px;flex:none;font-weight:1000;color:#665477;font-size:clamp(19px,5vw,26px)}
+.sort-family img{height:clamp(35px,8dvh,56px);width:clamp(35px,8dvh,56px);border-radius:50%;border:3px solid white;object-fit:cover}
+.sort-progress{display:flex;align-items:center;gap:10px;background:#fff9;border:3px solid white;border-radius:15px;padding:5px 9px;flex:none;font-size:clamp(19px,5vw,27px);font-weight:1000;color:#6b537a}
+.sort-meter{height:15px;flex:1;background:#eee;border:2px solid white;border-radius:99px;overflow:hidden}
+.sort-meter div{height:100%;width:0;background:linear-gradient(90deg,#ff9e96,#ffe37c,#8fe6a6);transition:width .2s}
+.sort-items{flex:1;min-height:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:minmax(0,1fr);gap:clamp(5px,1.5vw,12px)}
+.sort-item{min-height:0;min-width:0;display:flex;align-items:center;justify-content:center;gap:3px;border:4px solid white;border-radius:clamp(14px,4vw,23px);background:#fffcf3;box-shadow:0 4px 0 #c2b8b8;transition:transform .12s;position:relative}
+.sort-item.selected{background:#fff0ac;border-color:#ffac47;transform:scale(1.06);z-index:1}
+.sort-item.sorted{background:#d4f4d8;box-shadow:none;opacity:.68}
+.sort-dot{display:inline-block;width:clamp(16px,5vw,25px);height:clamp(16px,5vw,25px);border:2px solid white;border-radius:50%;box-shadow:0 0 0 2px #a3a0a5}
+.sort-dot.red{background:#f25262}.sort-dot.yellow{background:#ffcb27}.sort-dot.blue{background:#4f9aff}.sort-dot.green{background:#4ecb6d}.sort-dot.purple{background:#aa6ee6}
+.sort-emoji{font-size:clamp(26px,8.8vw,49px);line-height:1}
+.sort-check{font-size:clamp(26px,8vw,44px)}
+.sort-arrow{flex:none;text-align:center;font-size:clamp(17px,5vw,25px);line-height:1.1}
+.sort-baskets{flex:none;min-height:clamp(75px,17dvh,126px);display:grid;grid-template-columns:repeat(var(--bins),minmax(0,1fr));gap:clamp(4px,1.2vw,9px)}
+.sort-basket{min-width:0;border:4px solid white;border-radius:clamp(12px,3vw,22px);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;background:#fff;box-shadow:0 5px 0 #aab4a5}
+.sort-basket.red{background:#ffd3d9}.sort-basket.yellow{background:#fff1a7}.sort-basket.blue{background:#cce5ff}.sort-basket.green{background:#c5f5cd}.sort-basket.purple{background:#ead3ff}
+.sort-basket span{font-size:clamp(20px,6vw,33px);line-height:1}.sort-basket strong{font-size:clamp(27px,8vw,48px);line-height:1}
+.sort-basket.sort-good{outline:5px solid #77df8c;transform:translateY(-3px)}
+.sort-basket.sort-wrong{animation:sortShake .25s 2}
+@keyframes sortShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@media(max-height:650px){
+ .sort-game{gap:4px}.sort-family{min-height:36px}.sort-family img{height:32px;width:32px}
+ .sort-baskets{min-height:70px}.sort-basket span{font-size:19px}.sort-basket strong{font-size:28px}
+ .sort-emoji{font-size:clamp(25px,8vw,37px)}.sort-arrow{font-size:17px}
+}
+
+/* v69: 123 Woodman practice, pause, resume and checkpoint controls. */
+.wood-toolbar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(4px,1.2vw,9px);flex:none}
+.wood-toolbar button{min-width:0;min-height:clamp(37px,7dvh,49px);border:3px solid #fff;border-radius:14px;background:linear-gradient(#fffdf0,#dceeff);box-shadow:0 3px 0 #9cb5c7;color:#536282;font-weight:1000;font-size:clamp(13px,3.6vw,18px);padding:3px 1px}
+.wood-toolbar button[aria-pressed="true"]{background:linear-gradient(#e7ffca,#b6ebc6);color:#32744a}
+.wood-signal.paused{background:#dce6fa;color:#576688;animation:none}
+#wood-status{font-size:clamp(14px,4vw,20px);padding:4px 2px}
+@media(max-height:620px){.wood-toolbar button{min-height:35px;font-size:13px}.wood-game{gap:3px}.wood-signal{font-size:clamp(20px,6vw,28px)}.wood-hold{min-height:62px}#wood-status{font-size:13px;padding:3px 1px}}

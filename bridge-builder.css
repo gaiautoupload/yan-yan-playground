@@ -1,0 +1,78 @@
+/* v34: colorful tap-to-build bridge with animated excavator crossing */
+.bridge-tile{background:linear-gradient(145deg,#d8f5ff,#ffe5a2)}
+.bridge-screen .bridge-stage{flex:1;min-height:0;width:100%;max-width:590px;margin:auto;display:flex;flex-direction:column;justify-content:space-evenly;align-items:center;gap:clamp(4px,1dvh,10px);padding:6px 8px 10px;box-sizing:border-box;overflow-y:auto;touch-action:pan-y}
+.bridge-hero{width:100%;display:flex;align-items:center;justify-content:space-between;gap:6px;background:#fff9e8ee;border:3px solid white;border-radius:19px;padding:4px 7px;box-sizing:border-box;min-height:66px}
+.bridge-hero img{width:clamp(56px,18vw,96px);height:clamp(49px,10dvh,76px);object-fit:contain;flex:none}
+.bridge-hero #bridge-family{border-radius:12px;object-fit:contain;background:#e8f7ff}
+.bridge-hero strong{font-size:clamp(13px,4vw,19px);line-height:1.3;color:#674a37;text-align:center}
+.bridge-info{width:100%;display:flex;justify-content:space-between;gap:8px;font-weight:900;font-size:clamp(16px,4.6vw,20px);color:#5c4c65}
+.bridge-info span{background:#fffef1;border:2px solid white;border-radius:13px;padding:3px 9px}
+.bridge-landscape{position:relative;width:100%;height:clamp(135px,26dvh,215px);border:4px solid white;border-radius:24px;box-sizing:border-box;background:linear-gradient(#b5eafa 0%,#e6f9ff 48%,#75b9ec 49%,#50a5db 100%);overflow:hidden;flex:none}
+.bridge-sky{position:absolute;top:4px;left:0;width:100%;font-size:clamp(20px,5vw,31px);text-align:center;opacity:.9}
+.bridge-water{position:absolute;bottom:9px;width:100%;text-align:center;font-size:clamp(19px,5.6vw,31px);letter-spacing:5px;white-space:nowrap;opacity:.75}
+.bridge-slots{position:absolute;left:10%;right:10%;top:47%;display:grid;grid-template-columns:repeat(var(--bridge-cols),minmax(0,1fr));gap:clamp(3px,1vw,7px);z-index:2}
+.bridge-slot{min-width:0;height:clamp(48px,9dvh,67px);border-radius:9px;background:#fff9d5a8;border:3px dashed #fff;display:flex;align-items:center;justify-content:center;box-sizing:border-box;font-size:clamp(19px,5vw,31px)}
+.bridge-slot.bridge-built{background:var(--plank-color);border:3px solid white;box-shadow:inset 0 -8px 0 #614b3533,0 3px 0 #fff6}
+.bridge-slot.bridge-wait{opacity:.65}
+.bridge-slot.bridge-current{outline:4px solid #fff4a1;outline-offset:1px;animation:bridge-glow .7s ease-in-out infinite alternate}
+.bridge-vehicle{position:absolute;left:0;top:24%;width:clamp(58px,17vw,90px);height:clamp(55px,11dvh,82px);z-index:4;transition:left 1.05s ease-in-out;filter:drop-shadow(0 3px 2px #486a7555)}
+.bridge-vehicle img{width:100%;height:100%;object-fit:contain}
+.bridge-vehicle.bridge-crossing{left:calc(100% - clamp(60px,18vw,95px))}
+.bridge-finish{position:absolute;right:3px;top:14%;font-size:32px}
+.bridge-message{width:100%;background:#fffde8;color:#65456b;border-radius:15px;padding:7px 8px;text-align:center;font-size:clamp(13px,3.8vw,18px);font-weight:900;box-sizing:border-box}
+.bridge-choices{display:flex;justify-content:center;gap:clamp(3px,1vw,8px);width:100%;flex-wrap:nowrap}
+.bridge-choice{flex:1 1 0;min-width:0;max-width:100px;min-height:clamp(67px,12dvh,96px);border:3px solid white;border-radius:16px;background:var(--plank-color);box-shadow:inset 0 -8px 0 #614b3530,0 4px 0 #677f8555;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;touch-action:manipulation;cursor:pointer;color:#413e4d;font-weight:900}
+.bridge-choice span{font-size:clamp(24px,7vw,37px)}
+.bridge-choice small{font-size:clamp(11px,3.5vw,16px);background:#ffffffc7;border-radius:7px;padding:0 3px}
+.bridge-choice:disabled{opacity:.3;filter:grayscale(.5)}
+.bridge-choice.bridge-hinted{outline:5px solid #ffed44;outline-offset:1px;animation:bridge-glow .6s ease-in-out infinite alternate}
+.bridge-choice.bridge-wrong{animation:bridge-shake .25s linear}
+.bridge-actions{display:flex;gap:9px;width:100%}
+.bridge-actions button{flex:1;min-width:0;min-height:47px;border:3px solid white;border-radius:17px;font-weight:900;font-size:clamp(14px,4vw,19px);touch-action:manipulation;background:#ffe39c;color:#634866}
+.bridge-actions #bridge-drive{background:#a6f1b6}
+.bridge-actions #bridge-drive:disabled{background:#ddd;opacity:.6}
+@keyframes bridge-glow{to{filter:brightness(1.18);transform:scale(1.035)}}
+@keyframes bridge-shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@media(max-height:620px){.bridge-screen .bridge-stage{gap:3px;padding-top:2px}.bridge-hero{min-height:52px}.bridge-hero img{height:47px}.bridge-landscape{height:140px}.bridge-choices .bridge-choice{min-height:63px}.bridge-message{padding:4px 6px}.bridge-actions button{min-height:39px}}
+@media(prefers-reduced-motion:reduce){.bridge-vehicle{transition:none}.bridge-slot.bridge-current,.bridge-choice.bridge-hinted,.bridge-choice.bridge-wrong{animation:none}}
+/* v100: child-friendly one-step undo, including small screens */
+.bridge-actions #bridge-undo{background:#d9f0ff;min-height:44px;font-size:clamp(12px,3.5vw,18px)}
+.bridge-actions #bridge-undo:disabled{opacity:.48;filter:grayscale(.6)}
+@media(max-height:620px){.bridge-actions #bridge-undo{min-height:44px}}
+
+/* v129: drag a plank to the highlighted empty bridge slot (tap remains available). */
+.bridge-choice{touch-action:none;user-select:none;-webkit-user-select:none}
+.bridge-drag-ghost{position:fixed;z-index:9999;pointer-events:none;transform:translate(-50%,-50%);font-size:clamp(45px,13vw,72px);line-height:1;filter:drop-shadow(0 5px 6px #3447);animation:bridge-drag-pop .12s ease-out}
+.bridge-drop-ready .bridge-current{outline:5px solid #30e989;background:#d5ffbc;box-shadow:0 0 0 6px #fff8}
+@keyframes bridge-drag-pop{from{transform:translate(-50%,-50%) scale(.75)}to{transform:translate(-50%,-50%) scale(1)}}
+@media(prefers-reduced-motion:reduce){.bridge-drag-ghost{animation:none}}
+
+/* v154: preschool one-step bridge assist, two-column touch-friendly controls. */
+.bridge-actions{flex-wrap:wrap;gap:6px}
+.bridge-actions button{flex:1 1 calc(50% - 6px);min-height:44px;font-size:clamp(13px,3.7vw,17px)}
+.bridge-actions #bridge-help{background:#f8d9f5}
+.bridge-actions #bridge-help:disabled{opacity:.5;filter:grayscale(.5)}
+@media(min-width:520px){.bridge-actions button{flex-basis:calc(25% - 6px)}}
+@media(max-height:620px){.bridge-actions button{min-height:40px}}
+
+/* v175: drag the excavator across a completed bridge; tap-to-drive remains available. */
+.bridge-vehicle.bridge-car-ready{touch-action:none;cursor:grab;filter:drop-shadow(0 0 8px #ffd44e)}
+.bridge-vehicle.bridge-car-ready::after{content:'👉';position:absolute;right:-12px;top:-14px;font-size:22px;pointer-events:none}
+.bridge-vehicle.bridge-car-dragging{transition:none!important;cursor:grabbing;filter:drop-shadow(0 0 12px #ffc93c)}
+@media(prefers-reduced-motion:reduce){.bridge-vehicle.bridge-car-dragging{transition:none}}
+
+/* v274: accessible one-tap bridge rewind and finish flag. */
+.bridge-slot.bridge-built[data-bridge-undo-index]{position:relative;cursor:pointer;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.bridge-slot.bridge-built[data-bridge-undo-index] small{position:absolute;right:2px;bottom:0;font-size:13px;line-height:1;background:#fffdf4e0;border-radius:50%;padding:0 3px;color:#57456d}
+.bridge-slot.bridge-built[data-bridge-undo-index]:focus-visible{outline:4px solid #6740ee;outline-offset:2px}
+.bridge-finish{border:0;background:transparent;cursor:pointer;touch-action:manipulation;padding:0 4px;min-width:44px;min-height:44px;line-height:1}
+.bridge-finish:disabled{opacity:.75;cursor:default}
+.bridge-finish:not(:disabled){filter:drop-shadow(0 0 5px #ffec44)}
+@media(prefers-reduced-motion:reduce){.bridge-finish:not(:disabled){animation:none}}
+
+/* v275: keep the finish flag stationary for reliable small-screen touch and E2E tap targeting. */
+
+/* v276: the excavator is also a 58px+ tap/keyboard drive target after building. */
+.bridge-vehicle.bridge-car-ready{cursor:pointer}
+.bridge-vehicle:focus-visible{outline:4px solid #6144f5;outline-offset:3px;border-radius:12px}
+.bridge-vehicle[aria-disabled="true"]{cursor:default}

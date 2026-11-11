@@ -1,0 +1,55 @@
+.yt-screen .yt-stage{width:100%;max-width:720px;margin:auto;display:flex;flex-direction:column;align-items:center;gap:clamp(6px,1.4dvh,12px);padding:8px 12px 18px;overflow-y:auto;min-height:0}
+.yt-banner,.yt-status{width:100%;text-align:center;font-weight:900;color:#68455d;background:#fff8dc;border:3px solid #fff;border-radius:15px;padding:7px 9px;font-size:clamp(14px,3.7vw,20px)}
+.yt-status{background:#fff0c8}.yt-progress{font-weight:900;color:#5d4a64;font-size:clamp(15px,4vw,21px)}
+.yt-board{position:relative;isolation:isolate;width:min(100%,420px);height:clamp(218px,39dvh,330px);background:linear-gradient(#b9e9ff 0%,#e5f8ff 73%,#9ad37d 74%,#8bc46b);border:6px solid #ffbd67;border-radius:24px;overflow:hidden;touch-action:manipulation;box-shadow:0 6px 0 #db9850;cursor:pointer}
+.yt-cloud{position:absolute;top:15px;left:7%;font-size:30px;opacity:.75}.yt-hook{position:absolute;top:7px;right:12px;font-size:32px}
+.yt-stack,.yt-guide{position:absolute;inset:0;pointer-events:none}.yt-guide{inset:auto auto auto auto;height:7px;border-radius:6px;background:#fff8a2;box-shadow:0 0 8px #fcbf42;opacity:.75}
+.yt-layer,.yt-moving{position:absolute;height:31px;border:3px solid #a66a4c;border-radius:8px;box-shadow:inset 0 -5px 0 #0002,0 3px 2px #0002}
+.yt-moving{background:#ffcf58;transition:bottom .23s ease;pointer-events:none;z-index:4}.yt-moving.yt-falling{transform:translateY(32px);filter:brightness(1.1)}
+.yt-ground{position:absolute;bottom:0;left:0;right:0;height:34px;text-align:center;font-size:26px;letter-spacing:22px;background:#c1e58d}
+.yt-controls{display:grid;grid-template-columns:1.4fr 1fr;gap:9px;width:min(100%,420px)}.yt-controls button,.yt-actions button{border:3px solid #fff;border-radius:16px;min-height:52px;font-size:clamp(15px,4.2vw,20px);font-weight:900;background:#fff4bd;color:#62455a;box-shadow:0 4px 0 #d5ad72}
+.yt-controls .yt-drop{background:#ff9e63;color:#fff;text-shadow:0 1px #a65a42}.yt-actions{display:flex;gap:10px;width:min(100%,420px)}.yt-actions button{flex:1;min-height:44px;background:#e2f3ff}.yt-tip{text-align:center;font-size:13px;color:#735b69;font-weight:800}
+@media(max-height:650px){.yt-screen .yt-stage{gap:5px;padding:4px 10px 9px}.yt-board{height:clamp(184px,34dvh,250px)}.yt-banner,.yt-status{padding:4px 7px}.yt-controls button{min-height:46px}.yt-actions button{min-height:40px}.yt-tip{font-size:11px}}
+/* v65: alternating-turn family co-op with a large touch target */
+.yt-coop{width:min(100%,420px);display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center}
+.yt-coop button{min-height:46px;min-width:154px;padding:6px 12px;background:#ffdcf2;color:#754766;border:3px solid #fff;border-radius:16px;font-size:clamp(14px,3.8vw,18px);font-weight:900;box-shadow:0 3px 0 #d8a1c3}
+.yt-coop button[aria-pressed="true"]{background:#ffbce4;box-shadow:0 3px 0 #ca82b1}
+#yt-turn{flex:1;min-width:145px;text-align:center;font-weight:900;font-size:clamp(13px,3.6vw,17px);color:#704e68;background:#fff9e7;border-radius:14px;padding:7px 5px}
+@media(max-height:650px){.yt-coop button{min-height:42px}.yt-coop{gap:4px}#yt-turn{padding:3px 4px}.yt-screen .yt-board{height:clamp(155px,29dvh,225px)}}
+
+/* v66: clear green-light timing and two limited magnet assists per level */
+.yt-lamp{width:min(100%,420px);text-align:center;background:#fff0cf;color:#805a29;border:3px solid #fff;border-radius:14px;padding:5px;font-size:clamp(15px,4vw,19px);font-weight:900;min-height:37px}
+.yt-lamp.yt-ready{background:#baf4bd;color:#235c33;box-shadow:0 0 0 3px #51c87866}
+.yt-actions{flex-wrap:wrap}.yt-actions button{flex:1 1 40%}.yt-actions .yt-magnet{flex:1 1 100%;background:#f3d6ff;color:#633b7b;min-height:43px}.yt-actions .yt-magnet:disabled{opacity:.5;filter:grayscale(.6)}
+@media(max-height:650px){.yt-lamp{padding:2px;min-height:28px;font-size:14px}.yt-screen .yt-board{height:clamp(145px,26dvh,205px)}.yt-actions .yt-magnet{min-height:38px}}
+
+/* v67: optional color identification while stacking */
+.yt-color-task{width:min(100%,420px);padding:6px 9px;border:3px solid white;border-radius:15px;background:#fff7de;text-align:center}
+.yt-color-task[hidden]{display:none!important}.yt-color-hint{font-size:clamp(14px,3.8vw,18px);font-weight:900;color:#68445d}
+.yt-colors{display:flex;justify-content:center;gap:12px;margin-top:5px}.yt-colors button{flex:1;max-width:100px;min-height:47px;border-radius:14px;border:3px solid white;background:#e9f4ff;font-size:27px;box-shadow:0 3px #a5b5c9}
+.yt-colors button[aria-pressed="true"]{outline:3px solid #8655b0;background:#e8d1ff}.yt-colors button.yt-correct{background:#c4f7c3}
+#yt-color-mode[aria-pressed="true"]{background:#d7f6b7}
+@media(max-height:650px){.yt-color-task{padding:3px 6px}.yt-colors{margin-top:2px;gap:6px}.yt-colors button{min-height:42px;font-size:23px}}
+
+/* v104: undo last layer */
+.yt-actions #yt-undo{background:#fff1ba;color:#715323;min-height:46px}
+.yt-actions #yt-undo:disabled{opacity:.48;filter:grayscale(.4)}
+@media(max-height:650px){.yt-actions #yt-undo{min-height:44px}}
+
+/* v119: long-press green-light placement */
+.yt-controls .yt-drop{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.yt-controls .yt-drop.yt-holding{background:#48b96d;color:#fff;box-shadow:0 0 0 4px #b8f4c7,0 4px 0 #218347;animation:yt-hold-pulse .7s ease-in-out infinite alternate}
+@keyframes yt-hold-pulse{to{filter:brightness(1.14);transform:scale(1.025)}}
+@media(prefers-reduced-motion:reduce){.yt-controls .yt-drop.yt-holding{animation:none}}
+
+/* v240: drag a falling block horizontally and release to place */
+.yt-board{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.yt-board.yt-dragging{border-color:#47bd74;box-shadow:0 0 0 4px #aaf4c1,0 6px 0 #238d4d}
+.yt-board.yt-dragging .yt-moving{box-shadow:0 0 0 4px #fff9b3,0 0 20px #ffb938}
+
+/* v350: green-light itself is a large, accessible one-tap drop control */
+.yt-screen button.yt-lamp{display:block;min-height:48px;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:background .12s ease,box-shadow .12s ease}
+.yt-screen button.yt-lamp.yt-ready{background:#9ef3b4;border-color:#48bb71;box-shadow:0 0 0 3px #51c87866,0 4px 0 #239653}
+.yt-screen button.yt-lamp:focus-visible{outline:4px solid #286fbc;outline-offset:3px}
+.yt-screen button.yt-lamp:active:not(:disabled){transform:translateY(2px)}
+@media(max-height:650px){.yt-screen button.yt-lamp{min-height:46px}}

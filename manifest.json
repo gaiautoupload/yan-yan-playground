@@ -1,0 +1,21 @@
+{
+  "name": "彥彥配對樂園｜親子大冒險",
+  "short_name": "彥彥配對樂園",
+  "start_url": "./",
+  "display": "fullscreen",
+  "background_color": "#7dd0fa",
+  "theme_color": "#75cfff",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "display_override": [
+    "fullscreen",
+    "standalone"
+  ],
+  "orientation": "portrait"
+}

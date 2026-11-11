@@ -1,0 +1,132 @@
+/* v163: drag clue onto a choice, clear high-contrast drop feedback */
+/* v149: tap-to-change corner clues, compact 320px layout */
+/* v131: explore the zoomed photo by finger or keyboard without changing answers */
+/* v28: touch-friendly photo detail matching, keeps original family photos intact */
+.zoom-tile{background:linear-gradient(145deg,#e8f5ff,#ffdfed)}
+.zoom-screen .zoom-stage{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:space-around;gap:clamp(3px,.7dvh,9px);padding:clamp(3px,.6dvh,8px) 6px}
+.zoom-heading{font-size:clamp(15px,4.2vw,21px);color:#594375;background:#fffce7ed;border:2px solid #fff;border-radius:17px;padding:4px 12px;text-align:center}
+.zoom-progress{width:min(100%,500px);display:flex;justify-content:space-around;background:#fffe;border:2px solid #fff;border-radius:15px;padding:4px 9px;font-size:clamp(14px,4vw,19px);font-weight:900;color:#5e4873}
+.zoom-mystery{width:min(70vw,29dvh,260px);aspect-ratio:1;position:relative;overflow:hidden;border:5px solid white;border-radius:23px;background:#f8e4ff;box-shadow:0 5px 0 #b2a1b5;display:flex;align-items:center;justify-content:center}
+.zoom-mystery img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .3s ease;pointer-events:none;user-select:none}
+.zoom-mystery img[hidden]{display:none}
+.zoom-mystery #zoom-fallback{font-size:80px}
+.zoom-magnifier{position:absolute;right:5px;bottom:4px;font-size:26px;filter:drop-shadow(0 2px 2px #fff)}
+.zoom-choices{display:flex;justify-content:center;gap:clamp(6px,2vw,12px);width:min(98%,540px);min-height:0}
+.zoom-choice{flex:1 1 0;min-width:0;max-width:142px;aspect-ratio:1;position:relative;overflow:hidden;padding:0;border:4px solid white;border-radius:18px;background:#fff8ec;box-shadow:0 4px 0 #a9bac0;touch-action:manipulation;cursor:pointer}
+.zoom-choice img{display:block;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.zoom-choice img[hidden]{display:none}
+.zoom-choice-icon{position:absolute;right:2px;bottom:2px;background:#fffce9e6;border-radius:8px;font-size:clamp(15px,4vw,23px);padding:0 3px}
+.zoom-choice.zoom-correct{border-color:#4fdf81;box-shadow:0 0 0 3px #a7ffc0}
+.zoom-choice.zoom-wrong{animation:zoom-shake .28s ease;border-color:#ff9e9e}
+@keyframes zoom-shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.zoom-hint{border:3px solid #fff;border-radius:18px;background:linear-gradient(#fff1a7,#ffc26d);padding:7px 15px;min-height:44px;color:#67466c;font-size:clamp(15px,4.3vw,19px);font-weight:1000;touch-action:manipulation}
+.zoom-hint:disabled{opacity:.78}
+.zoom-guide{font-size:clamp(13px,3.8vw,18px);color:#624975;background:#fffee4;border-radius:15px;padding:4px 10px;font-weight:900;text-align:center}
+.zoom-win .popup{max-height:90dvh;overflow-y:auto}
+@media(max-height:620px){.zoom-mystery{width:min(64vw,25dvh,210px);border-width:3px}.zoom-choice{max-width:100px;border-width:3px}.zoom-heading,.zoom-progress{padding:2px 7px}.zoom-hint{min-height:40px;padding:4px 10px}.zoom-guide{padding:2px 7px}}
+@media(prefers-reduced-motion:reduce){.zoom-mystery img{transition:none}.zoom-choice.zoom-wrong{animation:none}}
+.zoom-mystery{touch-action:none;overscroll-behavior:contain;cursor:grab}
+.zoom-mystery.zoom-exploring{cursor:grabbing;border-color:#ffe16a;box-shadow:0 0 0 3px #ffedaa,0 5px 0 #b2a1b5}
+.zoom-mystery:focus-visible{outline:3px solid #ffe16a}
+.zoom-magnifier{pointer-events:none}
+
+.zoom-actions{display:flex;align-items:center;justify-content:center;gap:8px;width:min(100%,500px)}
+.zoom-actions button{flex:1 1 0;min-width:0;min-height:44px;padding:6px 9px;font-size:clamp(14px,3.8vw,18px);white-space:nowrap}
+.zoom-corner{border:3px solid #fff;border-radius:18px;background:linear-gradient(#d8f7ff,#92dafa);color:#40517a;font-weight:1000;touch-action:manipulation}
+.zoom-corner:disabled{opacity:.65}
+@media(max-height:620px){.zoom-actions button{min-height:40px;padding:3px 7px}}
+
+.zoom-choice.zoom-drop-target{border-color:#ffca31;box-shadow:0 0 0 4px #fff1a4,0 5px 0 #c28b1d;transform:translateY(-2px)}
+
+/* v243: independent, accessible full-photo preview on answer cards */
+.zoom-choice-wrap{position:relative;flex:1 1 0;min-width:0;max-width:142px;aspect-ratio:1}
+.zoom-choice-wrap .zoom-choice{width:100%;height:100%;max-width:none}
+.zoom-choice-wrap .zoom-choice-icon{left:2px;right:auto;top:2px;bottom:auto}
+.zoom-preview{position:absolute;right:2px;bottom:2px;min-width:44px;min-height:44px;padding:0;border:2px solid #fff;border-radius:14px;background:#ffef9a;box-shadow:0 2px 0 #aa874b;font-size:22px;cursor:pointer;touch-action:manipulation;z-index:1}
+.zoom-preview:focus-visible,.zoom-preview-close:focus-visible{outline:3px solid #295ce8;outline-offset:2px}
+.zoom-preview-overlay{z-index:1000;display:flex;align-items:center;justify-content:center;padding:12px;background:#241a40b8}
+.zoom-preview-panel{display:flex;flex-direction:column;align-items:center;gap:8px;width:min(94vw,460px);max-height:88dvh;padding:12px;border-radius:20px;background:#fff9ed;box-shadow:0 12px 40px #22194488}
+.zoom-preview-panel img{display:block;width:auto;max-width:100%;max-height:min(62dvh,460px);height:auto;object-fit:contain;border-radius:12px}
+.zoom-preview-panel img[hidden],.zoom-preview-fallback[hidden]{display:none}
+.zoom-preview-panel p{margin:0;font-weight:900;color:#624975}
+.zoom-preview-close{align-self:flex-end;min-height:48px;padding:7px 16px;border:2px solid #fff;border-radius:14px;background:#ffd46b;font-size:17px;font-weight:900}
+@media(max-height:620px){.zoom-choice-wrap{max-width:100px}.zoom-preview-panel{padding:7px;gap:3px}.zoom-preview-panel img{max-height:51dvh}}
+
+/* v244: drag answer cards up to the mystery photo; keep separate magnifier tappable */
+.zoom-choice-wrap .zoom-choice{touch-action:none}
+.zoom-choice.zoom-choice-dragging{border-color:#ffb32b;box-shadow:0 0 0 4px #ffeaa0;transform:scale(1.045);z-index:2}
+.zoom-mystery.zoom-choice-drop{border-color:#50d785;box-shadow:0 0 0 5px #a4ffbd,0 5px 0 #62b67a}
+@media(prefers-reduced-motion:reduce){.zoom-choice.zoom-choice-dragging{transform:none}}
+
+/* v245: one-tap child-friendly elimination hint. Wrong answer is dimmed and no longer selectable. */
+.zoom-eliminate{min-height:46px;border:3px solid #fff;border-radius:16px;background:#ffe6a4;color:#5b3c24;font-weight:900;font-size:clamp(13px,3.6vw,18px);padding:7px 10px;box-shadow:0 3px 0 #d4a955;touch-action:manipulation}
+.zoom-eliminate:disabled{opacity:.7;box-shadow:none}
+.zoom-choice.zoom-eliminated{opacity:.24;filter:grayscale(1);pointer-events:none;transform:scale(.92)}
+.zoom-choice-wrap:has(.zoom-eliminated) .zoom-preview{opacity:.28;pointer-events:none}
+@media(max-width:360px){.zoom-actions{flex-wrap:wrap}.zoom-eliminate{min-height:44px}}
+
+/* v261: long-press peek feedback; no layout shift. */
+.zoom-mystery.zoom-peeking{border-color:#ffe16b;box-shadow:0 0 0 4px #ffe16b,0 5px 0 #b2a1b5}
+.zoom-mystery.zoom-peeking .zoom-magnifier{opacity:.25}
+.zoom-hint[aria-pressed="true"]{background:linear-gradient(#d9f9ff,#98e9fa)}
+
+/* v271: touch-first preview gallery; arrows remain at least 44px wide. */
+.zoom-preview-gallery{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:0}
+.zoom-preview-gallery img{flex:1 1 0;min-width:0;max-width:calc(100% - 100px);max-height:min(57dvh,420px);touch-action:pan-y}
+.zoom-preview-prev,.zoom-preview-next{flex:0 0 44px;width:44px;min-height:54px;border:2px solid #fff;border-radius:14px;background:#bdeaff;color:#284f79;font-size:26px;font-weight:900;touch-action:manipulation}
+.zoom-preview-prev:disabled,.zoom-preview-next:disabled{opacity:.4}
+.zoom-preview-counter{font-weight:900;color:#524a7e;margin:0}
+@media(max-width:360px){.zoom-preview-panel{width:98vw;padding:7px}.zoom-preview-gallery{gap:3px}.zoom-preview-gallery img{max-width:calc(100% - 94px)}.zoom-preview-prev,.zoom-preview-next{flex-basis:44px}}
+@media(max-height:620px){.zoom-preview-gallery img{max-height:43dvh}}
+
+/* v291: incorrect answers are crossed out until the next round, without changing score or saved progress. */
+.zoom-choice.zoom-tried-wrong{opacity:.42;filter:grayscale(.8);border-color:#f16c79;box-shadow:0 0 0 3px #ffb1b7;cursor:not-allowed}
+.zoom-choice.zoom-tried-wrong::after{content:'✕';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:clamp(42px,14vw,76px);font-weight:1000;color:#c32e43;text-shadow:0 2px #fff,0 -2px #fff;pointer-events:none}
+.zoom-choice-wrap:has(.zoom-tried-wrong) .zoom-preview{opacity:.3;pointer-events:none}
+
+/* v295: explicit 48px answer action inside the enlarged-photo viewer. */
+.zoom-preview-choose{width:min(100%,320px);min-height:48px;border:3px solid #fff;border-radius:16px;background:linear-gradient(#c9ffbc,#76df92);color:#20552b;font-size:clamp(16px,4.4vw,20px);font-weight:1000;touch-action:manipulation;box-shadow:0 3px 0 #5ca46b;cursor:pointer}
+.zoom-preview-choose:disabled{background:#ddd;color:#777;box-shadow:none;cursor:not-allowed}
+.zoom-preview-choose:focus-visible{outline:3px solid #295ce8;outline-offset:2px}
+@media(max-height:620px){.zoom-preview-choose{min-height:44px}.zoom-preview-panel p:last-child{font-size:12px}}
+
+/* v296: optional in-gallery clue comparison; fit short 320x568 screens. */
+.zoom-preview-compare-toggle{width:min(100%,320px);min-height:44px;border:2px solid #fff;border-radius:14px;background:#d8efff;color:#294a73;font-size:16px;font-weight:900;touch-action:manipulation}
+.zoom-preview-compare-toggle[aria-pressed="true"]{background:#ffec9a}
+.zoom-preview-clue-wrap{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;font-size:13px;font-weight:900;color:#53426d}
+.zoom-preview-clue-wrap[hidden]{display:none}
+.zoom-preview-clue{width:82px;height:82px;flex:0 0 82px;overflow:hidden;border:3px solid #ffc85a;border-radius:12px;background:#f7e7ff;display:flex;align-items:center;justify-content:center}
+.zoom-preview-clue img{display:block;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.zoom-preview-clue img[hidden]{display:none}
+.zoom-preview-panel.zoom-preview-comparing{overflow-y:auto}
+.zoom-preview-panel.zoom-preview-comparing .zoom-preview-gallery img{max-height:min(32dvh,240px)}
+@media(max-height:620px){.zoom-preview-clue{width:62px;height:62px;flex-basis:62px}.zoom-preview-panel.zoom-preview-comparing .zoom-preview-gallery img{max-height:26dvh}.zoom-preview-clue-wrap{font-size:12px;gap:5px}}
+
+/* v298: in-gallery clue switching, with 44px touch target and narrow-screen wrap. */
+.zoom-preview-next-clue{flex:0 0 auto;min-height:44px;min-width:88px;padding:4px 7px;border:2px solid white;border-radius:12px;background:#ffe9a6;color:#674a23;font-size:14px;font-weight:900;touch-action:manipulation}
+.zoom-preview-next-clue:focus-visible{outline:3px solid #295ce8;outline-offset:2px}
+@media(max-width:360px){.zoom-preview-clue-wrap{flex-wrap:wrap;gap:4px}.zoom-preview-next-clue{min-height:44px}}
+
+/* v301: 2x photo magnification and one-finger detail inspection. */
+.zoom-preview-magnify{width:min(100%,320px);min-height:44px;border:2px solid #fff;border-radius:14px;background:#ffecaa;color:#60471d;font-size:16px;font-weight:900;touch-action:manipulation}
+.zoom-preview-magnify[aria-pressed="true"]{background:#c9f5ff}
+.zoom-preview-magnify:disabled{opacity:.5}
+.zoom-preview-gallery{overflow:hidden}
+.zoom-preview-gallery img{transition:transform .16s ease}
+.zoom-preview-gallery img.zoom-preview-zoomed{transform:scale(2);touch-action:none;cursor:grab}
+.zoom-preview-gallery .zoom-preview-prev,.zoom-preview-gallery .zoom-preview-next{position:relative;z-index:2}
+@media(prefers-reduced-motion:reduce){.zoom-preview-gallery img{transition:none}}
+
+/* v327: child-visible parental pointing hint; no automatic answer. */
+.zoom-point{min-height:44px;border:3px solid #fff;border-radius:16px;background:linear-gradient(#ddffce,#8ae5a3);color:#245a38;font-weight:900;font-size:clamp(13px,3.5vw,18px);padding:6px 8px;touch-action:manipulation}
+.zoom-point:disabled{opacity:.7}
+.zoom-choice.zoom-pointed{outline:5px solid #ffb52f;outline-offset:2px;box-shadow:0 0 0 8px #fff1a2;animation:zoom-point-pulse .65s ease-in-out 3 alternate;z-index:3}
+@keyframes zoom-point-pulse{to{filter:brightness(1.17);outline-color:#44c96b}}
+@media(max-width:360px){.zoom-actions button{flex:1 1 calc(50% - 6px)}}
+@media(prefers-reduced-motion:reduce){.zoom-choice.zoom-pointed{animation:none}}
+
+/* v327: preserve 44px tap targets on 320x568 compact screens. */
+@media(max-height:620px){.zoom-actions button{min-height:44px}}
+
+/* v332: allow real touch pinch gestures instead of browser-level page zoom. */
+.zoom-preview-gallery img{touch-action:none}

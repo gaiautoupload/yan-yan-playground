@@ -1,0 +1,15 @@
+/* v79 memory: two-second reveal hint, no auto-solve; 44px touch target */
+.memory-peek-tools{width:min(98%,540px);display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;color:#643c67;font-size:clamp(11px,3.1vw,15px);font-weight:800}
+.memory-peek-btn{min-height:44px;min-width:156px;border:3px solid #fff;border-radius:18px;background:linear-gradient(145deg,#ffe3a5,#ffbdde);color:#63385c;font-size:clamp(14px,4vw,18px);font-weight:1000;padding:6px 12px;box-shadow:0 3px 0 #b77f8c}
+.memory-peek-btn:disabled{opacity:.55;filter:grayscale(.3)}
+.memory-peek-btn:focus-visible{outline:4px solid #3487ff;outline-offset:2px}
+@media(max-height:600px){.memory-peek-tools{gap:3px;font-size:11px}.memory-peek-btn{min-height:44px;padding:4px 8px}.memory-screen .memory-grid{width:min(100%,520px,44dvh)}}
+
+/* v92: optional self-paced review after a wrong pair, preserving compact two-button row. */
+.memory-look-btn,.memory-continue-btn{min-height:44px;min-width:132px;border:3px solid white;border-radius:17px;padding:6px 9px;font-size:clamp(12px,3.5vw,16px);font-weight:1000;color:#523b71;background:linear-gradient(145deg,#e0f7ff,#b9f4e0);touch-action:manipulation}
+.memory-look-btn[aria-pressed="true"]{background:linear-gradient(145deg,#fff0a8,#ffd4ed)}
+.memory-continue-btn{background:linear-gradient(145deg,#ffde8c,#ffb980);color:#64380f}
+.memory-look-btn[hidden],.memory-continue-btn[hidden]{display:none!important}
+.memory-look-btn:disabled{opacity:.55}
+.memory-peek-tools{gap:clamp(3px,1vw,8px)}
+@media(max-width:350px){.memory-look-btn,.memory-continue-btn{min-width:124px;padding:5px 6px}}

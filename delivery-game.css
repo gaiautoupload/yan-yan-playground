@@ -1,0 +1,85 @@
+/* v31: touch-first two-step excavator delivery; additive styling only. */
+.delivery-tile{background:linear-gradient(135deg,#fff0b8,#d5f8d6)}
+.delivery-screen .delivery-stage{flex:1;min-height:0;display:flex;flex-direction:column;gap:clamp(3px,.7dvh,9px);align-items:center;justify-content:space-around;padding:3px 5px;overflow-y:auto}
+.delivery-status{width:min(100%,540px);display:flex;justify-content:space-between;gap:6px;font-weight:900;color:#674567;font-size:clamp(13px,3.8vw,18px)}
+.delivery-status span{padding:5px 9px;border-radius:13px;background:#fffdf5e9}
+.delivery-scene{width:min(100%,540px);height:clamp(72px,17dvh,145px);display:flex;gap:6px;align-items:stretch}
+.delivery-family{flex:1;min-width:0;overflow:hidden;border:3px solid white;border-radius:17px;background:#fff}
+.delivery-family img{width:100%;height:100%;object-fit:contain;display:block}
+.delivery-order{flex:1.1;min-width:0;background:#fff2bde8;border:3px solid #fff;border-radius:17px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px;text-align:center;padding:4px;color:#62446c}
+#delivery-order-icon{font-size:clamp(25px,7vw,41px);white-space:nowrap}
+.delivery-order strong{font-size:clamp(12px,3.3vw,18px)}
+.delivery-track{width:min(100%,540px);height:clamp(75px,16dvh,130px);position:relative;border-radius:20px;border:3px solid #fff;background:linear-gradient(#a9e7ff 0 56%,#b7e9a3 56% 77%,#a3a4b1 77%);overflow:hidden}
+.delivery-road{position:absolute;bottom:1px;left:5%;font-size:16px;color:#fff8d2;letter-spacing:6px;white-space:nowrap}
+.delivery-truck{position:absolute;bottom:10px;left:5%;width:clamp(78px,24vw,125px);height:75%;object-fit:contain;transition:transform .7s ease-in-out}
+.delivery-truck.delivery-driving{transform:translateX(clamp(95px,38vw,210px))}
+.delivery-load{position:absolute;left:29%;bottom:40%;font-size:clamp(24px,7vw,39px);pointer-events:none}
+.delivery-goal{position:absolute;right:5%;bottom:20%;font-size:clamp(33px,10vw,56px)}
+.delivery-cargo,.delivery-destinations{width:min(100%,540px);display:flex;justify-content:center;align-items:center;gap:clamp(5px,1.4vw,12px)}
+.delivery-item,.delivery-station{border:3px solid white;border-radius:18px;box-shadow:0 4px 0 #8097b766;background:#fff9e7;min-width:0;flex:1;max-width:102px;min-height:clamp(62px,12dvh,91px);display:flex;flex-direction:column;align-items:center;justify-content:center;touch-action:manipulation}
+.delivery-item span,.delivery-station span{font-size:clamp(30px,8.8vw,50px);line-height:1.1}
+.delivery-station{background:#e8f3ff;opacity:.48;filter:grayscale(.4);transition:opacity .2s}
+.delivery-destinations.delivery-ready .delivery-station{opacity:1;filter:none}
+.delivery-station small{font-size:clamp(11px,3vw,16px);font-weight:900;color:#5d5072}
+.delivery-item:disabled{opacity:.55}.delivery-item.delivery-correct,.delivery-station.delivery-correct{opacity:1;background:#c6f5ba;border-color:#53c977}
+.delivery-guide{font-weight:900;text-align:center;font-size:clamp(13px,3.8vw,18px);background:#fffdf0e9;padding:4px 10px;border-radius:12px;color:#644778}
+.delivery-hint{min-height:42px;min-width:105px;border:2px solid white;border-radius:16px;background:#ffe38c;font-size:17px;font-weight:900;color:#65476d}
+.delivery-highlight{outline:5px solid #ffb300;outline-offset:1px}
+.delivery-wrong{animation:delivery-shake .28s ease}
+@keyframes delivery-shake{0%,100%{transform:translateX(0)}30%{transform:translateX(-6px)}70%{transform:translateX(6px)}}
+.delivery-home-feature{display:none}
+@media(min-height:730px){
+ .home .spotlight{flex-direction:column;align-items:center;justify-content:flex-end;gap:7px}
+ .delivery-home-feature{display:flex;align-items:center;gap:10px;width:min(94%,350px);height:clamp(56px,10dvh,100px);background:#fffdf5f0;border:3px solid #fff4aa;border-radius:21px;box-shadow:0 6px 15px #132c5e36;padding:4px;overflow:hidden;color:#704c65}
+ .delivery-home-feature img{width:36%;height:100%;object-fit:contain;border-radius:15px;background:#fff}
+ .delivery-home-feature span{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+ .delivery-home-feature b{font-size:clamp(15px,4vw,20px)}
+ .delivery-home-feature small{font-size:clamp(12px,3vw,15px);font-weight:900}
+}
+@media(max-height:620px){
+ .delivery-screen .delivery-stage{gap:2px;padding:1px 3px}
+ .delivery-scene{height:clamp(64px,14dvh,90px)}
+ .delivery-track{height:clamp(62px,13dvh,80px)}
+ .delivery-item,.delivery-station{min-height:54px;border-radius:13px}
+ .delivery-item span,.delivery-station span{font-size:30px}
+ .delivery-hint{min-height:36px}
+}
+@media(max-width:340px){.delivery-screen .chip{font-size:11px;padding:5px 6px}.delivery-screen .iconbtn{width:40px;height:40px}}
+@media(prefers-reduced-motion:reduce){.delivery-truck{transition:none!important}.delivery-wrong{animation:none!important}}
+/* v115: drag cargo onto a destination; keyboard/tap controls remain available. */
+.delivery-cargo .delivery-item{touch-action:none}
+.delivery-item.delivery-dragging{opacity:.52;transform:scale(.96)}
+.delivery-drag-ghost{position:fixed;z-index:1000;pointer-events:none;transform:translate(-50%,-50%);font-size:clamp(45px,13vw,68px);filter:drop-shadow(0 5px 4px #36446966)}
+.delivery-station.delivery-drop-target{opacity:1;filter:none;outline:5px solid #ffbd2e;outline-offset:1px;transform:scale(1.05)}
+
+/* v207: reverse drag keeps existing tap/drag behavior. */
+.delivery-destinations .delivery-station{touch-action:none}
+.delivery-station.delivery-reverse-dragging{opacity:.55;transform:scale(.96)}
+.delivery-item.delivery-reverse-target{outline:5px solid #49c977;outline-offset:1px;background:#d7ffd7}
+.delivery-reverse-ghost{filter:drop-shadow(0 5px 4px #236b4c77)}
+
+/* v208: visible destination-first tap selection, including narrow phones. */
+.delivery-destinations .delivery-station.delivery-station-selected{opacity:1;filter:none;background:#fff0ac;border-color:#ffae23;outline:3px solid #ffca42;outline-offset:1px;transform:scale(1.04)}
+.delivery-station-selected span{animation:delivery-pick .35s ease-out}
+@keyframes delivery-pick{50%{transform:scale(1.18)}}
+@media(prefers-reduced-motion:reduce){.delivery-station-selected span{animation:none}}
+
+/* v208: keep the home delivery shortcut above the absolute-positioned photo quiz hero. */
+@media(min-height:730px){.home .spotlight .delivery-home-feature{position:relative;z-index:3}}
+
+/* v209: one-step parent help, with 320px / short-height touch targets. */
+.delivery-actions{width:min(100%,540px);display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap}
+.delivery-assist{min-height:44px;min-width:138px;padding:5px 10px;border:2px solid white;border-radius:16px;background:#c9f5d6;color:#315b3d;font-size:clamp(13px,3.7vw,17px);font-weight:900;touch-action:manipulation}
+.delivery-assist:disabled{opacity:.48;filter:grayscale(.3)}
+@media(max-height:620px){.delivery-actions{gap:5px}.delivery-actions .delivery-assist,.delivery-actions .delivery-hint{min-height:36px;font-size:13px}}
+
+/* v218: audible long-press labels for pre-readers; no score or selection changes. */
+.delivery-cargo .delivery-item{position:relative}
+.delivery-cargo .delivery-item::after{content:'🔊';position:absolute;right:3px;bottom:2px;font-size:clamp(13px,3.4vw,17px);opacity:.7;pointer-events:none}
+.delivery-item.delivery-speaking{outline:4px solid #24a8db;outline-offset:2px;background:#dcf6ff}
+@media(prefers-reduced-motion:reduce){.delivery-item.delivery-speaking{transition:none}}
+
+/* v260: reversible cargo/destination selection; 44px+ finger target. */
+.delivery-undo{min-height:44px;min-width:90px;padding:5px 12px;border:2px solid white;border-radius:16px;background:#d9e9ff;color:#365b8b;font-size:clamp(14px,3.8vw,17px);font-weight:900;touch-action:manipulation}
+.delivery-undo:disabled{opacity:.38;filter:grayscale(.4)}
+@media(max-height:620px){.delivery-actions .delivery-undo{min-height:44px;padding:4px 9px;font-size:13px}}

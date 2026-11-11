@@ -1,0 +1,65 @@
+.yc-screen .yc-stage{width:100%;max-width:720px;margin:auto;display:flex;flex-direction:column;align-items:center;gap:clamp(7px,1.6dvh,13px);padding:7px 12px 16px;overflow-y:auto;min-height:0}
+.yc-title{background:#fff9e9ed;border:3px solid white;border-radius:18px;padding:7px 14px;font-weight:1000;font-size:clamp(17px,4.5vw,25px);text-align:center;color:#624669}
+.yc-goal{font-size:clamp(30px,9vw,47px);vertical-align:middle}
+.yc-status{background:#fffbe6e8;border-radius:14px;padding:7px 12px;min-height:34px;font-weight:900;text-align:center;color:#60456a;font-size:clamp(13px,3.7vw,18px)}
+.yc-machine{position:relative;width:min(100%,460px);height:clamp(190px,39dvh,340px);background:linear-gradient(#bfeaff,#e7f8ff 68%,#ffe5b1);border:8px solid #ffb85e;border-radius:25px;box-shadow:0 7px 0 #ad7d58, inset 0 0 0 4px #fff;overflow:hidden}
+.yc-track{position:absolute;top:0;left:0;width:100%;height:66%;touch-action:none;z-index:4}
+.yc-rail{position:absolute;top:14px;left:5%;width:90%;height:9px;border-radius:10px;background:#6f86a2}
+.yc-claw{position:absolute;top:12px;left:50%;width:60px;height:70%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;transition:left .12s ease;pointer-events:none}
+.yc-claw:before{content:'';width:5px;height:45%;background:repeating-linear-gradient(#8292a8 0 7px,#c6d2df 7px 12px)}
+.yc-claw span{font-size:clamp(35px,8vw,55px);line-height:1;filter:drop-shadow(0 3px 2px #8a94a5);transition:transform .55s ease}
+.yc-claw.yc-down span{transform:translateY(clamp(60px,15dvh,130px))}
+.yc-prizes{position:absolute;bottom:23px;left:0;width:100%;height:80px}
+.yc-prize{position:absolute;transform:translateX(-50%);font-size:clamp(32px,8.5vw,53px);filter:drop-shadow(0 3px 2px #fff);transition:transform .3s,opacity .3s}
+.yc-prize.yc-caught{transform:translate(-50%,-90px);opacity:.2}
+.yc-floor{position:absolute;bottom:0;background:#f7ba73;width:100%;text-align:center;font-size:16px;height:23px}
+.yc-controls{width:min(100%,460px);display:grid;grid-template-columns:1fr 1.7fr 1fr;gap:8px}
+.yc-controls button{min-height:clamp(52px,9dvh,70px);border:3px solid white;border-radius:17px;background:#d7efff;color:#554767;font-size:clamp(22px,6vw,30px);font-weight:1000;box-shadow:0 4px 0 #92abc4}
+.yc-controls .yc-grab{background:linear-gradient(#ffdf70,#ffab72);font-size:clamp(19px,5vw,27px)}
+.yc-controls button:disabled{opacity:.55}.yc-tip{font-size:clamp(12px,3.4vw,16px);font-weight:900;color:#5c4b65;text-align:center;background:#ffffffb8;padding:5px 10px;border-radius:10px}
+.yc-retry{border:2px solid white;border-radius:14px;background:#fff8e7;padding:8px 16px;color:#5e4d6a;font-weight:900}
+@media(max-height:620px){.yc-machine{height:190px}.yc-title{padding:3px 10px}.yc-status{padding:4px 8px}.yc-screen .yc-stage{gap:5px}.yc-retry{padding:4px 12px}}
+
+/* v95: hold-to-move and visible alignment */
+.yc-controls #yc-left,.yc-controls #yc-right{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.yc-controls button.yc-holding{background:#a7e8ff;box-shadow:0 1px 0 #629cb5;transform:translateY(3px)}
+.yc-claw.yc-aligned span{filter:drop-shadow(0 0 10px #18cb77) drop-shadow(0 0 5px #fff)}
+.yc-claw.yc-aligned:after{content:'';position:absolute;top:72%;height:90px;left:50%;border-left:4px dotted #25b982;opacity:.7;pointer-events:none}
+
+/* v116: child-friendly direct prize aiming; prizes remain tappable above the track. */
+.yc-prizes{z-index:5;pointer-events:none}
+.yc-prize{appearance:none;-webkit-appearance:none;pointer-events:auto;cursor:pointer;background:transparent;border:3px solid transparent;border-radius:16px;padding:3px;min-width:48px;min-height:54px;display:flex;align-items:center;justify-content:center;touch-action:manipulation}
+.yc-prize.yc-picked,.yc-prize:focus-visible{border-color:#ff9b19;background:#fff6c8d9;box-shadow:0 0 0 3px #fff,0 0 12px #ffc52e;outline:none}
+
+/* v152: press-and-hold a prize to grab it in one gesture */
+.yc-prize{touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.yc-prize.yc-pressing{outline:4px solid #ff9d26;outline-offset:3px;filter:drop-shadow(0 0 8px #ffd056);transform:translateX(-50%) scale(1.14);transition:transform .12s ease,filter .12s ease}
+
+/* v248: show the actual prize under the claw while moving. */
+.yc-prize.yc-aimed{border-color:#35d994;background:#e5ffe8df;box-shadow:0 0 0 3px #fff,0 0 16px #26cb79;transform:translateX(-50%) scale(1.08)}
+.yc-prize.yc-picked.yc-aimed{border-color:#ffad24;background:#fff3b8;box-shadow:0 0 0 3px #fff,0 0 18px #ffb222}
+@media(prefers-reduced-motion:reduce){.yc-prize.yc-aimed{transition:none}}
+
+/* v252: one-tap parent aiming and pointer-safe arrow holding. */
+.yc-assist-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;width:min(100%,460px)}
+.yc-mom{border:3px solid white;border-radius:14px;background:linear-gradient(#fbd7f5,#f5b7e3);padding:9px 16px;color:#673c66;font-size:clamp(15px,4vw,19px);font-weight:1000;min-height:46px;box-shadow:0 3px 0 #cf8cba;touch-action:manipulation}
+.yc-mom:active{transform:translateY(2px);box-shadow:0 1px 0 #cf8cba}
+@media(max-height:620px){.yc-assist-row{gap:5px}.yc-mom{min-height:40px;padding:5px 12px}}
+
+/* v266: rail drag-to-grab visual feedback, without covering prize targets. */
+.yc-track.yc-dragging .yc-rail{background:#20c979;box-shadow:0 0 0 5px #e0ffe8,0 0 15px #27d58a}
+.yc-track.yc-dragging .yc-claw span{filter:drop-shadow(0 0 12px #25d78c)}
+@media(prefers-reduced-motion:reduce){.yc-track.yc-dragging .yc-rail{transition:none}}
+
+/* v268: keep upward prize swipes in the game rather than browser scrolling. */
+.yc-prize{touch-action:none}
+
+/* v341: one-tap parent-assisted grab while keeping manual controls. */
+.yc-assist-row>.yc-mom,.yc-assist-row>.yc-retry{flex:1 1 0;min-width:0;padding-inline:5px;font-size:clamp(12px,3.4vw,16px);white-space:nowrap}
+.yc-assist-row>.yc-auto{background:linear-gradient(#d8ffe4,#8eeec3);color:#17573d;box-shadow:0 3px 0 #4fbf8a}
+.yc-assist-row>.yc-auto:active{box-shadow:0 1px 0 #4fbf8a}
+
+/* v342: drag a prize down onto the grab button for a single-gesture catch. */
+.yc-prize.yc-carrying{border-color:#ffac2e;background:#fff1b6;box-shadow:0 0 0 4px #fff,0 0 20px #ffb42e;transform:translateX(-50%) scale(1.22);z-index:8}
+.yc-controls #yc-grab.yc-drop-ready{background:linear-gradient(#b7ffe1,#52e5ad);border-color:#20c981;box-shadow:0 0 0 5px #e6fff1,0 0 20px #25c88e}
+@media(prefers-reduced-motion:reduce){.yc-prize.yc-carrying{transition:none}}

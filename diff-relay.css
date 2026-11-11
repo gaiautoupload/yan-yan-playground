@@ -1,0 +1,8 @@
+/* v72: preschool co-op turns, readable at 320x568 */
+.diff-relay-bar{width:min(95vw,550px);display:flex;align-items:center;justify-content:space-between;gap:5px;min-height:38px;flex:none;background:#fff8e9ed;border:2px solid #fff;border-radius:14px;padding:3px 6px;box-shadow:0 2px 0 #c7a87a55;font-weight:900;font-size:clamp(11px,3vw,15px)}
+.diff-relay-bar button{touch-action:manipulation;white-space:nowrap;min-height:44px;min-width:105px;padding:3px 7px;border-radius:11px;border:2px solid #fff;background:linear-gradient(180deg,#f9c8ed,#e7b4ff);color:#62367c;font-weight:1000;font-size:clamp(11px,3vw,15px)}
+.diff-relay-bar button[aria-pressed="true"]{background:linear-gradient(180deg,#b7f6cc,#76dca9);color:#246849;border-color:#fff}
+#diff-turn{white-space:nowrap;min-width:0;text-align:center;flex:1;color:#7c4a8e}
+#diff-score{white-space:nowrap;color:#397a7b;font-variant-numeric:tabular-nums}
+@media(max-height:650px){.diff-relay-bar{min-height:44px;padding:1px 5px;font-size:11px}.diff-relay-bar button{min-height:44px;padding:1px 5px;min-width:94px;font-size:11px}.diff-shell{gap:2px}}
+@media(max-width:340px){.diff-relay-bar{gap:3px;padding:1px 4px;font-size:10px}.diff-relay-bar button{min-width:88px;font-size:10px}#diff-score{font-size:10px}}

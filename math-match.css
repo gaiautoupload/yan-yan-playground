@@ -1,0 +1,24 @@
+
+/* v19: visual arithmetic matching: small, legible picture groups, not text questions. */
+.math-match-board{gap:clamp(8px,3vw,20px);padding:3px}
+.math-match-board .match-col{gap:clamp(4px,.8dvh,9px)}
+.math-match-board .match-node{padding:2px;border-width:2px;border-radius:clamp(9px,2.6vw,15px);min-height:0}
+.math-match-expression{display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-width:0;min-height:0;gap:clamp(2px,.5vw,6px)}
+.math-match-pile{display:flex;flex:1 1 0;min-width:0;max-height:100%;height:100%;align-items:center;justify-content:center}
+.math-match-pile .tinycount{width:100%;height:auto;max-height:100%;grid-template-columns:repeat(var(--count-cols,3),minmax(0,1fr));gap:1px}
+.math-match-pile .tinycount .unit{font-size:clamp(11px,3.3vw,23px);line-height:1;min-height:0}
+.math-match-op{flex:none;font-size:clamp(19px,5vw,31px);color:#d76d8b;font-weight:1000}
+.math-match-removed{opacity:.55;position:relative}
+.math-match-removed::after{content:"";position:absolute;left:3%;right:3%;top:50%;height:clamp(3px,1vw,5px);border-radius:8px;background:#e96c70;transform:rotate(-22deg);pointer-events:none}
+.math-match-board .match-node[data-side="r"] .tinycount .unit{font-size:clamp(15px,4.3vw,29px)}
+.math-match-board .match-node[data-side="r"] .tinycount .unit .emoj{font-size:inherit}
+.math-match-board .match-node .tinycount .unit img{max-width:100%;max-height:100%}
+@media(max-height:650px){
+ .math-match-pile .tinycount .unit{font-size:clamp(10px,3vw,18px)}
+ .math-match-board .match-node[data-side="r"] .tinycount .unit{font-size:clamp(13px,3.9vw,24px)}
+ .math-match-board .match-node{border-radius:9px}
+}
+
+/* Match-specific specificity beats the original count-1/count-2 giant emoji rules. */
+.math-match-board .math-match-pile .tinycount .unit{font-size:clamp(11px,3.3vw,23px)}
+@media(max-height:650px){.math-match-board .math-match-pile .tinycount .unit{font-size:clamp(10px,3vw,18px)}}

@@ -1,0 +1,63 @@
+/* v24 photo memory pairs, compact five-game classic launcher */
+.classic-menu{overflow-y:auto;overflow-x:hidden;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:48px repeat(3,minmax(94px,auto)) 52px;grid-auto-rows:94px;align-content:start;padding:5px 5px 12px;overscroll-behavior:contain}
+.classic-menu>.classic-family,.classic-menu>.classic-audio-controls{grid-column:1/-1;min-height:0}
+.classic-menu>.classic-tile{min-width:0;min-height:94px;padding:4px 2px;border-width:3px;border-radius:18px;box-shadow:0 4px 0 #8b94a455}
+.classic-menu>.classic-tile .classic-big{font-size:clamp(25px,6dvh,40px)}
+.classic-menu>.classic-tile strong{font-size:clamp(16px,4.5vw,23px)}
+.classic-menu>.classic-tile span:not(.classic-big){font-size:clamp(13px,3.6vw,18px)}
+.classic-menu>.classic-tile small{font-size:12px;padding:2px 6px}
+.memory-tile{background:linear-gradient(160deg,#ffe7f5,#ffb5d5)}
+.memory-screen .memory-stage{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:clamp(4px,1dvh,10px);padding:clamp(5px,1dvh,12px) 7px}
+.memory-family{width:100%;max-width:520px;display:flex;justify-content:center;align-items:center;gap:8px;background:#fffdf0eb;border:2px solid #fff;border-radius:22px;padding:3px 6px;font-size:clamp(12px,3.5vw,17px);font-weight:900;color:#6e4771}
+.memory-family img{height:clamp(30px,6dvh,44px);width:clamp(30px,6dvh,44px);border-radius:50%;object-fit:cover}
+.memory-score{width:min(98%,540px);display:flex;justify-content:space-around;background:#fff9;border:2px solid #fff;border-radius:20px;padding:6px;font-size:clamp(15px,4vw,21px);font-weight:1000;color:#68436b}
+.memory-grid{width:min(100%,520px,54dvh);display:grid;grid-template-columns:repeat(var(--memory-cols),minmax(0,1fr));gap:clamp(5px,1.6vw,11px);margin:auto 0;align-content:center}
+.memory-card{aspect-ratio:1;min-width:0;border:0;background:transparent;padding:0;perspective:700px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.memory-card-inner{position:relative;width:100%;height:100%;display:block;transform-style:preserve-3d;transition:transform .28s ease}
+.memory-card.is-flipped .memory-card-inner{transform:rotateY(180deg)}
+.memory-card-back,.memory-card-front{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid white;border-radius:15px;overflow:hidden;backface-visibility:hidden;box-shadow:0 4px 0 #9b75b177}
+.memory-card-back{background:linear-gradient(140deg,#ffa4d5,#f9d9fc);font-size:clamp(28px,8vw,49px)}
+.memory-card-back small{font-size:20px}
+.memory-card-front{transform:rotateY(180deg);background:#fff9ec}
+.memory-card-front img{width:100%;height:100%;object-fit:cover;display:block}
+.memory-card-front span{position:absolute;bottom:0;left:0;right:0;text-align:center;background:#fffdf2dd;color:#653d62;font-weight:900;font-size:clamp(9px,2.5vw,13px);line-height:1.3;padding:3px 1px}
+.memory-card.is-matched .memory-card-front{border-color:#78d980;box-shadow:0 0 0 2px #57d57c,0 4px 0 #338c59}
+.memory-card:focus-visible{outline:4px solid #ffbf36;outline-offset:2px;border-radius:16px}
+.memory-guide{font-size:clamp(12px,3.4vw,17px);font-weight:900;color:#633c67;background:#fffd;border-radius:20px;padding:5px 10px;text-align:center}
+.memory-win .popup{max-height:90dvh;overflow-y:auto}
+@media(max-height:600px){.memory-screen .memory-stage{gap:3px;padding:3px}.memory-family img{width:28px;height:28px}.memory-family{font-size:12px}.memory-score{padding:3px}.memory-grid{width:min(100%,520px,50dvh);gap:4px}.memory-guide{padding:3px;font-size:12px}.memory-card-back,.memory-card-front{border-width:2px}}
+@media(prefers-reduced-motion:reduce){.memory-card-inner{transition:none}}
+/* v122: touch-friendly connect-two-cards gesture */
+.memory-grid{position:relative;touch-action:none}
+.memory-card{touch-action:none}
+.memory-drag-line{position:absolute;z-index:10;height:10px;background:linear-gradient(90deg,#ffb94b,#ff5fa6);border:2px solid #fff;border-radius:999px;box-shadow:0 2px 8px #a72b8066;transform-origin:left center;pointer-events:none}
+.memory-drag-line[hidden]{display:none}
+.memory-grid.memory-dragging .memory-card:not(.is-matched){cursor:crosshair}
+@media(prefers-reduced-motion:reduce){.memory-drag-line{box-shadow:none}}
+
+/* v329: parent points at the matching second card without turning it over or auto-scoring. */
+.memory-card.memory-pointed{position:relative;z-index:5;outline:5px solid #ffb52f;outline-offset:3px;border-radius:16px;box-shadow:0 0 0 9px #fff0a0;animation:memory-point-pulse .55s ease-in-out 3 alternate}
+.memory-card.memory-pointed .memory-card-back{background:linear-gradient(145deg,#fff0a6,#ffc85e)}
+@keyframes memory-point-pulse{to{outline-color:#35ca77;filter:brightness(1.14)}}
+@media(prefers-reduced-motion:reduce){.memory-card.memory-pointed{animation:none}}
+
+/* v336: one-time all-card preview; comfortable mobile touch target without changing other controls. */
+.memory-overview-btn{min-height:44px;padding:6px 10px;border:2px solid #fff;border-radius:16px;background:linear-gradient(145deg,#d8f8ff,#a9e7ff);color:#245577;font-size:clamp(12px,3.2vw,16px);font-weight:900;box-shadow:0 3px 0 #70b3d2;touch-action:manipulation}
+.memory-overview-btn:disabled{opacity:.55;box-shadow:none}
+@media(max-width:360px){.memory-overview-btn{font-size:12px;padding:5px 7px}}
+
+/* v346: allow a child to finish the 3-second overview early, without extra scoring. */
+.memory-overview-done{min-height:44px;padding:6px 10px;border:2px solid #fff;border-radius:16px;background:linear-gradient(145deg,#d5ffdc,#a5f0bb);color:#246040;font-size:clamp(12px,3.2vw,16px);font-weight:900;box-shadow:0 3px 0 #5caa78;touch-action:manipulation}
+.memory-overview-done[hidden]{display:none}
+@media(max-width:360px){.memory-overview-done{font-size:12px;padding:5px 7px}}
+
+/* v367: matched-photo inspect with accessible close and touch targets. */
+.memory-card.is-matched{position:relative;cursor:zoom-in}
+.memory-card.is-matched::after{content:'🔎';position:absolute;right:-3px;top:-3px;z-index:2;background:#fff9b8;border:2px solid white;border-radius:50%;width:26px;height:26px;display:grid;place-items:center;font-size:16px;pointer-events:none;box-shadow:0 2px 4px #0003}
+.memory-photo-inspect{display:flex;align-items:center;justify-content:center;padding:12px;background:#1e2547d9}
+.memory-photo-panel{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;width:min(94vw,520px);max-height:90dvh;overflow:auto;padding:54px 12px 16px;border-radius:22px;background:#fff9ec;color:#503a66;text-align:center;box-shadow:0 8px 30px #0005}
+.memory-photo-panel img{display:block;width:100%;max-height:58dvh;object-fit:contain;border-radius:14px;touch-action:manipulation;cursor:pointer}
+.memory-photo-panel strong{font-size:clamp(19px,5vw,25px)}
+.memory-photo-panel p{font-size:clamp(14px,3.8vw,18px);font-weight:800;margin:0}
+.memory-photo-close{position:absolute;top:7px;right:8px;width:48px;height:48px;border:2px solid #fff;border-radius:50%;background:#ffccda;color:#643651;font-size:24px;font-weight:900;touch-action:manipulation}
+@media(max-height:600px){.memory-photo-panel{padding-top:48px;gap:3px}.memory-photo-panel img{max-height:43dvh}}

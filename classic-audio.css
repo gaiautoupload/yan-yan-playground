@@ -1,0 +1,16 @@
+
+/* v16: audio options do not scroll even on 320x568 */
+.classic-menu{grid-template-rows:auto repeat(3,minmax(0,1fr)) auto}
+.classic-audio-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;min-width:0}
+.classic-audio-controls button{min-width:0;min-height:39px;border:2px solid #fff;border-radius:13px;background:#fff5d7;color:#645170;font-weight:1000;font-size:clamp(11px,3.2vw,14px);padding:5px 1px}
+.classic-audio-controls .classic-test-sound{background:#bdebd7}
+.classic-audio-controls [aria-pressed="false"]{background:#d5dce3;color:#67717e}
+.classic-audio-result{position:absolute;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:15;width:min(95vw,420px);background:#fffdf0;border:3px solid white;border-radius:17px;padding:9px 13px;text-align:center;font-size:13px;font-weight:900;box-shadow:0 8px 25px #1235;pointer-events:none}
+@media(max-height:650px){.classic-audio-controls button{min-height:31px;padding:2px 1px;font-size:11px}.classic-menu{gap:3px}.classic-menu .classic-big{font-size:clamp(28px,6.2dvh,46px)}}
+
+/* v18: clear listening state and touch-safe stop signal */
+.wood-signal.ready{background:#fff0bd;color:#8a6328;animation:none}
+.wood-hold:disabled{opacity:.74;filter:grayscale(.18);box-shadow:0 3px 0 #b5a18d}
+#wood-words{font-size:clamp(19px,6vw,37px);white-space:nowrap}
+@media(max-width:340px){#wood-words{font-size:19px}.wood-signal{font-size:clamp(21px,6.8vw,30px)}}
+@media(max-height:600px){.wood-signal{padding:4px}.wood-hold{min-height:66px}}

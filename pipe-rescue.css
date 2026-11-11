@@ -1,0 +1,58 @@
+/* v99: tap or swipe-to-rotate pipes; preserve compact responsive board */
+.pipe-tile{background:linear-gradient(145deg,#c5f2ff,#fdf0ae)}
+.pipe-screen .pipe-stage{flex:1;min-height:0;width:100%;max-width:620px;margin:auto;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;gap:clamp(3px,1dvh,9px);padding:4px 8px 8px;box-sizing:border-box;overflow-y:auto;touch-action:pan-y}
+.pipe-hero{display:flex;align-items:center;justify-content:space-between;width:100%;gap:6px;padding:3px 8px;box-sizing:border-box;background:#fffef0e8;border:3px solid white;border-radius:17px;min-height:55px}
+.pipe-hero img{width:clamp(48px,15vw,76px);height:clamp(40px,8dvh,64px);object-fit:contain;border-radius:10px;flex:none}
+.pipe-hero strong{font-size:clamp(15px,4.3vw,21px);color:#315c66;text-align:center}
+.pipe-status{width:100%;display:flex;justify-content:space-between;gap:5px;font-size:clamp(14px,4vw,20px);font-weight:900;color:#35687a}
+.pipe-status span{background:#f4fffc;border:2px solid white;border-radius:12px;padding:3px 7px}
+.pipe-board{--pipe-size:3;display:grid;grid-template-columns:repeat(var(--pipe-size),minmax(0,1fr));gap:clamp(3px,1vw,7px);width:min(100%,49dvh,410px);aspect-ratio:1;flex:none;background:#b7e6a5;border:5px solid #fff;border-radius:20px;padding:5px;box-sizing:border-box;box-shadow:0 5px 0 #70b99970;touch-action:none;user-select:none;-webkit-user-select:none}
+.pipe-cell{position:relative;min-width:0;min-height:0;border:2px solid #ffffffc7;border-radius:clamp(8px,2vw,15px);display:flex;align-items:center;justify-content:center;padding:0;overflow:hidden;touch-action:none;cursor:pointer;box-sizing:border-box}
+.pipe-cell.pipe-active{background:linear-gradient(#f7e8be,#d5ba85);box-shadow:inset 0 0 0 2px #cfa979}
+.pipe-cell.pipe-wet{background:linear-gradient(#e5f9ff,#a2e3ff)}
+.pipe-cell.pipe-grass{background:linear-gradient(#c4f3a8,#92d37d);font-size:clamp(17px,5vw,32px);opacity:.85}
+.pipe-cell:disabled{opacity:1;cursor:default}
+.pipe-svg{width:100%;height:100%;overflow:visible;fill:none;stroke:#a87b4a;stroke-width:22;stroke-linecap:round;stroke-linejoin:round}
+.pipe-svg circle{fill:#b98d5a;stroke:none}.pipe-svg.wet{stroke:#1999e6}.pipe-svg.wet circle{fill:#40b9ff}
+.pipe-end{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:clamp(20px,6vw,34px);filter:drop-shadow(0 2px 1px #fff)}
+.pipe-message{min-height:28px;width:100%;padding:5px 7px;box-sizing:border-box;background:#fffce8;border-radius:14px;text-align:center;color:#4a6170;font-weight:900;font-size:clamp(14px,4vw,20px)}
+.pipe-actions{width:100%;display:flex;gap:8px}.pipe-actions button{flex:1;min-width:0;min-height:44px;border:3px solid white;border-radius:15px;background:#d4f5ff;color:#315f6f;font-size:clamp(14px,4vw,18px);font-weight:900;touch-action:manipulation}
+.pipe-hint{outline:5px solid #ffdc42;outline-offset:-4px;animation:pipe-pulse .55s ease-in-out infinite alternate}
+@keyframes pipe-pulse{to{filter:brightness(1.2);transform:scale(1.04)}}
+@media(max-height:620px){.pipe-screen .pipe-stage{gap:2px;padding:2px 6px}.pipe-hero{min-height:43px}.pipe-hero img{height:36px}.pipe-board{width:min(100%,44dvh,360px)}.pipe-message{padding:2px}.pipe-actions button{min-height:36px}}
+@media(prefers-reduced-motion:reduce){.pipe-hint{animation:none}}
+/* v130: three accessible action buttons on narrow phones */
+.pipe-actions #pipe-help{background:#fff1ad;color:#75510b}
+@media(max-width:360px){.pipe-actions{gap:4px}.pipe-actions button{font-size:13px;padding:4px 2px}}
+
+/* v177: four touch-sized actions and two-column layout on small screens */
+.pipe-actions #pipe-undo{background:#e9e5ff;color:#493c86}
+.pipe-actions #pipe-undo:disabled{opacity:.48;filter:grayscale(.55);cursor:default}
+@media(max-width:430px){.pipe-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}.pipe-actions button{min-height:44px}}
+@media(max-width:430px) and (max-height:620px){.pipe-actions button{min-height:44px}}
+
+/* v180: reverse rotation is an explicit, accessible gameplay control. */
+.pipe-actions #pipe-reverse{background:#fff0d1;color:#765014}
+.pipe-actions #pipe-reverse[aria-pressed="true"]{background:#ffe28c;box-shadow:inset 0 0 0 2px #e4a528}
+@media(max-width:430px){.pipe-actions #pipe-reverse{grid-column:1/-1}}
+
+/* v181: minimum 44px touch targets at 320x568 and all narrow phones. */
+
+/* v182: route preview marks the whole solution without rotating or awarding stars. */
+.pipe-cell.pipe-route-ready{outline:3px solid #2eaa73;outline-offset:-4px}
+.pipe-cell.pipe-turn-needed{outline:4px dashed #f08a15;outline-offset:-5px}
+.pipe-cell.pipe-turn-needed::after{content:"↻";position:absolute;right:1px;bottom:0;z-index:2;background:#fff0b8;color:#8a4a0b;border-radius:50%;font-size:clamp(12px,3.5vw,19px);font-weight:900;line-height:1.1}
+
+/* v183.1: targeted pipe alignment; 3-row actions and a compact 320x568 board. */
+.pipe-actions #pipe-aim{background:#d9f9dc;color:#216039}
+.pipe-actions #pipe-aim[aria-pressed="true"]{background:#9ef0ad;box-shadow:inset 0 0 0 2px #3aab5b}
+@media(max-width:430px){.pipe-actions #pipe-reverse{grid-column:auto}}
+@media(max-height:620px){.pipe-board{width:min(100%,40dvh,320px)}}
+
+/* v376: make continuous aim-to-align mode visibly distinct. */
+.pipe-board.pipe-aim-swipe{outline:4px solid #35bd77;outline-offset:1px}
+.pipe-board.pipe-aim-swipe .pipe-active:not(:disabled){box-shadow:inset 0 0 0 3px #4acb82}
+
+/* v377: persistent route lamp uses existing path/turn classes without extra action rows. */
+.pipe-actions #pipe-hint[aria-pressed="true"]{background:#d2f8c7;color:#205b38;box-shadow:inset 0 0 0 2px #48b56d}
+.pipe-board.pipe-lamp-on{outline:3px solid #f6c94d;outline-offset:1px}

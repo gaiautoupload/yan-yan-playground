@@ -1,0 +1,13 @@
+/* v82: direct drag-to-basket color sorting, checkpoint and restart. */
+.sort-arrow{display:flex;align-items:center;justify-content:center;gap:12px;min-height:44px}
+#sort-restart{min-height:44px;min-width:90px;padding:5px 10px;border:3px solid white;border-radius:14px;background:#fff4c7;color:#69536b;font-weight:900;font-size:clamp(14px,3.7vw,18px);box-shadow:0 3px 0 #d2b781}
+.sort-item{touch-action:none}
+.sort-item.dragging{opacity:.88;filter:drop-shadow(0 7px 6px #6556);transition:none}
+.sort-basket.drag-target{outline:5px dashed #51bc83;outline-offset:1px;transform:translateY(-3px)}
+@media(max-height:600px){.sort-arrow{gap:6px;min-height:44px}#sort-restart{min-height:44px;padding:3px 7px}.sort-game{gap:2px}}
+
+/* v83: undo the most recently sorted item, preserving the existing checkpoint order. */
+.sort-arrow{flex-wrap:wrap;justify-content:center;gap:6px}
+#sort-undo{min-height:44px;min-width:98px;padding:5px 9px;border:3px solid #fff;border-radius:14px;background:#e2f4ff;color:#225575;font-weight:900;font-size:clamp(14px,3.7vw,18px);box-shadow:0 3px 0 #9bc8e4}
+#sort-undo:disabled{opacity:.45;box-shadow:none}
+@media(max-width:340px){.sort-arrow{gap:4px}#sort-undo,#sort-restart{min-width:88px;padding-inline:6px}}

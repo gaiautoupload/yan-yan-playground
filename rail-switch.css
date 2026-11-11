@@ -1,0 +1,82 @@
+/* v58: Fire-train switchyard puzzle. Mobile touch first. */
+.ysw-screen .ysw-stage{flex:1;min-height:0;width:100%;max-width:620px;box-sizing:border-box;margin:auto;padding:6px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;overflow-y:auto;overflow-x:hidden;touch-action:pan-y}
+.ysw-banner,.ysw-progress,.ysw-message{width:100%;box-sizing:border-box;text-align:center;border:3px solid white;border-radius:16px;padding:8px 5px;color:#604f66;font-weight:900;font-size:clamp(13px,3.8vw,19px);background:#fff9d8}
+.ysw-banner{background:linear-gradient(110deg,#ffe3a4,#b9f2e7)}
+.ysw-board{width:min(100%,460px);aspect-ratio:5/3;position:relative;box-sizing:border-box;border:4px solid white;border-radius:18px;overflow:hidden;background:#c3edac;box-shadow:0 5px 0 #87b17c;flex:none;user-select:none}
+.ysw-cells{position:absolute;inset:0;display:grid;grid-template-columns:repeat(var(--ysw-cols),minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr))}
+.ysw-cell{display:flex;align-items:center;justify-content:center;border:1px solid #a6d19b;background:#d8f5bb;color:#8fb38b;font-size:clamp(16px,5vw,30px);min-width:0;min-height:0}
+.ysw-target{background:#fff0b9;box-shadow:inset 0 0 0 3px #ffc55d}
+.ysw-route{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible}
+.ysw-train{position:absolute;z-index:2;left:10%;top:50%;transform:translate(-50%,-50%);font-size:clamp(25px,7vw,42px);transition:left .3s linear,top .3s linear;pointer-events:none;filter:drop-shadow(0 2px 2px white)}
+.ysw-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;width:100%}
+.ysw-controls button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:3px solid white;border-radius:15px;background:#d9edff;color:#534b6d;min-height:68px;font-weight:900;font-size:clamp(11px,3.2vw,15px);touch-action:manipulation}
+.ysw-controls b{font-size:clamp(24px,7vw,36px)}
+.ysw-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%}
+.ysw-actions button,.ysw-go{min-height:45px;border:3px solid white;border-radius:15px;background:#e0eaff;color:#594969;font-weight:900;font-size:clamp(14px,3.8vw,19px);touch-action:manipulation}
+.ysw-go{width:100%;background:#ffdc8d;min-height:51px}
+.ysw-actions button:disabled,.ysw-go:disabled,.ysw-controls button:disabled{opacity:.6}
+.ysw-flash{outline:4px solid #f38a22;outline-offset:-4px;animation:ysw-pulse .4s alternate 4}
+@keyframes ysw-pulse{to{filter:brightness(1.25)}}
+@media(max-height:700px){.ysw-screen .ysw-stage{gap:4px;padding:3px 8px}.ysw-banner,.ysw-progress,.ysw-message{padding:4px}.ysw-board{width:min(100%,360px)}.ysw-controls button{min-height:55px}.ysw-actions button{min-height:37px}.ysw-go{min-height:42px}}
+@media(prefers-reduced-motion:reduce){.ysw-flash{animation:none}.ysw-train{transition:none}}
+/* v105: Touch-sized, keyboard-accessible treasure stations. */
+.ysw-target{appearance:none;font:inherit;padding:0;cursor:pointer;touch-action:manipulation;position:relative;z-index:0}
+.ysw-target-picked{background:#c5f6cf;box-shadow:inset 0 0 0 3px #49bd82}
+.ysw-target:focus-visible{outline:4px solid #3d6bff;outline-offset:-4px;z-index:3}
+
+/* v150: allow uninterrupted finger route tracing on the board. */
+.ysw-cells{touch-action:none}
+.ysw-cells.ysw-tracing{box-shadow:inset 0 0 0 4px #2bb97b}
+@media(max-width:360px){.ysw-target{min-height:44px}}
+
+/* v151: failed-stop guidance and child-friendly single-tap repair. */
+.ysw-target-missed{background:#ffd4cb!important;box-shadow:inset 0 0 0 4px #f05247!important;animation:ysw-missed-pulse .65s ease-in-out infinite alternate}
+.ysw-actions #ysw-repair:not([hidden]){grid-column:1/-1;background:#ffdaab;color:#6b3b2d;min-height:46px}
+@keyframes ysw-missed-pulse{to{filter:brightness(1.18);transform:scale(.96)}}
+@media(prefers-reduced-motion:reduce){.ysw-target-missed{animation:none}}
+
+/* v202: intuitive swipe-up/down/sideways direct selection on direction buttons. */
+.ysw-controls button{touch-action:none;user-select:none;-webkit-user-select:none}
+.ysw-controls button.ysw-swipe-active{outline:4px solid #ff9f31;outline-offset:-3px;background:#fff1b0;transform:scale(1.035)}
+@media(prefers-reduced-motion:reduce){.ysw-controls button.ysw-swipe-active{transform:none}}
+
+/* v232: train speed switch stays alongside launch on small phones. */
+.ysw-drive{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:8px;width:100%}
+.ysw-speed{min-width:0;min-height:51px;border:3px solid #fff;border-radius:15px;background:#d8f4ff;color:#365d74;font-size:clamp(14px,3.8vw,19px);font-weight:900;touch-action:manipulation}
+.ysw-speed[aria-pressed="true"]{background:#ffda84;color:#6d3b22}
+@media(max-height:700px){.ysw-speed{min-height:42px}}
+
+/* v254: clear, full-width parent route assistance on small phones. */
+.ysw-actions #ysw-auto{grid-column:1/-1;min-height:48px;background:linear-gradient(130deg,#e6ffe4,#ffe8ac);color:#355d42;border-color:#fff}
+.ysw-actions #ysw-auto:disabled{opacity:.6}
+.ysw-actions #ysw-auto:focus-visible{outline:3px solid #286f43;outline-offset:2px}
+@media(max-height:620px){.ysw-actions #ysw-auto{min-height:44px}}
+
+/* v255: train is an accessible, large one-tap launch control, not decoration. */
+.ysw-train{pointer-events:auto;appearance:none;border:0;background:transparent;width:52px;height:52px;display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;touch-action:manipulation;line-height:1}
+.ysw-train:disabled{pointer-events:none;cursor:default}
+.ysw-train:focus-visible{outline:3px solid #2a65d5;outline-offset:1px;border-radius:50%;background:#fff8c9}
+@media(max-width:360px){.ysw-train{width:48px;height:48px}}
+
+/* v256: tactile feedback during a train long press, with reduced-motion support. */
+.ysw-train{touch-action:none;-webkit-touch-callout:none;user-select:none;-webkit-user-select:none}
+.ysw-train.ysw-holding{background:#fff4ad;border-radius:50%;box-shadow:0 0 0 5px #ffb83d;transform:translate(-50%,-50%) scale(1.1)}
+@media(prefers-reduced-motion:reduce){.ysw-train.ysw-holding{transform:translate(-50%,-50%)}}
+
+/* v320: ride skip and hold progress. */
+.ysw-actions #ysw-skip:not([hidden]){grid-column:1/-1;min-height:48px;background:#c6f2ff;color:#1e526e;border-color:#fff}
+.ysw-train.ysw-holding::after{content:'';position:absolute;inset:-8px;border-radius:50%;border:4px solid #fbbd36;pointer-events:none;animation:ysw-hold-ring 550ms linear forwards}
+@keyframes ysw-hold-ring{0%{opacity:.35;transform:scale(.85)}100%{opacity:1;transform:scale(1.1);border-color:#2cae6e}}
+@media(prefers-reduced-motion:reduce){.ysw-train.ysw-holding::after{animation:none;border-color:#2cae6e}}
+
+/* v361: keep undo and redo together in a single mobile-width action cell. */
+.ysw-history{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;min-width:0}
+.ysw-history button{min-width:0;padding:3px 1px;font-size:clamp(11px,3vw,15px);min-height:45px}
+@media(max-height:700px){.ysw-history button{min-height:37px}}
+.ysw-history button:focus-visible{outline:3px solid #286fcb;outline-offset:1px}
+
+/* v368: a final-treasure hold shows a visible 550ms countdown, without covering other stations. */
+.ysw-target-holding{background:#ffe2a0!important;z-index:3}
+.ysw-target-holding::after{content:'';position:absolute;inset:3px;border:4px solid #f89b22;border-radius:14px;pointer-events:none;animation:ysw-treasure-hold 550ms linear forwards}
+@keyframes ysw-treasure-hold{from{opacity:.45;transform:scale(.8);border-color:#f89b22}to{opacity:1;transform:scale(1);border-color:#2aa56d}}
+@media(prefers-reduced-motion:reduce){.ysw-target-holding::after{animation:none;border-color:#2aa56d}}

@@ -1,0 +1,11 @@
+/* v73: synchronized photo magnifier for family spot-the-difference. */
+.diff-zoom-toolbar{width:min(95vw,550px);min-height:46px;display:flex;align-items:center;justify-content:center;gap:9px;flex:none;padding:1px 8px;font-size:clamp(11px,3vw,15px);white-space:nowrap}
+.diff-zoom-toolbar button{flex:none;min-width:116px;min-height:44px;border:2px solid #fff;border-radius:14px;padding:4px 9px;font-size:clamp(12px,3.3vw,16px);font-weight:1000;background:linear-gradient(180deg,#c2f4ff,#89caff);color:#265b87;box-shadow:0 3px 0 #689cc777;touch-action:manipulation}
+.diff-zoom-toolbar button[aria-pressed="true"]{background:linear-gradient(180deg,#ffeab0,#ffcf6d);color:#775220}
+.diff-zoom-toolbar span{min-width:0;overflow:hidden;text-overflow:ellipsis;font-weight:900;color:#6c6489}
+.diff-frame.diff-zoomed{touch-action:none;cursor:grab}
+.diff-frame.diff-zoomed:active{cursor:grabbing}
+.diff-frame .diff-art{transform-origin:center center;will-change:transform}
+.diff-frame.diff-zoomed .diff-spot{touch-action:manipulation}
+@media(max-height:650px){.diff-zoom-toolbar{min-height:44px;gap:5px;padding:0 5px;font-size:11px}.diff-zoom-toolbar button{min-height:44px;min-width:108px;padding:1px 6px;font-size:12px}}
+@media(max-width:340px){.diff-zoom-toolbar{gap:4px}.diff-zoom-toolbar button{min-width:105px;font-size:11px}.diff-zoom-toolbar span{font-size:10px}}

@@ -1,0 +1,105 @@
+
+/* v21 endless five-hit meteor challenge, full-screen preschool controls */
+.classic-menu{grid-template-rows:auto repeat(4,minmax(0,1fr)) auto;gap:clamp(3px,.7dvh,7px)}
+.classic-menu .classic-tile{padding:2px;min-height:0}
+.classic-menu .classic-big{font-size:clamp(23px,6dvh,44px)}
+.classic-menu .classic-tile strong{font-size:clamp(18px,4.8vw,26px)}
+.classic-menu .classic-tile span:not(.classic-big){font-size:clamp(13px,3.8vw,20px)}
+.classic-menu .classic-tile small{font-size:clamp(11px,3vw,14px);padding:2px 7px}
+.meteor-tile{background:linear-gradient(#e9d9ff,#b5a5fa)}
+.meteor-screen{background:#29205b;overflow:hidden}
+.meteor-top{flex:none;min-height:43px;gap:4px}
+.meteor-top .chip{font-size:clamp(10px,3vw,16px);padding:3px}
+#meteor-hearts{font-size:clamp(11px,3vw,20px);letter-spacing:-2px;white-space:nowrap}
+.meteor-game{display:flex;flex-direction:column;flex:1;min-height:0;gap:clamp(4px,.9dvh,12px)}
+.meteor-stats{flex:none;display:flex;justify-content:space-between;gap:4px;align-items:center;padding:6px;background:#ffffffed;border:3px solid white;border-radius:15px;font-size:clamp(12px,3.4vw,17px);font-weight:1000;color:#635083}
+.meteor-stats strong{font-size:clamp(16px,4.5vw,26px)}
+.meteor-field{position:relative;min-height:100px;flex:1;overflow:hidden;touch-action:none;border:4px solid #fff1d9;border-radius:20px;background:linear-gradient(180deg,#141548,#393569 38%,#95638f 83%,#f4a174 100%);box-shadow:0 5px 0 #14134f99}
+.meteor-stars{position:absolute;inset:0;pointer-events:none;opacity:.85;background:radial-gradient(circle at 12% 17%,white 0 2px,transparent 3px),radial-gradient(circle at 55% 11%,white 0 1px,transparent 2px),radial-gradient(circle at 74% 26%,#ffe68a 0 2px,transparent 3px),radial-gradient(circle at 35% 65%,#fff 0 2px,transparent 3px);background-size:160px 170px}
+.meteor-ground{position:absolute;inset:auto 0 0;height:clamp(25px,5dvh,44px);background:repeating-linear-gradient(110deg,#6861aa,#6861aa 25px,#7772b6 25px,#7772b6 50px);border-top:4px solid #dfc2ef}
+.meteor-kid{position:absolute;bottom:clamp(9px,3dvh,24px);left:50%;transform:translateX(-50%);width:clamp(51px,15vw,75px);height:clamp(51px,15vw,75px);border:4px solid white;border-radius:50%;overflow:hidden;background:#fff0b3;z-index:3;pointer-events:none;box-shadow:0 4px 10px #1136;transition:left .045s}
+.meteor-kid img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.meteor-kid.meteor-hit{animation:meteorFlash .25s 3}
+@keyframes meteorFlash{50%{opacity:.27;filter:brightness(1.6)}}
+.meteor-falling{position:absolute;transform:translate(-50%,-50%);line-height:1;text-align:center;pointer-events:none;filter:drop-shadow(0 5px 4px #1f173e77);z-index:2}
+.meteor-controls{flex:none;display:flex;align-items:center;justify-content:space-between;gap:5px;min-height:clamp(60px,12dvh,100px)}
+.meteor-controls button{flex:1;min-height:clamp(61px,12dvh,100px);background:linear-gradient(#f5e7ff,#b0c3ff);font-size:clamp(35px,10vw,58px);border:4px solid white;border-radius:20px;box-shadow:0 4px 0 #7279ae;touch-action:none}
+.meteor-controls span{font-size:clamp(12px,3vw,16px);font-weight:1000;color:white;text-shadow:0 2px 5px #132}
+.meteor-intro{position:absolute;inset:0;z-index:11;display:flex;align-items:center;justify-content:center;padding:13px;background:#151547b9}
+.meteor-panel{width:min(95vw,420px);padding:clamp(13px,3dvh,28px);background:linear-gradient(#fff8e5,#f1e6ff);border:5px solid white;border-radius:25px;text-align:center;box-shadow:0 15px 28px #11164988}
+.meteor-panel h2{font-size:clamp(23px,6vw,35px);color:#59467d}
+.meteor-panel p{margin:9px;font-size:clamp(21px,7vw,36px)}
+.meteor-symbols{font-size:clamp(38px,11vw,65px)}
+.meteor-panel .primary{width:100%}
+@media(max-height:650px){.classic-menu .classic-big{font-size:clamp(21px,5dvh,35px)}.classic-menu .classic-tile strong{font-size:clamp(16px,4vw,22px)}.meteor-game{gap:4px}.meteor-stats{padding:3px}.meteor-controls{min-height:51px}.meteor-controls button{min-height:51px}.meteor-panel{padding:10px}}
+
+
+/* v22: colorful moving space, three meteor sizes, pickup, pause, progress */
+.meteor-field{isolation:isolate;background:linear-gradient(180deg,#0c1548 0%,#302665 37%,#6c4687 72%,#d48799 100%);border-color:#f7e1ff;box-shadow:0 7px 0 #151b56,0 0 22px #bf93ff66}
+.meteor-stars{opacity:1;animation:meteorStarShift 18s linear infinite;background-size:130px 135px,185px 210px,220px 165px,170px 195px}
+@keyframes meteorStarShift{to{background-position:130px 135px,-185px 210px,220px -165px,-170px 195px}}
+.meteor-planet{position:absolute;right:7%;top:17%;width:clamp(58px,17vw,100px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 32% 25%,#fff8cc,#ffc88e 25%,#a76bbb 70%);box-shadow:0 0 40px #fbd6ff66;opacity:.7;pointer-events:none}
+.meteor-planet:after{content:'';position:absolute;left:-20%;right:-20%;top:42%;height:17%;border:5px solid #c6ddffb3;border-radius:50%;transform:rotate(-22deg)}
+.meteor-ground{background:repeating-linear-gradient(115deg,#51478c,#51478c 24px,#6659a0 24px,#6659a0 48px);border-top:4px solid #ffcfdf}
+.meteor-falling{width:1em;height:1em;display:grid;place-items:center;will-change:top,left;filter:drop-shadow(0 0 7px #ffb158);animation:meteorWobble 1.6s ease-in-out infinite alternate}
+.meteor-falling .meteor-core{position:relative;z-index:2;line-height:1}
+.meteor-falling .meteor-trail{position:absolute;left:26%;top:-67%;height:105%;width:37%;border-radius:70% 70% 30% 30%;background:linear-gradient(0deg,#fff5a7dd,#ff9a4c88,transparent);transform:rotate(-20deg);filter:blur(5px)}
+.meteor-large{filter:drop-shadow(0 0 12px #ff7644)}
+.meteor-small{filter:drop-shadow(0 0 4px #a7dfff)}
+@keyframes meteorWobble{from{transform:translate(-50%,-50%) rotate(-9deg)}to{transform:translate(-50%,-50%) rotate(9deg)}}
+.meteor-pickup{position:absolute;z-index:3;font-size:clamp(28px,9vw,45px);transform:translate(-50%,-50%);filter:drop-shadow(0 0 12px #f9ff8d);animation:meteorShieldPulse .7s ease-in-out infinite alternate;pointer-events:none}
+@keyframes meteorShieldPulse{to{transform:translate(-50%,-50%) scale(1.23);filter:drop-shadow(0 0 19px #f9ff8d)}}
+.meteor-badges{position:absolute;z-index:5;left:9px;top:9px;display:flex;gap:6px;pointer-events:none}
+.meteor-badges span{background:#fff7e9e8;color:#62427c;border:2px solid white;border-radius:20px;padding:3px 7px;font-size:clamp(13px,3.5vw,17px);font-weight:900}
+#meteor-pause{position:absolute;right:8px;top:7px;z-index:8;min-width:43px;min-height:43px;border:3px solid white;border-radius:14px;background:#fff8dce8;font-size:22px;touch-action:manipulation}
+.meteor-fx{position:absolute;z-index:7;transform:translate(-50%,-50%);font-size:clamp(24px,7vw,39px);font-weight:1000;color:white;text-shadow:0 2px 5px #572e8c;pointer-events:none;white-space:nowrap;animation:meteorPop .85s ease-out forwards}
+@keyframes meteorPop{to{transform:translate(-50%,-145%) scale(1.3);opacity:0}}
+.meteor-pause-layer{position:absolute;inset:0;z-index:9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px;background:#171647bb;color:white;text-shadow:0 2px 4px #122}
+.meteor-pause-layer strong{font-size:clamp(27px,7vw,39px)}.meteor-pause-layer span{font-size:19px}.meteor-pause-layer button{min-width:70%;font-size:23px}
+.meteor-kid{box-shadow:0 0 0 5px #fff6a366,0 7px 15px #151f5c99}
+.meteor-stats{background:#fff9f3f5;border-color:#fff0c9;color:#5c467b}
+.meteor-stats span{font-size:clamp(13px,3.4vw,17px)}
+@media(max-height:650px){.meteor-badges span{padding:2px 5px}.meteor-stats{padding:2px 5px}#meteor-pause{min-height:38px;min-width:38px}}
+@media(prefers-reduced-motion:reduce){.meteor-stars,.meteor-falling,.meteor-pickup{animation:none}}
+
+/* v78: compact speed switch between large accessible steering controls */
+.meteor-controls #meteor-speed{flex:0 0 auto;width:clamp(76px,25vw,116px);min-width:76px;min-height:54px;padding:5px 4px;border:3px solid #fff9d6;border-radius:17px;background:linear-gradient(#f9ffd8,#b7f1ff);color:#374d70;font-size:clamp(14px,4.2vw,19px);font-weight:900;line-height:1.15;touch-action:manipulation;box-shadow:0 3px 0 #5b8fa7}
+.meteor-controls #meteor-speed[aria-pressed="true"]{background:linear-gradient(#c4f9ff,#93d8f2);box-shadow:0 3px 0 #427eaa}
+@media(max-height:650px){.meteor-controls #meteor-speed{min-height:44px}}
+
+/* v93: active jump, cooldown, touch-friendly four-button steering */
+.meteor-controls #meteor-jump{flex:0 0 auto;width:clamp(66px,22vw,98px);min-width:66px;min-height:54px;padding:5px 3px;border:3px solid #fff5c2;border-radius:17px;background:linear-gradient(#fff5b4,#ffb47a);color:#663e34;font-size:clamp(13px,3.8vw,18px);font-weight:1000;line-height:1.12;touch-action:manipulation;box-shadow:0 3px 0 #bb7351}
+.meteor-controls #meteor-jump:disabled{background:linear-gradient(#e5e6ec,#b6c1d1);color:#586178;opacity:.9;box-shadow:0 2px 0 #7b8799}
+.meteor-kid.meteor-jump{transform:translate(-50%,-22px);box-shadow:0 0 0 6px #fff9a8,0 0 26px 8px #e7f8ff;filter:brightness(1.18)}
+@media(max-width:360px){.meteor-controls{gap:3px}.meteor-controls #meteor-speed{min-width:68px;width:68px;font-size:13px}.meteor-controls #meteor-jump{min-width:64px;width:64px;font-size:13px}.meteor-controls button{padding-inline:0;font-size:clamp(29px,9vw,40px)}}
+@media(max-height:650px){.meteor-controls #meteor-jump{min-height:44px}.meteor-kid.meteor-jump{transform:translate(-50%,-14px)}}
+@media(prefers-reduced-motion:reduce){.meteor-kid.meteor-jump{transition:none}}
+
+/* v94: predictive impact circles and accessible radar toggle */
+.meteor-impact{position:absolute;z-index:1;height:18px;min-width:42px;transform:translate(-50%,-50%);border:4px dashed #ffde71;border-radius:50%;background:#ff774855;box-shadow:0 0 14px 4px #ff9b6499;pointer-events:none;opacity:0;transition:opacity .13s,left .09s}
+.meteor-impact-active{opacity:.82}.meteor-impact-urgent{border-color:#fff;background:#ff493caa;box-shadow:0 0 20px 7px #ff3e58aa;animation:meteorImpactPulse .45s ease-in-out infinite alternate}
+@keyframes meteorImpactPulse{to{filter:brightness(1.45);transform:translate(-50%,-50%) scale(1.13)}}
+.meteor-radar-off .meteor-impact{opacity:0!important;animation:none}
+#meteor-radar{position:absolute;z-index:8;left:8px;top:47px;min-height:44px;min-width:98px;padding:4px 7px;border:3px solid #fff8c8;border-radius:13px;background:#ecf8ffeb;color:#344a77;font-size:clamp(13px,3.8vw,17px);font-weight:900;touch-action:manipulation;box-shadow:0 3px 0 #344b7799}
+#meteor-radar[aria-pressed="false"]{background:#e4e5ec;color:#50536d}
+@media(max-height:650px){#meteor-radar{top:44px;min-height:44px}}
+@media(prefers-reduced-motion:reduce){.meteor-impact-urgent{animation:none}}
+
+/* v185: swipe jump hint, without blocking pointer gestures */
+.meteor-swipe-hint{position:absolute;z-index:5;bottom:9px;left:50%;transform:translateX(-50%);pointer-events:none;border-radius:14px;padding:3px 9px;background:#17214dbb;color:#fff5cb;font-weight:900;font-size:clamp(12px,3.5vw,16px);white-space:nowrap;text-shadow:0 1px 3px #17214d}
+@media(max-height:650px){.meteor-swipe-hint{bottom:4px;padding:2px 7px;font-size:12px}}
+
+/* v250: single-tap safe-lane assist, accessible without shrinking steering keys. */
+#meteor-assist{position:absolute;z-index:8;left:8px;top:100px;min-width:102px;min-height:44px;padding:5px 7px;border:3px solid #fff9d6;border-radius:13px;background:#ffebf5ed;color:#723b73;font-size:clamp(13px,3.7vw,17px);font-weight:1000;touch-action:manipulation;box-shadow:0 3px 0 #9c6a98}
+#meteor-assist:disabled{background:#e4e6ee;color:#64687b;opacity:.86;box-shadow:0 2px 0 #9a9db0}
+@media(max-height:650px){#meteor-assist{top:96px;min-height:42px}}
+
+/* v251: one-use mom hug after a hit, right-side touch target. */
+#meteor-heal{position:absolute;z-index:8;right:8px;top:57px;min-width:108px;min-height:44px;padding:5px 7px;border:3px solid #fff8d6;border-radius:13px;background:#ffdfebef;color:#823f63;font-size:clamp(13px,3.7vw,17px);font-weight:1000;touch-action:manipulation;box-shadow:0 3px 0 #b4718e}
+#meteor-heal:disabled{background:#e5e6ed;color:#656b7c;opacity:.86;box-shadow:0 2px 0 #9a9db0}
+@media(max-height:650px){#meteor-heal{top:52px;min-height:42px}}
+
+/* v303: one-use emergency shield, separate right-side 44px touch target. */
+#meteor-shield-gift{position:absolute;z-index:8;right:8px;top:111px;min-width:108px;min-height:44px;padding:5px 7px;border:3px solid #fff8d6;border-radius:13px;background:#e1f8ffef;color:#365578;font-size:clamp(13px,3.7vw,17px);font-weight:1000;touch-action:manipulation;box-shadow:0 3px 0 #7192b5}
+#meteor-shield-gift:disabled{background:#e5e6ed;color:#656b7c;opacity:.86;box-shadow:0 2px 0 #9a9db0}
+@media(max-height:650px){#meteor-shield-gift{top:104px;min-height:42px}}

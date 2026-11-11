@@ -1,0 +1,48 @@
+/* v40: finger-following maze, additive; arrow and tap controls remain. */
+.maze-trace-guide{flex:none;max-width:min(94vw,530px);padding:3px 12px;border-radius:99px;background:#e0f8ffeb;color:#315e77;border:2px solid #fff;font-size:clamp(11px,3vw,15px);font-weight:1000;text-align:center;line-height:1.25}
+.maze-grid.maze-tracing{border-color:#55d5f0;box-shadow:0 0 0 3px #fff8,0 0 18px #46cde6,0 6px 0 #91b5a3}
+.maze-grid.maze-tracing .maze-player{background:#9ceff4!important;box-shadow:inset 0 0 0 3px #31bdd9;z-index:2}
+.maze-grid.maze-tracing .maze-trail{background:#e0f8fa}
+.maze-grid.maze-trace-blocked{animation:mazeTraceBlocked .18s ease-out}
+@keyframes mazeTraceBlocked{50%{filter:sepia(.55);transform:translateX(2px)}}
+@media(max-height:640px){.maze-trace-guide{font-size:10px;padding:1px 7px;border-width:1px}}
+@media(prefers-reduced-motion:reduce){.maze-grid.maze-trace-blocked{animation:none}}
+
+.maze-auto-button{min-height:44px;touch-action:manipulation;background:#e7f9ff;border:2px solid #55bcd7;border-radius:14px;color:#205d72;font-weight:900;padding:7px 10px}.maze-auto-button[aria-pressed="true"]{background:#b7f8ce;border-color:#31a866;color:#126341}.maze-auto-status{max-width:min(95vw,530px);margin:3px auto;padding:3px 9px;border-radius:12px;background:#fff9db;color:#6b4b0d;font-size:clamp(11px,3vw,14px);font-weight:800;text-align:center}.maze-grid.maze-auto-active .maze-cell{cursor:pointer;touch-action:manipulation}@media(max-height:640px){.maze-auto-status{font-size:10px;padding:2px 6px}.maze-auto-button{min-height:40px;padding:3px 7px}}
+
+/* v189: one-tap gem route with clear stop state; preserve manual controls. */
+.maze-gem-button{background:#fff0bd;border-color:#e2a738;color:#69420a;min-width:120px;min-height:46px;touch-action:manipulation}
+.maze-gem-button:focus-visible{outline:3px solid #326fd4;outline-offset:2px}
+.maze-gem-status{background:#fff4d5}
+@media(max-width:360px){.maze-gem-button{min-width:105px;padding:5px 7px;font-size:12px}}
+
+/* v212: clearly distinguish paused, active and disabled route controls on small screens. */
+.maze-pause-button{min-height:44px;min-width:92px;background:#fff3ce;border-color:#e5ad4b;color:#6b4314}
+.maze-pause-button:disabled{opacity:.48;filter:grayscale(.5);cursor:default}
+.maze-pause-button:not(:disabled):active{transform:scale(.97)}
+
+/* v246: child-friendly three-speed control for the gem auto-driver. */
+.maze-speed-button{min-height:44px;min-width:116px;background:#e5f5ff;border-color:#74bde9;color:#205b83;touch-action:manipulation}
+.maze-speed-button:focus-visible{outline:3px solid #326fd4;outline-offset:2px}
+@media(max-width:360px){.maze-speed-button{min-width:100px;padding:5px 6px;font-size:12px}}
+
+
+/* v247: legal route preview; highlights never block taps or alter maze wall borders. */
+.maze-route-preview-button{min-height:44px;min-width:112px;background:#fff5bf;border-color:#e4bc45;color:#6b4b0d;touch-action:manipulation}
+.maze-route-preview-button[aria-pressed="true"]{background:#d9f8ce;border-color:#56b55b;color:#225e26}
+.maze-route-preview-button:focus-visible{outline:3px solid #326fd4;outline-offset:2px}
+.maze-route-preview-status{max-width:min(95vw,530px);margin:3px auto;padding:4px 10px;border-radius:12px;background:#e9f9de;color:#315b20;font-size:clamp(11px,3vw,14px);font-weight:900;text-align:center}
+.maze-grid .maze-cell.maze-route-hint{outline:3px dashed #e6ad24;outline-offset:-5px}
+.maze-grid .maze-cell.maze-route-hint-next{outline:4px solid #3dc568;outline-offset:-5px;box-shadow:inset 0 0 0 3px #d7ff9b}
+.maze-grid .maze-cell.maze-route-hint-goal{outline-color:#e48a22}
+@media(max-width:360px){.maze-route-preview-button{min-width:96px;padding:5px 6px;font-size:12px}}
+@media(max-height:640px){.maze-route-preview-status{padding:2px 6px;font-size:10px}}
+
+
+/* v323: one-step swipe from any maze tile; original excavator drag remains. */
+.maze-grid.maze-swipe-ready{touch-action:none;outline:3px solid #7cdeed;outline-offset:2px}
+@media(prefers-reduced-motion:reduce){.maze-grid.maze-swipe-ready{transition:none}}
+
+/* v324: feedback while a non-player tile is swiped for multiple legal steps. */
+.maze-grid.maze-swipe-ready{box-shadow:0 0 0 3px #fff8,0 0 0 6px #32b6e5,0 6px 0 #91b5a3}
+.maze-grid.maze-swipe-ready .maze-cell:not(.maze-player){cursor:grabbing}

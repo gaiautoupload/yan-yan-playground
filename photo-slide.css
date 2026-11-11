@@ -1,0 +1,57 @@
+/* v91: next-step hint; v90: pointer slide gesture; v89 undo control and checkpoint. v27: responsive family photo sliding puzzle, uses unchanged photo assets */
+.slide-tile{background:linear-gradient(150deg,#fff2b8,#b9f6ee)}
+.slide-screen .slide-stage{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:space-around;gap:clamp(3px,.8dvh,10px);padding:clamp(3px,.7dvh,9px) 5px}
+.slide-intro{background:#fffbe9ed;border:2px solid white;border-radius:18px;padding:4px 10px;text-align:center;font-size:clamp(14px,4vw,20px);color:#5a4974}
+.slide-progress{width:min(100%,500px);display:flex;justify-content:space-around;border-radius:15px;padding:4px 10px;background:#ffffffdb;font-size:clamp(14px,4vw,19px);font-weight:1000}
+.slide-board{--slide-n:2;width:min(93vw,47dvh,450px);aspect-ratio:1;display:grid;grid-template-columns:repeat(var(--slide-n),minmax(0,1fr));grid-template-rows:repeat(var(--slide-n),minmax(0,1fr));gap:clamp(3px,1vw,8px);padding:clamp(3px,1vw,8px);background:#fff9;border:3px solid white;border-radius:18px;box-shadow:0 5px 0 #6994a3}
+.slide-piece,.slide-hole{min-width:0;min-height:0;position:relative;overflow:hidden;border:2px solid white;border-radius:10px;padding:0;touch-action:manipulation}
+.slide-piece{background:#fff6e5;box-shadow:0 3px 0 #8a9fa6;cursor:pointer}
+.slide-piece img{position:absolute;display:block;max-width:none;max-height:none;object-fit:fill;pointer-events:none;user-select:none}
+.slide-piece.slide-movable{border-color:#ffcb43;box-shadow:0 0 0 2px #ffde78}
+.slide-piece:focus-visible{outline:4px solid #008ac4;outline-offset:2px}
+.slide-hole{display:grid;place-items:center;background:repeating-linear-gradient(135deg,#c5f6f6,#c5f6f6 10px,#dffafa 10px,#dffafa 20px);font-size:clamp(30px,8vw,50px);border:2px dashed #65c4d0}
+.slide-tools{width:min(96%,500px);display:flex;align-items:center;justify-content:center;gap:12px}
+.slide-peek-button{border:3px solid white;border-radius:18px;background:linear-gradient(#ffe69b,#ffb864);padding:8px 14px;min-height:44px;color:#594067;font-weight:1000;font-size:clamp(14px,4vw,18px)}
+.slide-thumbnail{width:clamp(42px,11dvh,70px);height:clamp(42px,11dvh,70px);object-fit:cover;border:3px solid white;border-radius:10px}
+.slide-guide{font-size:clamp(12px,3.6vw,17px);font-weight:1000;color:#603e6c;background:#fffde5;border-radius:16px;padding:5px 12px;text-align:center}
+.slide-peek[hidden]{display:none!important}
+.slide-peek{position:fixed;inset:0;z-index:501;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;background:#1d2e46e9;padding:15px}
+.slide-peek img{max-width:min(90vw,550px);max-height:70dvh;object-fit:contain;border:5px solid white;border-radius:16px}
+.slide-peek button{background:#ffe698;color:#57446d;font-size:20px;font-weight:1000;border:3px solid white;border-radius:18px;padding:12px 22px;min-height:48px}
+.slide-win .popup{max-height:90dvh;overflow-y:auto}
+@media(max-height:620px){.slide-board{width:min(92vw,44dvh,450px)}.slide-intro{padding:2px 8px}.slide-progress{padding:2px 8px}.slide-tools{gap:7px}.slide-peek-button{padding:5px 9px}.slide-guide{padding:2px 8px}.slide-thumbnail{width:38px;height:38px}}
+@media(prefers-reduced-motion:reduce){.slide-piece{transition:none}}
+
+.slide-undo-button{min-height:44px;min-width:108px;padding:7px 12px;border:3px solid #fff;border-radius:16px;background:linear-gradient(#d7f6ff,#9fe2ff);color:#235070;font-size:clamp(14px,3.8vw,18px);font-weight:1000;touch-action:manipulation}
+.slide-undo-button:disabled{opacity:.45;filter:grayscale(.4)}
+.slide-tools{gap:clamp(5px,1.5vw,12px);flex-wrap:wrap}
+@media(max-height:620px){.slide-undo-button{padding:5px 8px;min-width:94px}.slide-tools{gap:5px}}
+
+/* v90: finger swipe to empty tile, retaining tap-to-move */
+.slide-board,.slide-piece{touch-action:none}
+.slide-piece{transition:transform .12s ease;will-change:transform}
+.slide-piece.slide-dragging{z-index:3;border-color:#ffb52b;box-shadow:0 0 0 4px #ffe58b;transition:none}
+
+/* v91: an optional one-step visual clue; never moves a tile automatically. */
+.slide-hint-button{min-height:44px;min-width:118px;padding:7px 10px;border:3px solid white;border-radius:16px;background:linear-gradient(#fff4bd,#ffc66c);color:#62430d;font-size:clamp(14px,3.8vw,18px);font-weight:1000;touch-action:manipulation}
+.slide-hint-button:disabled{opacity:.45}
+.slide-piece.slide-hinted{outline:5px solid #ff8c1a;outline-offset:-5px;box-shadow:0 0 0 4px #ffe45d;z-index:2;animation:slide-hint-pulse .7s ease-in-out infinite alternate}
+@keyframes slide-hint-pulse{from{filter:brightness(1)}to{filter:brightness(1.24)}}
+@media(max-height:620px){.slide-hint-button{padding:5px 8px;min-width:104px}}
+@media(prefers-reduced-motion:reduce){.slide-piece.slide-hinted{animation:none}}
+
+/* v91.1: fit hint, undo, photo and footer on compact phones. */
+@media(max-height:700px){.slide-board{width:min(92vw,43dvh,450px)}.slide-stage{gap:2px}.slide-guide{padding:2px 8px}}
+
+/* v125: one-tap assisted move; compact two-row controls for narrow phones. */
+.slide-auto-button{min-height:44px;min-width:108px;padding:7px 10px;border:3px solid white;border-radius:16px;background:linear-gradient(#d9ffe4,#9cefc3);color:#225b43;font-size:clamp(13px,3.6vw,17px);font-weight:1000;touch-action:manipulation}
+.slide-auto-button:disabled{opacity:.45;filter:grayscale(.4)}
+@media(max-height:620px){.slide-auto-button{min-width:96px;padding:5px 8px}}
+
+/* v231: finger-origin cue for the reverse swipe from the empty cell. */
+.slide-hole.slide-hole-active{outline:4px solid #ffc94c;outline-offset:-3px;box-shadow:0 0 0 3px #fff7b2 inset;transform:scale(1.035);transition:transform .1s ease}
+
+/* v364: one-tap reshuffle of current photo, 44px minimum touch target. */
+.slide-shuffle-button{min-height:44px;min-width:106px;padding:7px 9px;border:3px solid #fff;border-radius:16px;background:linear-gradient(#f4e2ff,#d5b2ff);color:#543477;font-size:clamp(13px,3.6vw,17px);font-weight:1000;touch-action:manipulation}
+.slide-shuffle-button:disabled{opacity:.45;filter:grayscale(.4)}
+@media(max-height:620px){.slide-shuffle-button{min-width:94px;padding:5px 8px}.slide-tools{row-gap:3px}}

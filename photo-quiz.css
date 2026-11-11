@@ -1,0 +1,137 @@
+/* v25: photo listening game and original-photo homepage */
+.photo-quiz-tile{background:linear-gradient(155deg,#e2f8ff,#a3dfff)}
+.home .spotlight{position:relative;isolation:isolate}
+.photo-quiz-hero{position:absolute;inset:0 7%;overflow:hidden;border:3px solid #fff9df;border-radius:20px;box-shadow:0 4px 16px #273d6e60;background:#eaf7ff;touch-action:manipulation;padding:0}
+.photo-quiz-hero::before{content:"";position:absolute;inset:-12px;background-image:var(--hero-photo);background-size:cover;background-position:center;filter:blur(12px) brightness(.85);transform:scale(1.1)}
+.photo-quiz-hero>img{position:relative;width:100%;height:100%;object-fit:contain;display:block}
+.photo-quiz-hero-label{position:absolute;top:3px;right:5px;background:#fffef1ee;border:2px solid #fff;border-radius:30px;padding:2px 7px;font-weight:1000;color:#583a62;font-size:clamp(10px,2.8vw,15px);box-shadow:0 2px 5px #0003}
+.home .spotlight .mascot-tag{z-index:1;position:relative;pointer-events:none}
+.photo-quiz-screen .photo-quiz-stage{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:clamp(3px,.7dvh,9px);padding:clamp(3px,.8dvh,9px) 5px}
+.photo-quiz-parents{display:flex;align-items:center;justify-content:center;gap:8px;border:2px solid #fff;border-radius:24px;background:#fffbeaeb;padding:3px 10px;font-size:clamp(12px,3.5vw,18px);font-weight:1000;color:#724a70}
+.photo-quiz-parents img{width:clamp(28px,6dvh,44px);height:clamp(28px,6dvh,44px);object-fit:cover;border-radius:50%}
+.photo-quiz-progress{display:flex;justify-content:space-around;width:min(100%,580px);background:#fffdf0de;border-radius:22px;padding:5px;font-size:clamp(14px,4vw,20px);font-weight:1000}
+.photo-quiz-prompt{width:min(100%,600px);text-align:center;background:#fff6d3ed;border:3px solid #fff;border-radius:20px;padding:5px;font-size:clamp(16px,4.7vw,23px);font-weight:1000;color:#775143}
+.photo-quiz-grid{width:min(100%,610px);min-height:0;flex:1;display:grid;grid-template-columns:repeat(var(--photo-cols),minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:clamp(5px,1.7vw,12px);align-content:center}
+.photo-quiz-card{position:relative;min-width:0;min-height:0;overflow:hidden;border:4px solid white;border-radius:20px;background:#e8f8ff;box-shadow:0 5px 0 #6797ac88;touch-action:manipulation;padding:0}
+.photo-quiz-card::before{content:"";position:absolute;inset:-12px;background-image:var(--photo-src);background-size:cover;background-position:center;filter:blur(12px) brightness(.92);transform:scale(1.08)}
+.photo-quiz-card>img{position:relative;width:100%;height:100%;object-fit:contain;display:block}
+.photo-quiz-card.last-three{grid-column:1/-1;width:52%;justify-self:center}
+.photo-quiz-card.is-correct{border-color:#60e893;box-shadow:0 0 0 4px #37d876,0 4px 0 #2d9a5b}
+.photo-quiz-card.is-wrong{animation:photo-quiz-shake .28s ease}
+@keyframes photo-quiz-shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.photo-quiz-fallback{display:none;position:relative;align-items:center;justify-content:center;flex-direction:column;font-size:clamp(34px,8vw,56px);height:100%;background:linear-gradient(145deg,#fce1fa,#d7f3ff)}
+.photo-quiz-fallback small{font-size:clamp(12px,3vw,17px);font-weight:1000}
+.photo-quiz-card.is-fallback .photo-quiz-fallback{display:flex}
+.photo-quiz-guide{text-align:center;font-size:clamp(12px,3.3vw,16px);font-weight:1000;background:#fffde8d9;border-radius:18px;padding:3px 10px}
+.photo-quiz-win .popup{max-height:90dvh;overflow:auto}
+@media(max-height:620px){.photo-quiz-parents img{width:26px;height:26px}.photo-quiz-progress{padding:3px}.photo-quiz-prompt{padding:3px;font-size:15px}.photo-quiz-guide{padding:2px;font-size:12px}.photo-quiz-card{border-width:2px;border-radius:12px}.photo-quiz-hero-label{font-size:10px}.photo-quiz-hero{inset:0 3%}}
+@media(prefers-reduced-motion:reduce){.photo-quiz-card.is-wrong{animation:none}}
+/* v121: independent 48px zoom control and full-photo preview */
+.photo-quiz-item{position:relative;min-width:0;min-height:0}
+.photo-quiz-item .photo-quiz-card{width:100%;height:100%}
+.photo-quiz-grid .photo-quiz-item.last-three{grid-column:1/-1;width:52%;justify-self:center}
+.photo-quiz-zoom{position:absolute;right:7px;bottom:7px;z-index:2;width:48px;height:48px;border:3px solid #fff;border-radius:50%;background:#fff0b9;color:#4e3b6e;box-shadow:0 3px 8px #33446666;font-size:24px;font-weight:900;cursor:pointer;touch-action:manipulation}
+.photo-quiz-zoom:focus-visible,.photo-quiz-preview-close:focus-visible{outline:4px solid #ff9630;outline-offset:3px}
+.photo-quiz-preview{z-index:2000;padding:12px;display:flex;align-items:center;justify-content:center;background:#22274fbb}
+.photo-quiz-preview-panel{display:flex;flex-direction:column;align-items:center;gap:10px;width:min(96vw,620px);max-height:94dvh;padding:12px;background:#fffaf0;border-radius:22px}
+.photo-quiz-preview-panel img{display:block;width:100%;max-height:68dvh;object-fit:contain;border-radius:14px;background:#fff}
+.photo-quiz-preview-close{min-height:48px;border:2px solid #fff;border-radius:14px;background:#ffdf83;color:#473360;padding:8px 20px;font-size:18px;font-weight:900}
+.photo-quiz-preview-panel p{margin:0;text-align:center;font-size:clamp(14px,4vw,19px);font-weight:900;color:#594277}
+.photo-quiz-preview-fallback{font-weight:900;color:#654d70}
+@media(max-width:350px){.photo-quiz-zoom{width:44px;height:44px;right:3px;bottom:3px}.photo-quiz-preview-panel{padding:7px}}
+
+/* v142: short parent-guidance flash; hint never submits an answer */
+.photo-quiz-hint-wrap{display:flex;justify-content:center;width:100%;flex-shrink:0}
+.photo-quiz-hint{min-height:48px;min-width:152px;padding:6px 17px;border:3px solid #fff;border-radius:22px;background:#fff0a9;color:#62427c;font-size:clamp(15px,4vw,19px);font-weight:1000;box-shadow:0 3px 0 #d9a34c;touch-action:manipulation}
+.photo-quiz-hint:focus-visible{outline:4px solid #f37c35;outline-offset:2px}
+.photo-quiz-card.is-hinted{border-color:#ffb629;box-shadow:0 0 0 6px #ffbd27,0 0 28px 10px #ffdc61;animation:photo-quiz-hint-pulse .55s ease-in-out 3;z-index:1}
+@keyframes photo-quiz-hint-pulse{50%{filter:brightness(1.15);transform:scale(1.035)}}
+@media(max-height:620px){.photo-quiz-hint{min-height:44px;padding:3px 12px;font-size:14px}}
+@media(prefers-reduced-motion:reduce){.photo-quiz-card.is-hinted{animation:none}}
+
+/* v155: long-press photo preview without accidental text selection or answer. */
+.photo-quiz-card{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.photo-quiz-card:active{filter:brightness(1.04)}
+
+/* v217: eliminated wrong choice remains visible, but cannot be answered again this round. */
+.photo-quiz-card.is-eliminated{position:relative;opacity:.48;filter:grayscale(.75);border-color:#a7a5b0;box-shadow:inset 0 0 0 3px #e5dfe7;cursor:not-allowed;touch-action:manipulation}
+.photo-quiz-card.is-eliminated::after{content:'✕';position:absolute;inset:0;display:grid;place-items:center;color:#b51b44;font-size:clamp(42px,15vw,80px);font-weight:1000;text-shadow:0 2px 0 white;pointer-events:none}
+.photo-quiz-card.is-eliminated:active{filter:grayscale(.75)}
+
+/* v222: drag photos onto the mom banner; no changes to the image crop or face proportions. */
+.photo-quiz-card{touch-action:none}
+.photo-quiz-card.is-dragging{opacity:.45}
+.photo-quiz-parents{transition:box-shadow .12s,background-color .12s}
+.photo-quiz-parents.is-drop-ready{background:#d6ffe1;border-color:#42d98a;box-shadow:0 0 0 5px #47df83,0 0 22px #33c96599}
+.photo-quiz-drag-ghost{position:fixed;z-index:1800;pointer-events:none;left:0;top:0;transform:translate(-50%,-50%);width:clamp(72px,24vw,120px);height:clamp(72px,24vw,120px);border:4px solid #fff7a9;border-radius:16px;background:#e4f5ff;box-shadow:0 6px 20px #223d7288;overflow:hidden;display:grid;place-items:center;font-size:42px}
+.photo-quiz-drag-ghost img{width:100%;height:100%;object-fit:contain}
+
+/* v222: give 320px phones a preschool-size drop zone, even when text is hidden. */
+@media(max-width:350px){.photo-quiz-parents{min-width:180px;min-height:44px}.photo-quiz-parents::after{content:'⬆ 放這裡';font-size:12px;font-weight:1000;color:#347952}}
+
+/* v223: larger, tappable mom target and a clear swipe-up acceptance cue. */
+.photo-quiz-parents{width:min(100%,580px);min-height:48px;cursor:pointer;touch-action:manipulation}
+.photo-quiz-parents:focus-visible{outline:4px solid #ff9630;outline-offset:2px}
+.photo-quiz-parents.is-drop-ready{transform:scale(1.025)}
+
+/* v258: one-tap non-scoring elimination with two 44px touch targets. */
+.photo-quiz-hint-wrap{gap:6px;flex-wrap:nowrap}
+.photo-quiz-hint-wrap .photo-quiz-hint,.photo-quiz-eliminate{flex:1 1 0;min-width:0;min-height:44px;padding:5px 6px;font-size:clamp(12px,3.5vw,17px);border:3px solid #fff;border-radius:18px;font-weight:1000;touch-action:manipulation}
+.photo-quiz-eliminate{background:#d6f7ff;color:#365079;box-shadow:0 3px 0 #78b9c9}
+.photo-quiz-eliminate:disabled{opacity:.5;filter:grayscale(.5);box-shadow:none}
+.photo-quiz-eliminate:focus-visible{outline:4px solid #f37c35;outline-offset:2px}
+.photo-quiz-card.is-assisted{outline:3px dashed #64b8d6;outline-offset:-5px}
+.photo-quiz-zoom:disabled{opacity:.45;pointer-events:none}
+@media(max-height:620px){.photo-quiz-hint-wrap .photo-quiz-hint,.photo-quiz-eliminate{min-height:44px;padding:2px 4px}}
+
+/* v278: accessible photo gallery inside the non-scoring preview. */
+.photo-quiz-preview-nav{display:flex;align-items:center;justify-content:space-between;gap:7px;width:100%}
+.photo-quiz-preview-nav button{min-height:48px;min-width:88px;flex:1;border:2px solid #fff;border-radius:14px;background:#d7f4ff;color:#334a76;font-size:clamp(14px,3.7vw,18px);font-weight:1000;touch-action:manipulation}
+.photo-quiz-preview-nav button:focus-visible{outline:4px solid #f90;outline-offset:2px}
+.photo-quiz-preview-count{font-weight:1000;color:#543e78;min-width:45px;text-align:center}
+.photo-quiz-preview-panel img{touch-action:none;max-height:53dvh;user-select:none;-webkit-user-select:none}
+.photo-quiz-preview-choose:disabled{opacity:.6;filter:grayscale(.7)}
+@media(max-height:620px){.photo-quiz-preview-panel{gap:5px;padding:7px}.photo-quiz-preview-panel img{max-height:42dvh}.photo-quiz-preview-nav button{min-height:44px}.photo-quiz-preview-close{min-height:44px}}
+
+/* v278 layout repair: reserve a genuinely readable photo area on 320x568. */
+.photo-quiz-preview-panel{overflow-y:auto;overscroll-behavior:contain}
+.photo-quiz-preview-panel img{flex:0 0 auto;height:clamp(175px,39dvh,440px);max-height:45dvh;object-fit:contain}
+@media(max-height:620px){.photo-quiz-preview-panel img{height:clamp(175px,36dvh,240px);max-height:42dvh}}
+
+/* v279: two preschool-size actions remain available while browsing enlarged photos. */
+.photo-quiz-preview-helpers{display:flex;gap:7px;width:100%;align-items:stretch}
+.photo-quiz-preview-helpers button{flex:1 1 0;min-width:0;min-height:46px;padding:5px 7px;border:2px solid white;border-radius:14px;font-size:clamp(13px,3.7vw,17px);font-weight:1000;color:#3b5279;background:#e1f9e5;touch-action:manipulation}
+.photo-quiz-preview-helpers .photo-quiz-preview-guide{background:#fff0b6;color:#674575}
+.photo-quiz-preview-helpers button:focus-visible{outline:4px solid #f90;outline-offset:2px}
+@media(max-height:620px){.photo-quiz-preview-helpers button{min-height:44px;padding:3px 4px}.photo-quiz-preview-panel img{height:clamp(160px,33dvh,220px);max-height:38dvh}}
+
+/* v337: touch gestures on enlarged photo are handled by pointer events; controls remain scrollable around image. */
+
+/* v351: downward photo swipe gives an immediate, readable non-scoring rejection cue. */
+.photo-quiz-grid.is-reject-ready + .photo-quiz-guide{background:#fff0bf;color:#774c18;outline:3px solid #ffc54d;border-radius:12px;font-weight:1000}
+.photo-quiz-grid.is-reject-ready + .photo-quiz-guide::after{content:'　⬇️ 排除錯圖';white-space:nowrap}
+@media(max-width:350px){.photo-quiz-grid.is-reject-ready + .photo-quiz-guide::after{content:' ⬇️'}}
+
+/* v359: full-size photo detail zoom; panning never submits a quiz answer. */
+.photo-quiz-preview-panel .photo-quiz-preview-viewport{width:100%;height:clamp(175px,39dvh,440px);flex:0 0 auto;overflow:hidden;border-radius:14px;background:#fff;touch-action:none}
+.photo-quiz-preview-panel .photo-quiz-preview-viewport img{display:block;width:100%;height:100%;max-height:none;object-fit:contain;transform-origin:var(--photo-pan-x,50%) var(--photo-pan-y,50%);transition:transform .12s ease;touch-action:none}
+.photo-quiz-preview.is-magnified .photo-quiz-preview-viewport img{transform:scale(1.8);transition:none;cursor:grab}
+.photo-quiz-preview-magnify[aria-pressed="true"]{background:#d7ecff;color:#184e80;outline:3px solid #5799d5}
+@media(max-height:620px){.photo-quiz-preview-panel .photo-quiz-preview-viewport{height:clamp(160px,33dvh,220px)}}
+@media(max-width:350px){.photo-quiz-preview-helpers{gap:3px}.photo-quiz-preview-helpers button{font-size:12px;padding:3px 2px}}
+@media(prefers-reduced-motion:reduce){.photo-quiz-preview-panel .photo-quiz-preview-viewport img{transition:none}}
+
+/* v392: preschool-sized non-scoring question swap on narrow phones. */
+.photo-quiz-hint-wrap .photo-quiz-skip{flex:1 1 0;min-width:0;min-height:44px;padding:5px 4px;border:3px solid #fff;border-radius:18px;background:#e8dcff;color:#563d82;font-size:clamp(12px,3.5vw,17px);font-weight:1000;box-shadow:0 3px 0 #a89bd4;touch-action:manipulation}
+.photo-quiz-skip:focus-visible{outline:4px solid #f37c35;outline-offset:2px}
+@media(max-height:620px){.photo-quiz-hint-wrap .photo-quiz-skip{min-height:44px;padding:2px 3px}}
+
+/* v395: discoverable long-press help without adding another crowded control. */
+#photo-quiz-eliminate::after{content:'長按留兩張';display:block;font-size:10px;line-height:1.15;opacity:.85}
+
+/* v400: one-tap undo for hint-eliminated photos; does not undo a scored wrong answer. */
+.photo-quiz-hint-wrap .photo-quiz-undo{flex:0 0 60px;min-width:60px;min-height:44px;padding:3px 2px;border:3px solid #fff;border-radius:16px;background:#d9f7d8;color:#245d3c;font-size:13px;font-weight:1000;box-shadow:0 3px 0 #85ba8b;touch-action:manipulation}
+.photo-quiz-hint-wrap .photo-quiz-undo[hidden]{display:none!important}
+.photo-quiz-hint-wrap .photo-quiz-undo:disabled{opacity:.5;box-shadow:none}
+.photo-quiz-hint-wrap .photo-quiz-undo:focus-visible{outline:4px solid #f90;outline-offset:2px}
+@media(max-width:350px){.photo-quiz-hint-wrap .photo-quiz-undo{flex-basis:48px;min-width:48px;font-size:11px}.photo-quiz-hint-wrap .photo-quiz-hint{min-width:118px;padding-left:3px;padding-right:3px}}

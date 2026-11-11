@@ -1,0 +1,64 @@
+/* v44: touch-first Sokoban-style construction puzzle */
+.push-screen{overflow:hidden;overscroll-behavior:none}
+.push-stage{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;gap:clamp(3px,.65dvh,8px);padding:3px 8px 6px;overflow-y:auto;overscroll-behavior:contain}
+.push-family{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:430px;background:#fff8dfe9;border:3px solid white;border-radius:16px;padding:3px 7px;color:#665075;font-size:clamp(14px,4vw,20px)}
+.push-family img{height:clamp(28px,6dvh,42px);width:clamp(28px,6dvh,42px);object-fit:cover;border-radius:50%;border:2px solid white}
+.push-progress{display:flex;justify-content:space-around;width:100%;max-width:390px;font-weight:1000;color:#604a70;background:#fffae8e8;border-radius:12px;padding:4px}
+.push-board{--push-cols:6;display:grid;grid-template-columns:repeat(var(--push-cols),minmax(0,1fr));width:min(88vw,44dvh,430px);aspect-ratio:1;gap:2px;background:#8cb978;border:4px solid #fff;border-radius:16px;padding:4px;box-shadow:0 5px 0 #5a8b7680;flex-shrink:0;touch-action:none;user-select:none;-webkit-user-select:none}
+.push-cell{min-width:0;min-height:0;display:flex;align-items:center;justify-content:center;border:1px solid #a6c899;border-radius:6px;background:#d7f5c3;color:#624a55;font-size:clamp(20px,6vw,38px);line-height:1;touch-action:none;padding:0}
+.push-wall{background:#c0b7a8;border-color:#9d9180;filter:saturate(.85)}.push-goal{background:#ffec9d;border:2px dashed #f3a552}.push-box{background:#f8d39a;border:2px solid #dd9a59}.push-box-done{background:#a9e9c1;box-shadow:inset 0 0 0 3px #66c590}.push-player{background:#b8e5fc;border:2px solid #7bb4e6}.push-cell:disabled{opacity:1}
+.push-message{min-height:25px;max-width:450px;text-align:center;font-size:clamp(12px,3.5vw,17px);font-weight:900;color:#644c68;background:#fff8e3e8;border-radius:11px;padding:4px 8px}
+.push-directions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;width:min(90vw,420px)}
+.push-directions button{min-height:clamp(42px,7dvh,60px);border:3px solid white;border-radius:15px;background:linear-gradient(#e5f7ff,#b9e2fa);font-size:clamp(24px,6vw,32px);touch-action:manipulation}
+.push-tools{display:flex;gap:6px;width:min(90vw,420px)}.push-tools button{flex:1;min-width:0;min-height:clamp(37px,6dvh,48px);border:2px solid white;border-radius:12px;background:#ffedc4;color:#684d64;font-size:clamp(12px,3.3vw,16px);font-weight:1000;touch-action:manipulation}
+.push-directions button:active,.push-tools button:active{transform:translateY(2px)}
+.push-directions button:focus-visible,.push-tools button:focus-visible,.push-cell:focus-visible{outline:3px solid #faaf3d;outline-offset:1px}
+@media(max-height:610px){.push-board{width:min(87vw,41dvh,430px)}.push-family{padding:1px 5px}.push-message{min-height:20px}.push-stage{gap:2px}.push-progress{padding:2px}}
+
+/* v45: clear feedback for tap-to-walk on 320px phones */
+.push-route-target{outline:3px solid #2b9d6c;outline-offset:-3px;background:#b4ffd1!important;box-shadow:inset 0 0 0 3px #78dbad;animation:push-route-pulse .75s ease-in-out infinite alternate}
+@keyframes push-route-pulse{from{filter:brightness(1)}to{filter:brightness(1.16)}}
+@media(max-width:360px){.push-directions{gap:5px}.push-directions button{min-height:48px}.push-tools button{min-height:42px}.push-board{width:min(91vw,43dvh,430px)}}
+@media(prefers-reduced-motion:reduce){.push-route-target{animation:none}}
+
+/* v46: visible step-by-step teaching for preschoolers */
+.push-guide-next{outline:4px solid #24a66d!important;outline-offset:-4px;background:#b5ffd2!important;box-shadow:inset 0 0 0 3px #fef5a5,0 0 10px #55d898;animation:push-guide-breathe .7s ease-in-out infinite alternate}
+@keyframes push-guide-breathe{from{filter:brightness(1)}to{filter:brightness(1.15)}}
+.push-tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.push-tools button{min-height:clamp(42px,6.8dvh,54px);font-size:clamp(13px,3.8vw,17px);white-space:normal}
+#push-assist{background:linear-gradient(145deg,#c8f9d6,#a5e8c8);border-color:#fff;font-weight:1000}
+@media(max-height:620px){.push-board{width:min(87vw,38dvh,430px)}.push-tools button{min-height:41px}.push-stage{gap:2px}}
+@media(prefers-reduced-motion:reduce){.push-guide-next{animation:none}}
+
+/* v106: held direction keys give visible feedback; continuous walk stops before an automatic box push. */
+.push-directions button.push-holding{background:linear-gradient(#b7f9d4,#65dbac);border-color:#3cae80;box-shadow:inset 0 2px 6px #23865b55,0 0 0 3px #d6ffbd;transform:translateY(2px) scale(.97)}
+
+/* v307: visual feedback while dragging a crate in the chosen direction. */
+.push-cell.push-dragging{outline:4px solid #ffab33;outline-offset:-3px;background:#ffe9ad!important;box-shadow:0 0 0 3px #fff7c6,inset 0 0 0 2px #db8b26;transform:scale(1.06);z-index:2}
+@media(prefers-reduced-motion:reduce){.push-cell.push-dragging{transform:none}}
+
+/* v316: tactile long-hold rewind without adding a new row. */
+#push-undo small{display:block;font-size:clamp(10px,2.7vw,12px);line-height:1.15;font-weight:800}
+#push-undo.push-undo-arming{background:#fff0a6;box-shadow:inset 0 0 0 3px #f2be48}
+#push-undo.push-undo-fired{background:#b8f3d5;box-shadow:inset 0 0 0 3px #46b887}
+
+/* v318: two-line accessible assistance, no extra tool row on narrow phones. */
+#push-assist small{display:block;font-size:clamp(10px,2.7vw,12px);line-height:1.15;font-weight:800}
+#push-assist.push-assist-arming{background:#fff0a6;box-shadow:inset 0 0 0 3px #e4b642}
+#push-assist.push-assist-ready{background:#7be6b4;box-shadow:inset 0 0 0 3px #238f64}
+
+/* v370: make empty delivery targets visibly tappable without changing board sizing */
+.push-goal:not(.push-box){box-shadow:inset 0 0 0 2px #fff8c9,0 0 0 1px #e7aa3d;cursor:pointer}
+.push-goal:not(.push-box):focus-visible{outline:3px solid #198b62;outline-offset:1px}
+
+/* v372: undo and redo share one action cell; both stay >=44px tall on small phones. */
+.push-history{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4px;min-width:0}
+.push-tools .push-history button{min-width:0;width:100%;padding:2px 1px;font-size:clamp(11px,3.1vw,14px);min-height:44px}
+.push-tools #push-redo{background:#d9f1ff;color:#2c5572}
+.push-tools #push-redo:disabled{opacity:.48;filter:grayscale(.4)}
+@media(max-width:360px){.push-history{gap:2px}.push-tools .push-history button{font-size:11px}}
+
+/* v409: guided one-crate delivery is visible and tappable on narrow phones. */
+#push-deliver{background:linear-gradient(145deg,#ffe9a0,#ffd17b);border-color:#fff;min-height:44px}
+#push-deliver[aria-pressed="true"]{background:linear-gradient(145deg,#ffd0c8,#ffa5a0);box-shadow:inset 0 0 0 2px #f38b76}
+@media(min-width:390px){.push-tools{grid-template-columns:repeat(3,minmax(0,1fr))}}

@@ -1,0 +1,71 @@
+/* v57: Preschool rail puzzle, touch-first and responsive */
+.rail-screen .rail-stage{flex:1;min-height:0;box-sizing:border-box;width:100%;max-width:620px;margin:0 auto;padding:6px 10px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;overflow-y:auto;overflow-x:hidden;touch-action:pan-y}
+.rail-banner{width:100%;text-align:center;box-sizing:border-box;border:3px solid #fff;border-radius:17px;background:linear-gradient(110deg,#fef0b4,#c5f6e4);color:#5d5971;padding:8px 4px;font-size:clamp(14px,3.9vw,20px);font-weight:950}
+.rail-progress,.rail-message{width:100%;box-sizing:border-box;text-align:center;background:#fffdf0;color:#65536b;border:2px solid white;border-radius:14px;padding:7px;font-size:clamp(13px,3.5vw,18px);font-weight:900}
+.rail-board{position:relative;flex:none;box-sizing:border-box;width:min(100%,min(49dvh,390px));aspect-ratio:1;border:4px solid white;border-radius:18px;background:#9bd58c;box-shadow:0 5px 0 #78a878;overflow:hidden;user-select:none;touch-action:manipulation}
+.rail-cells{position:absolute;inset:0;display:grid;grid-template-columns:repeat(var(--rail-size),minmax(0,1fr));grid-template-rows:repeat(var(--rail-size),minmax(0,1fr))}
+.rail-cell,.rail-grass{position:relative;display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;padding:0;border:1px solid #a1d4a1;border-radius:0;background:#d4f4b7;touch-action:manipulation}
+.rail-cell{cursor:pointer;appearance:none}
+.rail-cell:disabled{opacity:1;cursor:default}
+.rail-correct{background:#e4f5ba}.rail-turn{background:#ffe9b1}
+.rail-track{width:100%;height:100%;display:block;overflow:visible}.rail-track-bed{stroke:#8b6544;stroke-width:22;stroke-linecap:round}.rail-track-inner{stroke:#fff3ce;stroke-width:9;stroke-linecap:round}
+.rail-station-icon{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:clamp(20px,6.5vw,34px);filter:drop-shadow(0 1px 2px white)}
+.rail-grass{font-size:clamp(17px,5vw,29px);background:#a6df91}
+.rail-train{position:absolute;z-index:3;pointer-events:none;opacity:0;left:12%;top:12%;transform:translate(-50%,-50%);font-size:clamp(25px,8vw,40px);transition:left .24s linear,top .24s linear;filter:drop-shadow(0 2px 2px white)}
+.rail-actions{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+.rail-actions button,.rail-go{min-height:46px;border:3px solid white;border-radius:15px;background:#d9edff;color:#574c64;font-weight:950;font-size:clamp(14px,4vw,19px);touch-action:manipulation}
+.rail-go{width:100%;background:#ffe2a1;min-height:52px}
+.rail-actions button:disabled,.rail-go:disabled{opacity:.6}
+.rail-hint-flash{outline:4px solid #f48b2c;outline-offset:-4px;animation:rail-blink .4s alternate 4}
+@keyframes rail-blink{to{filter:brightness(1.2)}}
+@media(max-height:700px){.rail-screen .rail-stage{gap:4px;padding:3px 8px 4px}.rail-board{width:min(100%,min(40dvh,340px))}.rail-banner,.rail-progress,.rail-message{padding:4px}.rail-actions button{min-height:39px}.rail-go{min-height:42px}}
+@media(prefers-reduced-motion:reduce){.rail-hint-flash{animation:none}.rail-train{transition:none}}
+/* v114.1: Keep all three rail controls on one row even on 320px screens. */
+.rail-actions button{font-size:clamp(12px,3.2vw,17px);line-height:1.2;padding:4px 2px;min-width:0;overflow-wrap:anywhere}
+
+/* v201: finger-hold feedback; does not alter rail grid geometry. */
+.rail-cell.rail-holding{z-index:1;outline:4px solid #ff853e;outline-offset:-4px;animation:rail-hold-glow .45s linear both}
+@keyframes rail-hold-glow{from{box-shadow:inset 0 0 0 0 #ff853e}to{box-shadow:inset 0 0 0 10px #ff853e}}
+@media(prefers-reduced-motion:reduce){.rail-cell.rail-holding{animation:none}}
+
+/* v226: allow a continuous finger trail across the rail board without page panning. */
+.rail-board,.rail-cells,.rail-cell{touch-action:none;-webkit-user-select:none;user-select:none}
+
+/* v233: preschool-friendly tappable locomotive; stays within the first station cell. */
+.rail-train{pointer-events:auto;appearance:none;display:grid;place-items:center;width:clamp(34px,10vw,44px);height:clamp(34px,10vw,44px);padding:0;border:2px solid #fff;border-radius:50%;background:#fff7ca;box-shadow:0 2px 6px #33445555;cursor:pointer;line-height:1;touch-action:manipulation}
+.rail-train:focus-visible{outline:4px solid #f8782d;outline-offset:3px}
+.rail-train.rail-ready:not(:disabled){box-shadow:0 0 0 4px #39cf73,0 0 18px #30cc66;animation:rail-train-ready .75s ease-in-out infinite alternate}
+.rail-train:disabled{pointer-events:none}
+@keyframes rail-train-ready{to{filter:brightness(1.12);box-shadow:0 0 0 6px #39cf73,0 0 24px #30cc66}}
+@media(prefers-reduced-motion:reduce){.rail-train.rail-ready:not(:disabled){animation:none}}
+
+/* v277: hold feedback without new controls. */
+.rail-actions #rail-hint{-webkit-user-select:none;user-select:none;position:relative;overflow:hidden}
+.rail-actions #rail-hint.rail-hint-holding{background:#ffe4a4;box-shadow:inset 0 0 0 3px #ffae37;animation:rail-hint-hold .55s linear both}
+@keyframes rail-hint-hold{from{filter:brightness(1)}to{filter:brightness(1.13)}}
+@media(prefers-reduced-motion:reduce){.rail-actions #rail-hint.rail-hint-holding{animation:none}}
+
+/* v293: visible long-hold readiness without changing locomotive geometry. */
+.rail-train{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.rail-train.rail-train-armed:not(:disabled){outline:5px solid #ff923c;outline-offset:2px;box-shadow:0 0 0 8px #ffe77a,0 0 22px #ffb13a}
+
+/* v294: the next broken rail stays visibly highlighted until repaired. */
+.rail-cell.rail-guided{z-index:1;outline:5px solid #f47a23;outline-offset:-5px;box-shadow:inset 0 0 0 4px #fff2a2;animation:rail-guided-pulse .7s ease-in-out infinite alternate}
+@keyframes rail-guided-pulse{to{filter:brightness(1.18);box-shadow:inset 0 0 0 8px #ffe26d}}
+@media(prefers-reduced-motion:reduce){.rail-cell.rail-guided{animation:none}}
+
+/* v353: Three visible train speeds; launch remains one row at 320px. */
+.rail-launch{display:grid;grid-template-columns:minmax(100px,1fr) minmax(0,2fr);gap:6px;width:100%}
+.rail-launch #rail-speed{min-width:0;min-height:52px;padding:4px;border:3px solid white;border-radius:15px;background:#d2f8e4;color:#375b55;font-size:clamp(13px,3.4vw,18px);font-weight:950;touch-action:manipulation}
+.rail-launch #rail-speed:disabled{opacity:.6}
+.rail-launch .rail-go{min-width:0}
+.rail-train{transition:left var(--rail-travel,.24s) linear,top var(--rail-travel,.24s) linear}
+@media(max-height:700px){.rail-launch #rail-speed{min-height:42px}}
+@media(prefers-reduced-motion:reduce){.rail-train{transition:none}}
+
+/* v373: Pause and resume during train ride, three large controls at 320px. */
+.rail-launch{grid-template-columns:repeat(3,minmax(0,1fr))}
+.rail-launch #rail-pause{min-width:0;min-height:52px;padding:4px 2px;border:3px solid #fff;border-radius:15px;background:#ffe5a7;color:#574c64;font-size:clamp(12px,3.3vw,17px);font-weight:950;touch-action:manipulation}
+.rail-launch #rail-pause:disabled{opacity:.55}
+.rail-launch #rail-pause[aria-pressed="true"]{background:#c7f2d4}
+@media(max-height:700px){.rail-launch #rail-pause{min-height:42px}}

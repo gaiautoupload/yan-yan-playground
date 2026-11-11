@@ -1,0 +1,69 @@
+/* v48: guided slide; v47: Ice rescue: sliding physics challenge within engineering world */
+.ice-screen{overflow:hidden;overscroll-behavior:none}
+.ice-stage{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;gap:clamp(3px,.8dvh,9px);padding:4px 8px 8px;overflow-y:auto;overscroll-behavior:contain}
+.ice-family{width:100%;max-width:430px;display:flex;justify-content:center;align-items:center;gap:9px;background:#f2fbffec;border:3px solid white;border-radius:16px;padding:4px 7px;color:#465f85;font-size:clamp(13px,4vw,20px);font-weight:1000}
+.ice-family img{height:clamp(30px,6dvh,43px);width:clamp(30px,6dvh,43px);object-fit:cover;border-radius:50%;border:2px solid white}
+.ice-progress{width:min(91vw,430px);display:flex;justify-content:space-around;gap:5px;padding:5px;border-radius:12px;background:#f5fcffed;font-weight:1000;color:#3c6585;font-size:clamp(12px,3.8vw,17px)}
+.ice-board{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));width:min(90vw,43dvh,400px);aspect-ratio:1;flex-shrink:0;gap:2px;padding:4px;border:4px solid white;border-radius:18px;background:#90c4d8;box-shadow:0 5px 0 #5895b48c;touch-action:none;user-select:none;-webkit-user-select:none}
+.ice-cell{display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;border-radius:5px;background:linear-gradient(135deg,#e3faff,#b7e9ff);border:1px solid #9bcfe5;font-size:clamp(17px,5vw,34px);line-height:1}
+.ice-wall{background:#c7c9d2;border-color:#9ca5b6}.ice-player{background:#fff3b9;box-shadow:inset 0 0 0 2px #f1b965}.ice-gem{background:#c3f5ff}.ice-exit{background:#d4f6d5}
+.ice-trail{box-shadow:inset 0 0 0 3px #73c8ef;background:#eaffff}
+.ice-tip{width:min(91vw,430px);min-height:30px;text-align:center;background:#f3fbffeb;border-radius:12px;padding:5px;color:#42607c;font-size:clamp(12px,3.6vw,17px);font-weight:900}
+.ice-directions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;width:min(91vw,430px)}
+.ice-directions button{min-height:clamp(49px,8dvh,65px);border:3px solid white;border-radius:15px;background:linear-gradient(#d7faff,#a9dfff);font-size:clamp(26px,7vw,36px);touch-action:manipulation}
+.ice-directions .ice-recommended{background:#b9ffc8;box-shadow:0 0 0 4px #56d88a;animation:ice-pulse .7s infinite alternate}
+.ice-tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;width:min(91vw,430px)}
+.ice-tools button{min-width:0;min-height:clamp(42px,7dvh,54px);border:3px solid white;border-radius:14px;background:#fff2c5;color:#5b5c78;font-size:clamp(12px,3.5vw,17px);font-weight:1000;touch-action:manipulation}
+#push-ice{background:#c9f3ff}
+@keyframes ice-pulse{from{filter:brightness(1)}to{filter:brightness(1.15)}}
+@media(max-height:620px){.ice-board{width:min(90vw,38dvh,400px)}.ice-stage{gap:2px}.ice-family{padding:2px}.ice-tip{min-height:22px}.ice-directions button{min-height:46px}.ice-tools button{min-height:40px}}
+@media(prefers-reduced-motion:reduce){.ice-directions .ice-recommended{animation:none}}
+
+/* Compact bonus mode entry: avoid top-bar overflow on 320px phones. */
+.push-progress{align-items:center;gap:4px}
+.push-progress #push-ice{flex:none;min-height:36px;padding:3px 7px;border:2px solid white;border-radius:11px;background:#d0f6ff;color:#4d5b78;font-weight:1000;font-size:clamp(11px,3.2vw,15px);touch-action:manipulation}
+@media(max-width:350px){.push-progress{font-size:12px}.push-progress #push-ice{padding:3px 5px;min-height:36px}}
+
+/* v48: complete next-slide preview; only displayed after a child requests a hint */
+.ice-cell.ice-guide-trail{background:#d5e7ff;box-shadow:inset 0 0 0 3px #698dff}
+.ice-cell.ice-guide-target{outline:3px solid #5264e8;outline-offset:-3px;background:#fff1b7}
+.ice-tools{grid-template-columns:repeat(4,minmax(0,1fr))}
+.ice-tools button{font-size:clamp(11px,3.1vw,15px);padding:4px 1px;min-height:44px}
+
+/* v49: tap a destination for two guided ice slides */
+.ice-cell{cursor:pointer}.ice-cell.ice-nav-target{outline:3px solid #ffac45;outline-offset:-3px;background:#fff1c9}
+.ice-tools{grid-template-columns:repeat(3,minmax(0,1fr))}
+#ice-nav[aria-pressed="true"]{background:#b9ffd2;border-color:#3dbb78;color:#17644c}
+@media(max-height:620px){.ice-tools button{min-height:42px}.ice-stage{justify-content:flex-start}}
+
+/* v50: Child-friendly eight-command route programming and path preview */
+.ice-plan[hidden]{display:none!important}
+.ice-plan{width:min(91vw,430px);padding:6px;border:3px solid #fff;border-radius:14px;background:#eee8ff;color:#51438a;font-weight:1000;text-align:center}
+.ice-plan-label{font-size:clamp(11px,3vw,15px);line-height:1.35}
+#ice-plan-queue{display:block;min-height:19px;letter-spacing:1px;font-size:clamp(14px,4vw,19px);overflow-wrap:anywhere}
+.ice-plan-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-top:4px}
+.ice-plan-actions button{min-height:40px;min-width:0;padding:2px;border:2px solid white;border-radius:10px;background:#d4f6ff;color:#3c5681;font-size:clamp(11px,3.1vw,15px);font-weight:1000;touch-action:manipulation}
+.ice-plan-actions button:disabled{opacity:.48}
+#ice-plan-toggle[aria-pressed=true]{background:#ded0ff;border-color:#9a74ed;color:#5739a0}
+.ice-cell.ice-plan-trail{background:#ebddff;box-shadow:inset 0 0 0 2px #ad80f7}
+.ice-cell.ice-plan-target{outline:3px solid #874ae8;outline-offset:-3px}
+@media(max-height:620px){.ice-plan{padding:3px}.ice-plan-actions button{min-height:37px}}
+
+/* v137: four route-programming controls, thumb-sized on narrow phones */
+.ice-plan-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ice-plan-actions button{min-height:44px}
+#ice-plan-fill{background:#c8ffd9;color:#215e44}
+@media(max-height:620px){.ice-plan-actions button{min-height:40px}}
+
+/* v206: distinct, accessible full-route demonstration control. */
+#ice-demo{background:linear-gradient(#d9ffdd,#b2f4c7);color:#176449;min-height:44px}
+#ice-demo[aria-pressed="true"]{background:#ffe0b6;border-color:#ffb65a;color:#7b481d;box-shadow:inset 0 0 0 2px #fff}
+
+/* v270: direct-tap goals; keep parent swipe gesture intact. */
+.ice-cell.ice-tap-goal{outline:2px solid #f3a94c;outline-offset:-3px;cursor:pointer}
+.ice-cell.ice-tap-goal:focus-visible{outline:4px solid #ef8e23;outline-offset:-4px}
+
+/* v381: Long-press a goal for a full shortest-path ride; release or drag cancels. */
+.ice-hold-target{position:relative;z-index:2;outline:4px solid #21ae91;outline-offset:-4px;animation:ice-hold-glow .52s ease-out forwards;touch-action:none}
+@keyframes ice-hold-glow{0%{box-shadow:inset 0 0 0 0 #1acb89aa}100%{box-shadow:inset 0 0 0 12px #1acb8922}}
+@media(prefers-reduced-motion:reduce){.ice-hold-target{animation:none;background:#d3ffe5}}
