@@ -1,6 +1,12 @@
 # 彥彥配對樂園
 
-Release 418 — 2026-11-11 (Asia/Taipei).
+Release 419 — 2026-11-11 (Asia/Taipei).
+
+## Release 419
+
+- Food can be dragged onto the baby to feed once, with a moving food image and highlighted drop area. Dropping outside returns without feeding. Tap selection plus tapping the baby remains available.
+- Pointer capture, cancellation, capture loss, focus loss, hidden page, activity change and leaving the room clear the drag. Late releases cannot feed a new activity.
+- Actual browser drag/drop succeeded at 320×568, 360×800, 390×844 and 844×390; checked a missed drop and tap fallback. Touch cancellation is covered by a Node event harness because the browser tool does not support injecting touch-cancel; physical phone verification remains outstanding.
 
 ## Audience
 
@@ -68,6 +74,7 @@ node verification/save-recovery.cjs
 node verification/speech.cjs
 node verification/timed-speech.cjs
 node verification/delivery.cjs
+node verification/pretend-drag.cjs
 ```
 
 Original v411 hashes remain in `verification/production-audit.json`. `check.cjs --snapshot` checks those original hashes with text line-ending normalization; it intentionally rejects modified application files. Normal checks validate current syntax and resource references.
