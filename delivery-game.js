@@ -263,14 +263,7 @@ function enhance(){
   b.innerHTML='<span class="classic-big">🚜📦</span><strong>挖土機運貨</strong><span>📦 ➜ 🏗️ 🌷 🦁</span><small>⭐ '+(Number(state.deliveryLevel)||1)+' / '+MAX+'</small>';
   classic.insertBefore(b,classic.querySelector('.classic-audio-controls'));b.onclick=()=>start();
  }
- const spotlight=app.querySelector('.screen.home .spotlight');
- if(spotlight&&!spotlight.querySelector('#delivery-home-entry')){
-  const b=document.createElement('button');b.id='delivery-home-entry';b.className='delivery-home-feature';b.setAttribute('aria-label','玩新的挖土機運貨遊戲');
-  const photo=photos[(Number(state.deliveryLevel)||1)%Math.max(1,photos.length)];
-  b.innerHTML='<img alt="媽媽和彥彥" src="'+(photo?photo.scene:'./assets/family-home.webp')+'"><span><b>🚜 挖土機運貨</b><small>幫媽媽送貨！👆</small></span>';
-  b.querySelector('img').onerror=e=>{e.currentTarget.onerror=null;e.currentTarget.src='./assets/family-home.webp'};
-  spotlight.insertBefore(b,spotlight.firstChild);b.onclick=()=>start();
- }
+
 }
 const observer=new MutationObserver(enhance);observer.observe(app,{childList:true,subtree:true});enhance();
 window.YanDeliveryGame={start,stop,makeTask,enhance};

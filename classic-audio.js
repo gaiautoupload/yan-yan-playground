@@ -51,7 +51,7 @@ function play(kind){
  return success;
 }
 
-function canSpeak(){return !!(window.speechSynthesis&&typeof SpeechSynthesisUtterance==='function')}
+function canSpeak(){return !!window.YanSpeech}
 // v18: synchronize red light with the actual end of the spoken chant.
 // Timed fallback prevents the game freezing on devices without Chinese TTS.
 function speakTimed(message,onFinish,fallbackMs=4000){
@@ -63,27 +63,18 @@ function speakTimed(message,onFinish,fallbackMs=4000){
   const wait=minimum-(Date.now()-began);
   if(wait>0){if(minTimer===null)minTimer=setTimeout(()=>{minTimer=null;finish()},wait);return}
   finished=true;clearTimeout(timeout);if(minTimer!==null)clearTimeout(minTimer);
+  window.YanSpeech?.cancel();
   if(typeof onFinish==='function')onFinish();
  }
- timeout=setTimeout(finish,maximum);
+ timeout=setTimeout(finish,shared.state.voice!==false&&canSpeak()?20000:maximum);
  let spoken=false;
  if(shared.state.voice!==false&&canSpeak()){
   try{
-   const synth=window.speechSynthesis;
-   synth.cancel();
-   const utterance=new SpeechSynthesisUtterance(String(message));
-   utterance.lang='zh-TW';utterance.rate=.78;utterance.pitch=1.08;utterance.volume=1;
-   const voices=synth.getVoices?.()||[];
-   const preferred=voices.find(v=>/^zh[-_]TW$/i.test(v.lang))||voices.find(v=>/^zh[-_]/i.test(v.lang))||voices.find(v=>/^zh$/i.test(v.lang));
-   if(preferred)utterance.voice=preferred;
-   utterance.onend=finish;
-   // Mobile engines may omit onend; fallback clock advances the round.
-   utterance.onerror=()=>{};
-   synth.speak(utterance);if(synth.paused)synth.resume();
+   window.YanSpeech.speak(message,finish);
    spoken=true;
   }catch(_){}
  }
- return {spoken,cancel(){finished=true;clearTimeout(timeout);if(minTimer!==null)clearTimeout(minTimer)}};
+ return {spoken,cancel(){window.YanSpeech?.cancel();finished=true;clearTimeout(timeout);if(minTimer!==null)clearTimeout(minTimer)}};
 }
 function voice(s){return shared.state.voice===false?false:shared.say(s)}
 function test(){return {effect:play('test'),voice:voice('彥彥，聽到了嗎？媽媽陪你一起玩！')}}

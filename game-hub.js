@@ -1,6 +1,6 @@
 (()=>{'use strict';
 const sh=window.YanClassicShared;if(!sh)return;const {app,state,persist}=sh;
-const groups=[["look","👀","觀察探索","看一看，找出目標",[["👂","聽聲找照片","聽故事認場景","YanPhotoQuiz"],["🔍","照片猜猜看","看局部找全圖","YanPhotoZoom"],["🧺","親子尋寶袋","找到指定物品","YanFamilyTreasure"],["🫧","泡泡抓抓樂","找目標戳泡泡","YanBubbleCatch"]]],["memory","🧠","記憶音樂","記住位置、順序、音高",[["🃏","親子翻翻樂","記住位置配成對","YanMemoryCards"],["📷","照片順序記憶","照順序點照片","YanPhotoSequence"],["🎵","音樂記憶","聽音高重複節奏","YanRhythmGame"]]],["action","🏃","動作反應","按住、放開、點擊、閃躲",[["🚦","123木頭人","紅燈停、綠燈走","YanClassics","wood"],["🐹","打地鼠","快速點出地鼠","YanClassics","mole"],["☄️","躲隕石","左右移動閃避","YanClassics","meteor"]]],["build","🚜","工程冒險","運貨、挖寶、鋪橋、修管",[["📦","挖土機運貨","選貨物送到目的地","YanDeliveryGame"],["💎","挖土機尋寶","挖格子找寶藏","YanDigGame"],["🌉","挖土機造橋","按順序鋪橋板","YanBridgeGame"],["💧","水管大救援","旋轉水管連水流","YanPipeGame"],["📦","推箱子工程","推動木箱到指定位置","YanPushBoxGame"]]],["logic","🧩","動腦益智","分類、數數、還原圖片",[["🎨","顏色分類","放入正確顏色籃","YanClassics","colorSort"],["🐰","動物園餵食","選出指定數量","YanFeedGame"],["🖼️","滑塊拼圖","移動方塊還原照片","YanSlidePuzzle"]]]];let active=null,index=0,relay=false,surprise=false;
+const groups=[["look","👀","觀察探索","看一看，找出目標",[["👂","聽聲找照片","聽故事認場景","YanPhotoQuiz"],["🔍","照片猜猜看","看局部找全圖","YanPhotoZoom"],["🧺","親子尋寶袋","找到指定物品","YanFamilyTreasure"],["🫧","泡泡抓抓樂","找目標戳泡泡","YanBubbleCatch"]]],["memory","🧠","記憶音樂","記住位置、順序、音高",[["🃏","親子翻翻樂","記住位置配成對","YanMemoryCards"],["📷","照片順序記憶","照順序點照片","YanPhotoSequence"],["🎵","音樂記憶","聽音高重複節奏","YanRhythmGame"]]],["action","🏃","動作反應","按住、放開、點擊、閃躲",[["🚦","123木頭人","紅燈停、綠燈走","YanClassics","wood"],["🐹","打地鼠","快速點出地鼠","YanClassics","mole"],["☄️","躲隕石","左右移動閃避","YanClassics","meteor"]]],["build","🚜","工程冒險","運貨、挖寶、鋪橋、修管",[["📦","挖土機運貨","選貨物送到目的地","YanDeliveryGame"],["💎","挖土機尋寶","挖格子找寶藏","YanDigGame"],["🌉","挖土機造橋","按順序鋪橋板","YanBridgeGame"],["💧","水管大救援","旋轉水管連水流","YanPipeGame"],["📦","推箱子工程","推動木箱到指定位置","YanPushBoxGame"]]],["logic","🧩","動腦益智","分類、數數、還原圖片",[["🎨","顏色分類","放入正確顏色籃","YanClassics","colorSort"],["🐰","動物園餵食","選出指定數量","YanFeedGame"],["🖼️","滑塊拼圖","移動方塊還原照片","YanSlidePuzzle"]]]];let active=null,index=0,relay=false,surprise=false,menuGroup=null;
 // v356: one-tap favorites and last-played resume in the classic hub; uses existing unified save.
 function entryFor(id,i){const g=groups.find(x=>x[0]===id);return g&&Number.isInteger(i)&&i>=0&&i<g[4].length?{id,i,item:g[4][i]}:null}
 function favoriteEntries(){
@@ -38,7 +38,7 @@ function syncSkip(){
 function run(id,i,mixed,randomMode){
  const g=groups.find(x=>x[0]===id),item=g&&g[4][i],mod=item&&window[item[3]],fn=item&&(item[4]||'start');
  if(!mod||typeof mod[fn]!=='function')return false;
- active=id;index=i;relay=!!mixed;surprise=!!randomMode;state.yanHubLast=state.yanHubLast||{};state.yanHubLast[id]=i;state.yanHubLastPlayed={id,i};persist();mod[fn]();syncSkip();return true;
+ window.YanSpeech?.cancel();menuGroup=id;active=id;index=i;relay=false;surprise=false;state.yanHubLast=state.yanHubLast||{};state.yanHubLast[id]=i;state.yanHubLastPlayed={id,i};persist();mod[fn]();syncSkip();return true;
 }
 // v331: cross-world relay has a distinct name from the existing passport surprise game; v330: cross-world surprise relay; skip the four most recently launched games.
 // v387: one-tap independent random practice; no forced relay or score reset.
@@ -70,10 +70,18 @@ function pickSurprise(){
 }
 function show(id){
  const el=app.querySelector('#yan-hub');if(!el)return;
- const g=groups.find(x=>x[0]===id);
- if(!g){const saved=lastPlayed(),favorites=favoriteEntries();el.innerHTML='<div class="hub-head">🌈 五大遊戲世界<small>每個世界，操作都不一樣！</small></div>'+(saved?'<button class="hub-continue" data-continue="'+saved.id+':'+saved.i+'">▶️ 繼續上次：'+saved.item[0]+' '+saved.item[1]+'</button>':'')+(favorites.length?'<div class="hub-favorites"><div class="hub-favorites-title">⭐ 我的常玩遊戲</div><div class="hub-favorites-grid">'+favorites.map(x=>'<div class="hub-favorite"><button type="button" class="hub-fav-launch" data-fav-launch="'+x.id+':'+x.i+'">'+x.item[0]+' '+x.item[1]+'</button><button type="button" class="hub-fav-remove" data-fav-remove="'+x.id+':'+x.i+'" aria-label="取消收藏'+x.item[1]+'">✕</button></div>').join('')+'</div></div>':'')+'<button class="hub-practice" data-practice="" aria-label="隨機選一款遊戲，不強制接力">🎲 驚喜玩一款<small>隨機挑遊戲，保留原本進度</small></button><button class="hub-surprise" data-surprise="1" aria-label="五界接力：過關自動換另一種玩法">🔄 五界接力<small>過關換玩法，最近四款不重複</small></button><div class="hub-cats">'+groups.map(x=>'<button class="hub-cat" data-g="'+x[0]+'"><span>'+x[1]+'</span><b>'+x[2]+'</b><small>'+x[3]+'</small></button>').join('')+'</div><div class="hub-hint">⭐ 原本的星星與所有關卡保留</div>';return;}
- const last=Math.min(g[4].length-1,Math.max(0,Number(state.yanHubLast&&state.yanHubLast[id])||0));
- el.innerHTML='<div class="hub-head"><button data-back="1" class="hub-back">❮</button>'+g[1]+' '+g[2]+'</div><div class="hub-hint">'+g[3]+'</div><button class="hub-relay" data-r="'+id+'" data-n="'+last+'">▶ 混合闖關<small>每次過關，就換一種玩法</small></button><button class="hub-practice hub-practice-group" data-practice="'+id+'">🎲 這一區隨機玩一款<small>不接力、不清除進度</small></button><div class="hub-subhead">或選一個玩法練習</div><div class="hub-modes">'+g[4].map((x,i)=>'<div class="hub-mode-wrap"><button class="hub-mode" data-p="'+id+':'+i+'"><span>'+x[0]+'</span><b>'+x[1]+'<small>'+x[2]+'</small></b></button><button type="button" class="hub-fav-toggle" data-fav-toggle="'+id+':'+i+'" aria-pressed="'+favoriteEntries().some(f=>f.id===id&&f.i===i)+'" aria-label="'+(favoriteEntries().some(f=>f.id===id&&f.i===i)?'取消收藏':'收藏')+x[1]+'">'+(favoriteEntries().some(f=>f.id===id&&f.i===i)?'★':'☆')+'</button></div>').join('')+'</div>';
+ const g=groups.find(x=>x[0]===id);menuGroup=g?g[0]:null;
+ el.dataset.group=menuGroup||'';
+ const menu=el.closest('.classic-menu');if(menu)menu.scrollTop=0;
+ if(!g){
+  const saved=lastPlayed();
+  el.innerHTML='<div class="hub-head">選一款，慢慢玩<small>過關繼續同一款，想換再回來選</small></div>'+(saved?'<button class="hub-continue" data-continue="'+saved.id+':'+saved.i+'">▶ 繼續上次：'+saved.item[1]+'</button>':'')+'<div class="hub-cats">'+groups.map(x=>'<button class="hub-cat" data-g="'+x[0]+'"><span class="hub-category-icon">'+x[1]+'</span><b>'+x[2]+'</b><small>'+x[3]+'</small></button>').join('')+'</div>';return;
+ }
+ const preferred={look:['YanPhotoQuiz','YanFamilyTreasure'],memory:['YanMemoryCards','YanRhythmGame'],action:['YanClassics'],build:['YanPushBoxGame','YanPipeGame','YanParkingGame','YanRailGame'],logic:['YanSlidePuzzle','YanFeedGame']};
+ const card=(x,i)=>'<div class="hub-mode-wrap"><button class="hub-mode" data-p="'+id+':'+i+'"><span>'+x[0]+'</span><b>'+x[1]+'<small>'+x[2]+'</small></b><span class="hub-open" aria-hidden="true">›</span></button></div>';
+ const primary=[],extra=[];
+ g[4].forEach((x,i)=>{((preferred[id]||[]).includes(x[3])?primary:extra).push(card(x,i))});
+ el.innerHTML='<div class="hub-head"><button data-back="1" class="hub-back" aria-label="返回遊戲分類">‹ 分類</button>'+g[1]+' '+g[2]+'</div><div class="hub-hint">'+g[3]+'</div><div class="hub-modes">'+primary.join('')+'</div>'+(extra.length?'<details class="hub-more"><summary>更多練習（'+extra.length+'）</summary><div class="hub-modes">'+extra.join('')+'</div></details>':'');
 }
 function enhance(){
  const m=app.querySelector('.classic-menu');if(!m||m.querySelector('#yan-hub'))return;
@@ -92,7 +100,7 @@ function enhance(){
  else if(b.hasAttribute('data-continue')){const [g,i]=b.dataset.continue.split(':');run(g,Number(i),false)}
  else if(b.hasAttribute('data-p')){const [g,i]=b.dataset.p.split(':');run(g,Number(i),false)}
  else if(b.hasAttribute('data-r'))run(b.dataset.r,Number(b.dataset.n),true);
- });show();
+ });show(menuGroup);
 }
 function nextOnWin(){
  if(!relay||!active||app.querySelector('.classic-menu'))return;

@@ -21,7 +21,7 @@ const P=[['sun','☀️','太陽',523.25],['flower','🌸','花朵',587.33],['ca
 function makeRound(level,round,rng=Math.random){const n=level<=8?2:level<=18?3:level<=30?4:5,sequence=[];for(let i=0;i<n;i++){const opts=P.filter(p=>!i||p[0]!==sequence[i-1]);sequence.push(opts[Math.floor(rng()*opts.length)][0])}return {level,round,sequence,length:n}}
 function checkTap(seq,i,pad){const correct=seq[i]===pad;return {correct,nextIndex:correct?i+1:0,complete:correct&&i+1===seq.length}}
 let generation=0,timers=[],ctx;
-function stop(){generation++;timers.forEach(clearTimeout);timers=[];try{window.speechSynthesis?.cancel()}catch(_){}}
+function stop(){generation++;timers.forEach(clearTimeout);timers=[];try{window.YanSpeech?.cancel()}catch(_){}}
 function later(fn,ms,token){const id=setTimeout(()=>{timers=timers.filter(x=>x!==id);if(token===generation)fn()},ms);timers.push(id)}
 function tone(id){const p=P.find(x=>x[0]===id);if(!p)return;try{const C=window.AudioContext||window.webkitAudioContext;if(!C){a.play('hit');return}ctx=ctx||new C();if(ctx.state==='suspended')ctx.resume().catch(()=>{});const o=ctx.createOscillator(),g=ctx.createGain(),t=ctx.currentTime;o.type='sine';o.frequency.setValueAtTime(p[3],t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.18,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.33);o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+.35)}catch(_){a.play('hit')}}
 function menu(){stop();window.YanClassics.menu()}

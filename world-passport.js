@@ -53,15 +53,7 @@ function decorateWin(){
  const stamp=document.createElement('div');stamp.className='passport-win';stamp.setAttribute('role','status');
  stamp.textContent=p.medal?'🏅 世界護照集滿！ '+p.done+'/'+p.total:(fresh?'📒 收到新印章！ ':'📒 已收集的印章 ')+p.done+'/'+p.total;
  const heading=popup.querySelector('h2');if(heading)heading.insertAdjacentElement('afterend',stamp);else popup.prepend(stamp);
- // v312: one tap from a completed challenge to the next uncollected game in the same world.
- const next=nextUnplayed(s.active,s.index),g=validGroup(s.active),item=g&&g[4][next];
- if(item){
-  const go=document.createElement('button');go.type='button';go.className='passport-next-play';
-  go.textContent=(p.medal?'🎉 再玩：':'🎯 下一個新遊戲：')+item[1];
-  go.setAttribute('aria-label','開始'+item[1]);
-  go.addEventListener('click',()=>{go.disabled=true;if(!hub.run(s.active,next,true)){go.disabled=false;go.textContent='🔄 請再試一次';}});
-  popup.appendChild(go);
- }
+
 }
 function decorateHub(){
  const el=app.querySelector('#yan-hub');if(!el)return;
@@ -74,36 +66,10 @@ function decorateHub(){
    if(!p.total||card.querySelector('.passport-count'))return;
    const badge=document.createElement('span');badge.className='passport-count';badge.textContent=(p.medal?'🏅 ':'📒 ')+p.done+'/'+p.total;card.appendChild(badge);
   });
-  // Visible above the five world cards; no new save keys or replacement of existing entries.
-  let go=el.querySelector('.passport-surprise');
-  if(!go){
-   go=document.createElement('button');go.type='button';go.className='passport-surprise';
-   go.addEventListener('click',()=>{
-    const choice=pickSurprise();if(!choice)return;
-    go.disabled=true;
-    if(!hub.run(choice.id,choice.index,false)){go.disabled=false;go.textContent='🔄 請再試一次'}
-   });
-   if(head)head.insertAdjacentElement('afterend',go);else el.prepend(go);
-  }
-  // Recompute after stamps change without forcing a menu reload.
-  if(!go.disabled){
-   const label=s.done===s.total?'🎉 全收集！再玩驚喜關':'🎲 驚喜闖關｜'+(s.total-s.done)+' 種新玩法';
-   const aria='隨機開始一個'+(s.done===s.total?'已完成':'尚未集章')+'的遊戲';
-   // MutationObserver watches childList; assigning unchanged textContent loops forever.
-   if(go.textContent!==label)go.textContent=label;
-   if(go.getAttribute('aria-label')!==aria)go.setAttribute('aria-label',aria);
-  }
   return;
  }
- const relay=el.querySelector('.hub-relay');if(!relay||el.querySelector('.passport-progress'))return;
- const id=relay.dataset.r,p=progress(id),g=validGroup(id);if(!g)return;
- const panel=document.createElement('section');panel.className='passport-progress';panel.setAttribute('aria-label','世界護照進度');
- panel.innerHTML='<div class="passport-title">'+(p.medal?'🏅 世界全收集！':'📒 收集不同玩法的印章')+'　'+p.done+'/'+p.total+'<small class="passport-tap-hint">👆 點印章直接玩</small></div><div class="passport-stamps">'+g[4].map((item,i)=>'<button type="button" class="passport-stamp '+(clean(id).includes(i)?'earned':'')+'" data-p="'+id+':'+i+'" aria-label="開始'+item[1]+'，'+(clean(id).includes(i)?'已完成':'未完成')+'">'+item[0]+'</button>').join('')+'</div>';
- const btn=document.createElement('button');btn.className='passport-challenge';btn.type='button';btn.textContent=p.medal?'🎉 再玩一種不同挑戰':'🎯 挑戰還沒收集的玩法';
- btn.addEventListener('click',()=>{const s=hub.session(),from=s&&s.active===id?s.index:(Number(state.yanHubLast&&state.yanHubLast[id])||-1);hub.run(id,nextUnplayed(id,from),true)});
- panel.appendChild(btn);relay.insertAdjacentElement('afterend',panel);
- el.querySelectorAll('.hub-mode').forEach(b=>{const a=(b.dataset.p||'').split(':');if(a[0]===id&&clean(id).includes(Number(a[1]))){b.classList.add('passport-earned');const mark=document.createElement('span');mark.className='passport-mark';mark.textContent='✓';b.appendChild(mark)}});
 }
+
 const observer=new MutationObserver(()=>{decorateWin();decorateHub()});observer.observe(app,{childList:true,subtree:true});decorateHub();
 window.YanWorldPassport={progress,summary,nextUnplayed,pickSurprise,record,isVictory,decorateWin,decorateHub};
 })();

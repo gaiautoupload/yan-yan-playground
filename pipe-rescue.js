@@ -38,7 +38,7 @@ function routeGuide(task,turns){const masks=apply(task,turns);return {path:task.
 function validTurns(task,turns){return Array.isArray(turns)&&turns.length===task.n*task.n&&turns.every(t=>Number.isInteger(t)&&t>=0&&t<4)}
 function apply(task,turns){return task.masks.map((m,i)=>{for(let t=0;t<(turns[i]||0);t++)m=rotate(m);return m})}
 let generation=0,timers=[];
-function stop(){generation++;timers.forEach(clearTimeout);timers=[];try{window.speechSynthesis?.cancel()}catch(_){}}
+function stop(){generation++;timers.forEach(clearTimeout);timers=[];try{window.YanSpeech?.cancel()}catch(_){}}
 function later(fn,ms,token){const id=setTimeout(()=>{timers=timers.filter(t=>t!==id);if(token===generation)fn()},ms);timers.push(id)}
 function menu(){stop();window.YanClassics.menu()}
 function pipeSvg(mask,wet){

@@ -401,15 +401,7 @@ function enhance(){
   b.innerHTML='<span class="classic-big">👂📷</span><strong>聽聲找照片</strong><span>🔊 👆 💗</span><small>⭐ '+(Number(state.familyPhotoQuizLevel)||1)+' / '+MAX+'</small>';
   classic.insertBefore(b,classic.querySelector('.classic-audio-controls'));b.onclick=()=>start();
  }
- const spotlight=app.querySelector('.home .spotlight');
- if(spotlight&&!spotlight.querySelector('#photo-quiz-hero')){
-  const p=photos[((Number(state.familyPhotoQuizLevel)||1)-1)%photos.length];
-  const b=document.createElement('button');b.id='photo-quiz-hero';b.className='photo-quiz-hero';b.setAttribute('aria-label','看親子照片，開始聽聲找照片');
-  b.style.setProperty('--hero-photo',"url('"+p.scene+"')");
-  b.innerHTML='<img src="'+p.scene+'" alt="'+p.name+'" draggable="false"><span class="photo-quiz-hero-label">📷 👂 聽聲找照片 ▶</span>';
-  b.querySelector('img').onerror=e=>{e.target.onerror=null;e.target.src='./assets/family-home.webp';b.style.setProperty('--hero-photo',"url('./assets/family-home.webp')")};
-  b.onclick=()=>start();spotlight.insertBefore(b,spotlight.firstChild);
- }
+
 }
 const observer=new MutationObserver(enhance);observer.observe(app,{childList:true,subtree:true});enhance();
 window.YanPhotoQuiz={start,makeRound,stop,enhance};

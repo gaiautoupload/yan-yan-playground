@@ -5,10 +5,10 @@ const audio=window.YanClassicAudio;
 if(!audio)throw Error('Classic sound engine missing');
 let timers=[],session=0;
 const later=(fn,ms)=>{const id=setTimeout(()=>{timers=timers.filter(t=>t!==id);fn()},ms);timers.push(id);return id};
-function clean(){session++;timers.forEach(clearTimeout);timers=[];window.speechSynthesis?.cancel()}
+function clean(){session++;timers.forEach(clearTimeout);timers=[];window.YanSpeech?.cancel()}
 function menu(){
  clean();audio.unlock();audio.play('welcome');
- app.innerHTML='<section class="screen game classic-screen">'+bg('play')+'<header class="bar"><button class="iconbtn" id="classic-back">⌂</button><span class="chip">🎲 經典小遊戲</span><span class="chip">👩‍👦</span></header><main class="classic-menu"><div class="classic-family"><img src="./assets/mom.webp"><span>🎈 一起來玩！</span><img src="./assets/kid.webp"></div><button class="classic-tile wood-tile" id="wood-entry"><span class="classic-big">🚦🏃</span><strong>123 木頭人</strong><span>🟢 👆 ➜ 🔴 ✋</span><small>⭐ '+state.woodLevel+' / 60</small></button><button class="classic-tile mole-tile" id="mole-entry"><span class="classic-big">🐹🌼</span><strong>打地鼠</strong><span>👀 👉 🐹 ⭐</span><small>⭐ '+state.moleLevel+' / 60</small></button><button class="classic-tile color-tile" id="color-entry"><span class="classic-big">🔴🟡🔵</span><strong>顏色分類</strong><span>🍎 ➜ 🧺</span><small>⭐ '+state.colorLevel+' / 60</small></button><button class="classic-tile meteor-tile" id="meteor-entry" aria-label="開始彥彥躲隕石"><span class="classic-big">☄️🏃</span><strong>躲隕石</strong><span>⬅️ 🏃 ➡️　❤️×5</span><small>🏆 '+(Number(state.meteorBest)||0)+' 次閃避</small></button><div class="classic-audio-controls"><button id="classic-sfx-toggle" aria-pressed="'+(audio.enabled()?'true':'false')+'">'+(audio.enabled()?'🔊 音效':'🔇 音效')+'</button><button id="classic-voice-toggle" aria-pressed="'+(state.voice?'true':'false')+'">'+(state.voice?'🗣️ 語音':'🔇 語音')+'</button><button class="classic-test-sound" id="classic-test-sound">🎧 試聲音</button></div></main></section>';
+ app.innerHTML='<section class="screen game classic-screen">'+bg('play')+'<header class="bar"><button class="iconbtn" id="classic-back">⌂</button><span class="chip">🎮 遊戲分類</span><span class="chip">👩‍👦</span></header><main class="classic-menu"><div class="classic-family"><img src="./assets/mom.webp"><span>🎈 一起來玩！</span><img src="./assets/kid.webp"></div><button class="classic-tile wood-tile" id="wood-entry"><span class="classic-big">🚦🏃</span><strong>123 木頭人</strong><span>🟢 👆 ➜ 🔴 ✋</span><small>⭐ '+state.woodLevel+' / 60</small></button><button class="classic-tile mole-tile" id="mole-entry"><span class="classic-big">🐹🌼</span><strong>打地鼠</strong><span>👀 👉 🐹 ⭐</span><small>⭐ '+state.moleLevel+' / 60</small></button><button class="classic-tile color-tile" id="color-entry"><span class="classic-big">🔴🟡🔵</span><strong>顏色分類</strong><span>🍎 ➜ 🧺</span><small>⭐ '+state.colorLevel+' / 60</small></button><button class="classic-tile meteor-tile" id="meteor-entry" aria-label="開始彥彥躲隕石"><span class="classic-big">☄️🏃</span><strong>躲隕石</strong><span>⬅️ 🏃 ➡️　❤️×5</span><small>🏆 '+(Number(state.meteorBest)||0)+' 次閃避</small></button><div class="classic-audio-controls"><button id="classic-sfx-toggle" aria-pressed="'+(audio.enabled()?'true':'false')+'">'+(audio.enabled()?'🔊 音效':'🔇 音效')+'</button><button id="classic-voice-toggle" aria-pressed="'+(state.voice?'true':'false')+'">'+(state.voice?'🗣️ 語音':'🔇 語音')+'</button><button class="classic-test-sound" id="classic-test-sound">🎧 試聲音</button></div></main></section>';
  app.querySelector('#classic-back').onclick=()=>{clean();renderHome()};
  app.querySelector('#wood-entry').onclick=wood;
  app.querySelector('#mole-entry').onclick=mole;
@@ -16,7 +16,7 @@ function menu(){
  app.querySelector('#meteor-entry').onclick=()=>{clean();window.YanMeteors.start()};
  app.querySelector('#classic-sfx-toggle').onclick=()=>{state.classicSound=!audio.enabled();persist();menu()};
  app.querySelector('#classic-voice-toggle').onclick=()=>{state.voice=!state.voice;persist();menu();if(state.voice)audio.voice('彥彥，語音開啟囉！')};
- app.querySelector('#classic-test-sound').onclick=()=>{state.classicSound=true;state.voice=true;persist();const result=audio.test();const toast=document.createElement('div');toast.className='classic-audio-result';toast.textContent=result.effect?'🎵 已播放音效！語音需要手機的中文語音服務。':'⚠️ 請開啟手機媒體音量，再點一次';app.querySelector('.screen')?.appendChild(toast);setTimeout(()=>toast.remove(),2600);app.querySelector('#classic-sfx-toggle').textContent='🔊 音效';app.querySelector('#classic-voice-toggle').textContent='🗣️ 語音';};
+ app.querySelector('#classic-test-sound').onclick=()=>{state.classicSound=true;state.voice=true;persist();const result=audio.test();const toast=document.createElement('div');toast.className='classic-audio-result';toast.textContent=result.effect?'🎵 音效已播放，台灣中文語音載入中。':'⚠️ 請開啟手機媒體音量，再點一次';app.querySelector('.screen')?.appendChild(toast);setTimeout(()=>toast.remove(),2600);app.querySelector('#classic-sfx-toggle').textContent='🔊 音效';app.querySelector('#classic-voice-toggle').textContent='🗣️ 語音';};
  say('彥彥，來和媽媽玩一二三木頭人，或是打地鼠吧！');
 }
 function header(title,level){
@@ -119,7 +119,7 @@ function wood(){
  pause.onclick=()=>{
   if(!live())return;hold=false;
   if(phase==='paused'){phase='ready';paint();later(green,550);later(tick,95);return}
-  phase='paused';round++;timers.forEach(clearTimeout);timers=[];window.speechSynthesis?.cancel();
+  phase='paused';round++;timers.forEach(clearTimeout);timers=[];window.YanSpeech?.cancel();
   saveCheckpoint(true);paint();
  };
  restart.onclick=()=>{state.woodCheckpoint=null;persist();wood()};

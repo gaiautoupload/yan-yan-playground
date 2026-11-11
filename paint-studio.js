@@ -263,7 +263,7 @@ function start(requested){
 }
 function enhance(){
  const hub=app.querySelector('#yan-hub');if(!hub||hub.querySelector('#paint-entry'))return;
- const anchor=hub.querySelector('.hub-cats')||hub.querySelector('.hub-relay[data-r="look"]');if(!anchor)return;
+ const anchor=hub.dataset.group==='look'&&hub.querySelector('.hub-modes');if(!anchor)return;
  const b=document.createElement('button');b.id='paint-entry';b.className='paint-entry';b.type='button';
  b.innerHTML='<span>🎨</span><b>小小畫家<small>手指畫畫、貼貼紙，保存自己的作品</small></b>';
  b.onclick=()=>start();const modes=hub.querySelector('.hub-modes');(modes||anchor).insertAdjacentElement('afterend',b);

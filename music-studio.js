@@ -283,7 +283,7 @@ function start(requested){
 }
 function enhance(){
  const hub=app.querySelector('#yan-hub');
- if(!hub||hub.querySelector('#studio-entry'))return;
+ if(!hub||hub.dataset.group!=='memory'||hub.querySelector('#studio-entry'))return;
  const b=document.createElement('button');b.id='studio-entry';b.className='studio-entry';b.type='button';
  b.innerHTML='<span>🎼</span><b>自由作曲工坊<small>自己彈、自己編、自己保存歌曲</small></b>';
  b.onclick=()=>start();const anchor=hub.querySelector('.hub-cats')||hub.querySelector('.hub-modes')||hub.querySelector('.hub-relay[data-r="memory"]');if(anchor)anchor.insertAdjacentElement('afterend',b);else hub.appendChild(b);

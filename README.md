@@ -1,17 +1,37 @@
 # 彥彥配對樂園
 
-Production snapshot v411, verified 2026-11-11 (Asia/Taipei).
+Release 412 — 2026-11-11 (Asia/Taipei).
 
-Live site: https://yan-yan-excavator-dots.vercel.app/
+## Changes
 
-Deployment: dpl_mPMM9ibXBxU6cmFHR8eCkWbzeHXb
-Project: prj_nf4iEjcMUuQbt7uWddQ1A6jQvrnG
-Team: team_OVGEHePYtPbjVUKhgvq57GRa
+- Direct game selection replaces duplicate random/relay entry points and extra cross-game actions on win dialogs.
+- Ordinary launches never enable relay. Returning restores the original category. Existing save keys and catalogue indices are preserved.
+- Phone game cards use readable single-column rows. Similar/simple activities live under “更多練習”. Delivery and photo quiz no longer inject large home promotions.
+- Fixed passport badges covering category names. Drawing and composing appear only in relevant categories.
+- Fixed small-phone Sokoban tools clipping and blocked touch scrolling; optional assistance is collapsed.
+- Edge TTS Taiwan Mandarin (`zh-TW-HsiaoChenNeural`) via `/api/speech`: bounded input, timeout, cached audio, cancellation on screen changes and mute.
+- Invalid saved game modes recover to the default adventure.
 
-The owner explicitly selected this previously empty repository as the sync destination. No prior branch or commit existed. All 129 publicly served application files were downloaded and their SHA-1 matched the deployment source manifest, including 14 assets/*.avif images. No application code was changed.
+## Checks
 
-The deployment contains 130 source files. Its original README.md is not publicly served (HTTP 404), and the source API truncated its contents. This README is a replacement, not a byte-identical restoration of that documentation.
+```
+node verification/check.cjs
+node verification/save-recovery.cjs
+node verification/speech.cjs
+```
 
-Validation: run node verification/check.cjs. This checks application hashes, JavaScript syntax, HTML resource paths, literal asset paths, nine home entries and the existing localStorage key yan-family-unified-v6. It is static verification, not browser E2E.
+Original v411 hashes remain in `verification/production-audit.json`. `check.cjs --snapshot` checks those original hashes with text line-ending normalization; it intentionally rejects modified application files. Normal checks validate current syntax and resource references.
 
-Not verified: full gameplay, level completion, reload/save recovery, four mobile layouts, physical touch, speech, vibration and WebP fallback. No Vercel deployment or Git integration settings were changed.
+Manual browser checks: 390×844 and 320×568, category selection, original delivery level completion, Sokoban level completion/next level, reload recovery, return to category, real Edge TTS playback via the local API. Physical iOS/Android touch and every level of every game are not yet covered.
+
+## Deployment
+
+Vercel: `yan-yan-playground` (`prj_9FAgRuyuCbzLKkt48XoqX7fikUAx`) in `pioter` (`team_Im5St1qEFYRCzY0LTXHV6szY`). Static frontend plus Python Function; dependencies pinned in `requirements.txt`.
+
+Vercel's GitHub connection lacks repository write access. Deploy reviewed source files directly until the correct GitHub account is connected. Exclude verification reports, scratch files, credentials and `.env` files.
+
+Original v411 site: https://yan-yan-excavator-dots.vercel.app/ on a different team. This release targets the new project selected by the owner.
+
+## Next passes
+
+Audit remaining game screens at phone sizes, consolidate similar mechanics, improve delivery gameplay instead of adding repetitive rounds, and test Edge TTS timing in the red-light game on physical phones. Avoid new random navigation or duplicate entry points.

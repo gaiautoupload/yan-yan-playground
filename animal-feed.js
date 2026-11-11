@@ -28,7 +28,7 @@ const evaluate=function evaluate(task,selected,index){if(!Number.isInteger(index
 const remainingFoodIndices=(task,selected)=>task.choices.flatMap((f,i)=>f.id===task.food.id&&!selected.includes(i)?[i]:[]);
 const validSelected=function validSelected(task,items){return Array.isArray(items)&&items.length<=task.count&&new Set(items).size===items.length&&items.every(i=>Number.isInteger(i)&&i>=0&&i<task.choices.length&&task.choices[i].id===task.food.id)};
 let generation=0,timers=[],stopActiveBowl=()=>{};
-function stop(){stopActiveBowl();generation++;timers.forEach(clearTimeout);timers=[];try{window.speechSynthesis?.cancel()}catch(_){}}
+function stop(){stopActiveBowl();generation++;timers.forEach(clearTimeout);timers=[];try{window.YanSpeech?.cancel()}catch(_){}}
 function later(fn,ms,token){const id=setTimeout(()=>{timers=timers.filter(t=>t!==id);if(generation===token)fn()},ms);timers.push(id);return id}
 function menu(){stop();window.YanClassics.menu()}
 function start(requested){

@@ -30,7 +30,7 @@ function evaluate(task,placed,id){
 }
 function validPrefix(task,items){return Array.isArray(items)&&items.length<=task.count&&items.every((id,i)=>task.goal[i].id===id)}
 let generation=0,timers=[];
-function stop(){generation++;timers.forEach(clearTimeout);timers=[];try{window.speechSynthesis?.cancel()}catch(_){}}
+function stop(){generation++;timers.forEach(clearTimeout);timers=[];try{window.YanSpeech?.cancel()}catch(_){}}
 function later(fn,ms,token){const t=setTimeout(()=>{timers=timers.filter(x=>x!==t);if(token===generation)fn()},ms);timers.push(t)}
 function menu(){stop();window.YanClassics.menu()}
 function start(requested){

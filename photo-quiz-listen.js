@@ -21,7 +21,7 @@ function clearStop(){
  if(stopGrid){stopGrid.classList.remove('is-listening-all');stopGrid=null}
 }
 function stopReading(){
- try{window.speechSynthesis?.cancel?.()}catch(_e){}
+ try{window.YanSpeech?.cancel?.()}catch(_e){}
  clearStop();
 }
 function offerStop(grid){
@@ -37,7 +37,7 @@ function offerStop(grid){
  const started=Date.now();
  stopPoll=setInterval(()=>{
   if(!stopControl||!stopGrid?.isConnected){clearStop();return}
-  const synth=window.speechSynthesis;
+  const synth=window.YanSpeech;
   if(Date.now()-started>1300&&synth&&!synth.speaking&&!synth.pending)clearStop();
  },350);
  stopExpiry=setTimeout(clearStop,30000);
