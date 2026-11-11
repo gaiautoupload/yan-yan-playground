@@ -1,6 +1,13 @@
 # 彥彥配對樂園
 
-Release 415 — 2026-11-11 (Asia/Taipei).
+Release 416 — 2026-11-11 (Asia/Taipei).
+
+## Release 416
+
+- Added preschool hide-and-seek: tap four hiding places to uncover three animals and a butterfly surprise. No written questions, countdown, penalties or arithmetic.
+- Large animal portraits show found/not-found visually. Optional hints highlight a hiding place and speak Taiwan Mandarin through the existing Edge TTS service. Replays shuffle hiding places; returning home cancels speech.
+- Home prioritizes Woodman, Hide-and-seek and the catalogue; existing direct games remain in a collapsed parent section.
+- Completed a hide-and-seek round at 320×568, 360×800, 390×844 and 844×390; checked hints, replay, return and audio cancellation. Pretend-play is not implemented yet.
 
 ## Release 415
 

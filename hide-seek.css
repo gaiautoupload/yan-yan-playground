@@ -1,0 +1,21 @@
+.seek-screen{background:#e5f8ec!important;gap:6px;color:#325b47}
+.seek-friends{display:flex;justify-content:center;gap:20px;flex:none;padding:4px}
+.seek-friends>span{font-size:42px;position:relative;filter:saturate(.5)}
+.seek-friends small{position:absolute;right:-8px;bottom:0;font:bold 20px sans-serif;background:#fff;border-radius:50%;width:25px;height:25px;text-align:center}
+.seek-friends .found{filter:none}.seek-friends .found small{background:#b9ebbd}
+.seek-yard{flex:1;min-height:0;display:flex;flex-direction:column;border-radius:28px;background:linear-gradient(#bceaff 0 35%,#cdeca2 35% 100%);border:4px solid white;overflow:hidden}
+.seek-sky{font-size:28px;padding:6px 20px;display:flex;justify-content:space-between;letter-spacing:25px;flex:none}
+.seek-spots{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:10px;padding:4px 12px 12px;flex:1;min-height:0}
+.seek-spot{position:relative;display:flex;align-items:center;justify-content:center;border:3px solid #ffffffaa;border-radius:24px;background:#ffffff40;min-width:0;min-height:0;touch-action:manipulation;box-shadow:0 5px 0 #629a5733}
+.seek-cover,.seek-reveal{font-size:clamp(54px,15vw,100px);line-height:1.15;pointer-events:none}
+.seek-hand,.seek-found{position:absolute;font-size:24px;right:5px;bottom:4px;pointer-events:none}
+.seek-open{background:#fff8cf}.seek-reveal{animation:seek-pop .35s ease-out}.seek-peek{outline:5px solid #ffbd44;outline-offset:-5px}.seek-peek .seek-cover{animation:seek-wiggle .7s ease-in-out 3}
+.seek-footer{display:flex;justify-content:center;flex:none;min-height:60px}.seek-footer button{font-size:30px;min-width:130px;border:3px solid white;border-radius:24px;background:#ffe6a1;padding:6px 20px;touch-action:manipulation}.seek-footer button[hidden]{display:none}
+.seek-status{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.seek-complete .seek-friends{background:#fff7d6;border-radius:20px}
+.home .kid-favorites{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.home .kid-favorites .game-launch{min-height:125px;display:flex;flex-direction:column;justify-content:center}.home .kid-favorites .game-launch-icon{font-size:52px}.home .kid-favorites .game-launch-label{font-size:16px}
+.kid-more{background:#ffffffbf;border-radius:16px;padding:0 10px;margin-top:8px}.kid-more summary{padding:12px;font-size:14px;min-height:44px}.kid-more[open]{max-height:45vh;overflow:auto;touch-action:pan-y}.kid-more .game-launch-grid{padding-bottom:10px}
+@keyframes seek-pop{from{transform:scale(.5)}to{transform:scale(1)}}@keyframes seek-wiggle{25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+@media(max-height:600px){.seek-friends>span{font-size:32px}.seek-sky{font-size:22px;padding:0 14px}.seek-footer{min-height:50px}.seek-footer button{font-size:26px}.home .kid-favorites .game-launch{min-height:105px}}
+@media(orientation:landscape) and (max-height:500px){.seek-spots{grid-template-columns:repeat(4,1fr);grid-template-rows:1fr}.seek-cover,.seek-reveal{font-size:65px}.seek-friends{position:absolute;top:8px;left:30%;right:30%;pointer-events:none}.seek-screen>.bar .chip{visibility:hidden}.seek-sky{font-size:18px}.seek-footer{min-height:44px}.seek-footer button{font-size:24px;padding:2px 20px}}
+@media(prefers-reduced-motion:reduce){.seek-reveal,.seek-peek .seek-cover{animation:none}}
