@@ -2,6 +2,23 @@
 
 Release 424 — 2026-11-12 (Asia/Taipei).
 
+## Follow-up browser verification — 2026-11-12
+
+Production release 424 was played using browser pointer holds and viewport overrides. These checks are not physical iOS/Android touch tests.
+
+| Viewport | Woodman full round | Additional evidence |
+| --- | --- | --- |
+| 320×568 | Level 1 completed; one red-light retry; final segment in slow practice | Reload at 52% restored 52%; switching speed at 91% retained progress; Next opened level 2 |
+| 360×800 | Level 2 completed in slow practice with no retry recorded | Next opened level 3; reload retained level 3 |
+| 390×844 | Level 3 completed in slow practice with no retry recorded | Next opened level 4 |
+| 844×390 | Level 4 completed in slow practice with no retry recorded | Scrollable win dialog; Next reachable; Other Games returned to category |
+
+Hide-and-seek rounds also completed at all four sizes. Completed boards survived home/re-entry at each size. Leaving after replaying guidance paused and cleared that speech player. Baby-care activities and saved sleeping/food feedback were verified in releases 422–423.
+
+Outstanding: physical touch cancellation, mobile browser focus/background behavior, normal-speed full rounds at the three larger sizes, and coverage of later Woodman levels. A butterfly revealed after all animals can replace the completion status with its own discovery message; Replay stays visible, but completion guidance should be reviewed in the next interaction pass.
+
+This follow-up only records observed tests; it does not change deployed application files.
+
 ## Release 424
 
 - Corrected hide-and-seek completion voice to point at the visible monkey/replay control. The home entry resumes completed boards and does not start a new round.
