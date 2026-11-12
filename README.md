@@ -1,6 +1,6 @@
 # 彥彥配對樂園
 
-Release 424 — 2026-11-12 (Asia/Taipei).
+Release 425 — 2026-11-12 (Asia/Taipei).
 
 ## Follow-up browser verification — 2026-11-12
 
@@ -18,6 +18,11 @@ Hide-and-seek rounds also completed at all four sizes. Completed boards survived
 Outstanding: physical touch cancellation, mobile browser focus/background behavior, normal-speed full rounds at the three larger sizes, and coverage of later Woodman levels. A butterfly revealed after all animals can replace the completion status with its own discovery message; Replay stays visible, but completion guidance should be reviewed in the next interaction pass.
 
 This follow-up only records observed tests; it does not change deployed application files.
+
+## Release 425
+
+- Hide-and-seek keeps replay guidance when the butterfly is revealed after all animals, when found spots are tapped again, and when voice guidance is replayed.
+- Completion wording is shared so the visible replay control remains the spoken next action.
 
 ## Release 424
 
