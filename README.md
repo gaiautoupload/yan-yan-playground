@@ -15,9 +15,17 @@ Production release 424 was played using browser pointer holds and viewport overr
 
 Hide-and-seek rounds also completed at all four sizes. Completed boards survived home/re-entry at each size. Leaving after replaying guidance paused and cleared that speech player. Baby-care activities and saved sleeping/food feedback were verified in releases 422–423.
 
-Outstanding: physical touch cancellation, mobile browser focus/background behavior, normal-speed full rounds at the three larger sizes, and coverage of later Woodman levels. A butterfly revealed after all animals can replace the completion status with its own discovery message; Replay stays visible, but completion guidance should be reviewed in the next interaction pass.
+Outstanding: physical touch cancellation, mobile browser focus/background behavior, normal-speed full rounds at the three larger sizes, and coverage of later Woodman levels. The butterfly completion-guidance issue observed during this audit was fixed in release 425.
 
 This follow-up only records observed tests; it does not change deployed application files.
+
+## Release 425 follow-up — 2026-11-13 (Asia/Taipei)
+
+- At 320×568, 360×800, 390×844 and 844×390, actual browser drags of banana onto the baby produced feeding feedback. Strawberry dropped outside the baby retained the strawberry effect rather than feeding, and left zero drag ghosts.
+- An initial batch timed out with no usable results. The successful checks above were repeated as individual drag operations; the timeout was not classified as an application failure.
+- At all four sizes, freely selected hugging, sleeping, bathing and feeding. Selected porridge and fed feedback survived reload; returning home paused and cleared speech.
+- Hide-and-seek Replay reset found badges to zero and restored four covered spots. Reloading the fresh round did not restore old found badges, and each size completed a new round. Completion reload and speech cancellation were also checked at every size.
+- Physical phone input, touch cancellation and background/focus behavior remain unverified by these browser drags. Automated cancellation tests are separate evidence.
 
 ## Release 425
 
