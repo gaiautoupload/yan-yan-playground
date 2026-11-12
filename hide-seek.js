@@ -42,7 +42,7 @@ function start(reset=false){
   if(f>=0){const badge=screen.querySelector('[data-friend="'+f+'"]');badge.classList.add('found');badge.querySelector('small').textContent='✓';badge.setAttribute('aria-label','找到'+friends[f][1])}
   markTarget();
   const done=deck.every((f,i)=>f<0||opened.has(i));
-  if(done&&!celebrated){celebrated=true;screen.classList.add('seek-complete');screen.querySelector('#seek-again').hidden=false;screen.querySelector('#seek-hint').hidden=true;if(!restoring)audio.play('win');announce('都找到啦！抱抱！再按躲貓貓，就可以再玩一次。')}
+  if(done&&!celebrated){celebrated=true;screen.classList.add('seek-complete');screen.querySelector('#seek-again').hidden=false;screen.querySelector('#seek-hint').hidden=true;if(!restoring)audio.play('win');announce('都找到了！按下面的猴子和轉圈圈，再玩一次！')}
   else announce((f<0?'哇，是小蝴蝶！':'找到'+friends[f][1]+'了！')+(celebrated?'':targetText()));
   if(!restoring)save();
  });

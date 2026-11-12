@@ -1,6 +1,11 @@
 # 彥彥配對樂園
 
-Release 423 — 2026-11-12 (Asia/Taipei).
+Release 424 — 2026-11-12 (Asia/Taipei).
+
+## Release 424
+
+- Corrected hide-and-seek completion voice to point at the visible monkey/replay control. The home entry resumes completed boards and does not start a new round.
+- Copy-only change; syntax/resource and checkpoint tests passed. No new mobile layout or complete-level manual testing in this pass.
 
 ## Release 423
 
