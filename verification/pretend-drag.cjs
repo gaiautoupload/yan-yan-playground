@@ -12,12 +12,12 @@ function fixture(){
  const map={'#pretend-baby':baby,'.pretend-effect':effect,'.pretend-status':status,'.pretend-window':node(),'.pretend-face':node(),'.pretend-food':node(),'#pretend-home':node(),'#pretend-voice':node()};
  screen=Object.assign(node(),{querySelector:q=>q==='.pretend-drag-food'?ghost:map[q],querySelectorAll:q=>q==='[data-food]'?food:modes,appendChild:g=>{ghost=g}});
  const listeners={};const document={hidden:false,createElement:node,addEventListener:(name,fn)=>listeners[name]=fn};
- const window={addEventListener:(name,fn)=>listeners[name]=fn,YanSpeech:{cancel(){}},YanClassicAudio:{unlock(){},play(){}},YanClassicShared:{app:{querySelector:()=>screen},say:t=>spoken.push(t),renderHome(){screen.isConnected=false}}};
+ const window={addEventListener:(name,fn)=>listeners[name]=fn,YanSpeech:{cancel(){}},YanClassicAudio:{unlock(){},play(){}},YanClassicShared:{state:{},persist(){},app:{querySelector:()=>screen},say:t=>spoken.push(t),renderHome(){screen.isConnected=false}}};
  vm.runInNewContext(fs.readFileSync(require('node:path').join(__dirname,'../pretend-play.js'),'utf8'),{window,document,AbortController});
  window.YanPretendPlay.start();modes[0].click();
  const event=(x,y,id=1)=>({clientX:x,clientY:y,pointerId:id,button:0,preventDefault(){}});
  const begin=()=>{food[1].onpointerdown(event(10,10));food[1].onpointermove(event(140,140))};
- return {food,modes,baby,effect,status,window,document,listeners,event,begin,ghost:()=>ghost,spoken};
+ return {food,modes,baby,effect,status,window,document,listeners,event,begin,ghost:()=>ghost,spoken,map};
 }
 for(const cancel of ['pointercancel','lostpointercapture','blur','visibilitychange','mode','stop']){
  const f=fixture();f.begin();assert(f.ghost(),'drag image appears');
@@ -32,3 +32,17 @@ assert.equal(f.effect.textContent,'😋');assert.equal(f.spoken.filter(s=>s.star
 const missed=fixture();missed.begin();missed.food[1].onpointerup(missed.event(500,500));assert(!missed.spoken.some(s=>s.startsWith('啊嗚')));assert.equal(missed.ghost(),null);
 const tap=fixture();tap.food[2].onpointerdown(tap.event(10,10));tap.food[2].onpointerup(tap.event(10,10));tap.food[2].click();tap.baby.click();assert.equal(tap.effect.textContent,'😋');
 console.log('Pretend drag: successful drop once, miss, tap fallback, pointer cancellation, capture loss, blur, hidden page, mode change and late release passed.');
+
+const resume=fixture();resume.modes[3].click();resume.baby.click();
+assert.equal(resume.window.YanClassicShared.state.pretendSession.sleeping,true);
+resume.window.YanPretendPlay.stop();resume.window.YanPretendPlay.start();
+assert.equal(resume.baby.getAttribute('aria-label'),'叫醒娃娃');
+resume.map['#pretend-voice'].click();assert(resume.spoken.at(-1).includes('叫他起床'));
+resume.baby.click();assert.equal(resume.window.YanClassicShared.state.pretendSession.sleeping,false);
+const cp=resume.window.YanPretendPlay.checkpoint;
+const valid=resume.window.YanClassicShared.state.pretendSession;
+assert.equal(cp({...valid,food:'invalid'}),null);
+assert.equal(cp({...valid,activity:'feed',sleeping:true}),null);
+assert.equal(cp({...valid,version:2}),null);
+assert.notEqual(cp(valid),valid);
+console.log('Pretend save: sleeping resume, wake guidance, waking and invalid checkpoints passed.');

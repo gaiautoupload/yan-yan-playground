@@ -1,6 +1,13 @@
 # 彥彥配對樂園
 
-Release 421 — 2026-11-11 (Asia/Taipei).
+Release 422 — 2026-11-12 (Asia/Taipei).
+
+## Release 422
+
+- Baby care now saves activity, selected food, sleeping, bathing and feeding feedback through the shared local save. Returning home or reloading restores the room without replaying the action.
+- Sleeping voice guidance explains how to wake the baby; invalid or incompatible checkpoints safely use the default room.
+- Played feeding, bathing, hugging, sleeping and waking at 320×568, 360×800, 390×844 and 844×390; sleeping survived home navigation and reload at every size. Also verified selected strawberry/feeding feedback after reload and audio cancellation on home.
+- Regression tests cover restored sleeping, waking guidance, invalid checkpoints and existing drag cancellation. Physical phone touch testing remains outstanding.
 
 ## Release 421
 

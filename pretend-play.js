@@ -2,8 +2,14 @@
 const sh=window.YanClassicShared,audio=window.YanClassicAudio;if(!sh||!audio)return;
 let owner=null,cleanup=()=>{};
 function stop(){cleanup();cleanup=()=>{};owner=null;window.YanSpeech?.cancel()}
+function checkpoint(s){
+ if(!s||s.version!==1||!['feed','bath','hug','sleep'].includes(s.activity)||!['🍌','🍓','🥣'].includes(s.food)||['sleeping','washed','fed'].some(k=>typeof s[k]!=='boolean')||s.sleeping&&s.activity!=='sleep')return null;
+ return {version:1,activity:s.activity,food:s.food,sleeping:s.sleeping,washed:s.washed,fed:s.fed};
+}
 function start(){
- stop();audio.unlock();let activity='hug',food='🍌',sleeping=false,washed=false,fed=false;
+ stop();audio.unlock();const saved=checkpoint(sh.state.pretendSession);
+ let {activity,food,sleeping,washed,fed}=saved||{activity:'hug',food:'🍌',sleeping:false,washed:false,fed:false};
+ const save=()=>{sh.state.pretendSession={version:1,activity,food,sleeping,washed,fed};sh.persist()};
  sh.app.innerHTML='<section class="screen pretend-screen"><header class="bar"><button class="iconbtn" id="pretend-home" aria-label="回首頁">⌂</button><span class="chip">🧸 照顧娃娃</span><button class="iconbtn" id="pretend-voice" aria-label="再聽一次">🔊</button></header><main class="pretend-room"><div class="pretend-window" aria-hidden="true">☀️ ☁️</div><div class="pretend-hearts" aria-hidden="true">💛 💛 💛</div><button class="pretend-baby" id="pretend-baby" aria-label="抱抱娃娃"><span class="pretend-face" aria-hidden="true">👶</span><span class="pretend-effect" aria-hidden="true">🧸</span><span class="pretend-hand" aria-hidden="true">👆</span></button><div class="pretend-bed" aria-hidden="true">🛏️</div><div class="pretend-food" aria-label="選擇食物" hidden><button data-food="🍌" aria-label="選香蕉">🍌</button><button data-food="🍓" aria-label="選草莓">🍓</button><button data-food="🥣" aria-label="選粥">🥣</button></div></main><footer class="pretend-tools" aria-label="自由選擇照顧方式"><button data-activity="feed" aria-label="餵飯" aria-pressed="false">🥣</button><button data-activity="bath" aria-label="洗澡" aria-pressed="false">🛁</button><button data-activity="hug" aria-label="抱抱" aria-pressed="true">🧸</button><button data-activity="sleep" aria-label="睡覺" aria-pressed="false">🌙</button></footer><div class="pretend-status" role="status" aria-live="polite"></div></section>';
  const screen=sh.app.querySelector('.pretend-screen');owner=screen;
  const live=()=>owner===screen&&screen.isConnected;
@@ -23,10 +29,10 @@ function start(){
  function cancelDrag(){const old=drag;drag=null;screen.querySelector('.pretend-drag-food')?.remove();baby.classList.remove('pretend-drop-ready');if(old&&old.button.hasPointerCapture(old.id))old.button.releasePointerCapture(old.id)}
  cleanup=()=>{cancelDrag();listeners.abort()};
  const prompts={feed:'把食物拖給娃娃。也可以選食物，再點娃娃。',bath:'洗澡囉！點點娃娃，洗出香香的泡泡。',hug:'來抱抱！點點娃娃，給一個大抱抱。',sleep:'晚安。點點娃娃，陪他睡覺。'};
- screen.querySelectorAll('[data-activity]').forEach(b=>b.onclick=()=>{if(!live())return;cancelDrag();activity=b.dataset.activity;if(activity!=='sleep')sleeping=false;washed=false;fed=false;paint();audio.play('tap');tell(prompts[activity])});
+ screen.querySelectorAll('[data-activity]').forEach(b=>b.onclick=()=>{if(!live())return;cancelDrag();activity=b.dataset.activity;if(activity!=='sleep')sleeping=false;washed=false;fed=false;paint();save();audio.play('tap');tell(prompt())});
  screen.querySelectorAll('[data-food]').forEach(b=>{
   let suppressClick=false;
-  b.onclick=()=>{if(suppressClick){suppressClick=false;return}if(!live())return;food=b.dataset.food;fed=false;paint();tell(({ '🍌':'香蕉','🍓':'草莓','🥣':'粥'})[food]+'，拖給娃娃，或點娃娃餵一口。')};
+  b.onclick=()=>{if(suppressClick){suppressClick=false;return}if(!live())return;food=b.dataset.food;fed=false;paint();save();tell(({ '🍌':'香蕉','🍓':'草莓','🥣':'粥'})[food]+'，拖給娃娃，或點娃娃餵一口。')};
   b.onpointerdown=e=>{if(!live()||activity!=='feed'||drag||e.button!==0)return;suppressClick=false;drag={id:e.pointerId,button:b,x:e.clientX,y:e.clientY,moved:false};b.setPointerCapture(e.pointerId)};
   b.onpointermove=e=>{
    if(!drag||drag.id!==e.pointerId||drag.button!==b)return;
@@ -49,11 +55,12 @@ function start(){
   else if(activity==='bath'){washed=!washed;tell(washed?'泡泡沖乾淨了，香香的！':'搓搓泡泡，洗洗小手！')}
   else if(activity==='sleep'){sleeping=!sleeping;tell(sleeping?'呼，娃娃睡著了。晚安。':'早安！我們再一起玩。')}
   else tell('抱緊緊！娃娃好開心，謝謝你照顧我。');
-  paint();audio.play(activity==='sleep'?'tap':'hit');
+  paint();save();audio.play(activity==='sleep'?'tap':'hit');
  };
  screen.querySelector('#pretend-home').onclick=()=>{stop();sh.renderHome()};
- screen.querySelector('#pretend-voice').onclick=()=>tell(prompts[activity]);
- paint();tell('我們來照顧娃娃！餵飯、洗澡、抱抱，想玩哪一個都可以。');
+ const prompt=()=>activity==='sleep'&&sleeping?'娃娃睡著了。點點娃娃，就可以叫他起床。':prompts[activity];
+ screen.querySelector('#pretend-voice').onclick=()=>tell(prompt());
+ paint();save();tell(saved?prompt():'我們來照顧娃娃！餵飯、洗澡、抱抱，想玩哪一個都可以。');
 }
-window.YanPretendPlay={start,stop};
+window.YanPretendPlay={start,stop,checkpoint};
 })();
