@@ -1,6 +1,12 @@
 # 彥彥配對樂園
 
-Release 422 — 2026-11-12 (Asia/Taipei).
+Release 423 — 2026-11-12 (Asia/Taipei).
+
+## Release 423
+
+- Tapping the already-selected baby-care activity repeats its guidance without clearing feeding or clean-bath feedback. Switching to a different activity still begins that interaction normally.
+- At 320×568, 360×800, 390×844 and 844×390, played feeding, bathing and sleeping, tapped each selected activity again, checked feedback stayed visible, and returned home/reopened. Regression coverage includes preserved feedback after restart and switching activities.
+- This is browser viewport testing, not physical phone testing. Woodman timing is covered by the existing automated suite this pass, not a newly completed manual level.
 
 ## Release 422
 

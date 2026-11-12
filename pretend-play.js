@@ -29,7 +29,7 @@ function start(){
  function cancelDrag(){const old=drag;drag=null;screen.querySelector('.pretend-drag-food')?.remove();baby.classList.remove('pretend-drop-ready');if(old&&old.button.hasPointerCapture(old.id))old.button.releasePointerCapture(old.id)}
  cleanup=()=>{cancelDrag();listeners.abort()};
  const prompts={feed:'把食物拖給娃娃。也可以選食物，再點娃娃。',bath:'洗澡囉！點點娃娃，洗出香香的泡泡。',hug:'來抱抱！點點娃娃，給一個大抱抱。',sleep:'晚安。點點娃娃，陪他睡覺。'};
- screen.querySelectorAll('[data-activity]').forEach(b=>b.onclick=()=>{if(!live())return;cancelDrag();activity=b.dataset.activity;if(activity!=='sleep')sleeping=false;washed=false;fed=false;paint();save();audio.play('tap');tell(prompt())});
+ screen.querySelectorAll('[data-activity]').forEach(b=>b.onclick=()=>{if(!live())return;cancelDrag();if(activity===b.dataset.activity){tell(prompt());return}activity=b.dataset.activity;if(activity!=='sleep')sleeping=false;washed=false;fed=false;paint();save();audio.play('tap');tell(prompt())});
  screen.querySelectorAll('[data-food]').forEach(b=>{
   let suppressClick=false;
   b.onclick=()=>{if(suppressClick){suppressClick=false;return}if(!live())return;food=b.dataset.food;fed=false;paint();save();tell(({ '🍌':'香蕉','🍓':'草莓','🥣':'粥'})[food]+'，拖給娃娃，或點娃娃餵一口。')};
