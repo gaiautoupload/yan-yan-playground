@@ -19,7 +19,7 @@ function speak(message,onFinish,onStart){
  return true;
 }
 function showRetry(){
- const button=document.querySelector('[id$="-speak"],#speak');
+ const button=document.querySelector('[id$="-speak"],#speak,#seek-voice,#pretend-voice');
  if(button){button.title='語音暫時無法播放，點一下重試';button.setAttribute('aria-label','重播語音，若無聲請再試一次')}
 }
 document.addEventListener('visibilitychange',()=>{if(document.hidden)cancel()});
