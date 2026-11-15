@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
-let audio,screen={},observer;
+let audio,screen={},observer,retryButton=null;
 class AudioMock{constructor(){audio=this}pause(){this.paused=true}play(){this.paused=false;return Promise.resolve()}removeAttribute(){this.src=''}load(){}}
-const document={body:{appendChild(){}},querySelector:()=>screen,getElementById:()=>({}),addEventListener(){}};
+const document={body:{appendChild(){}},querySelector:selector=>selector==='#app > .screen'?screen:retryButton&&selector.split(',').includes('#'+retryButton.id)?retryButton:null,getElementById:()=>({}),addEventListener(){}};
 const window={YanClassicShared:{state:{voice:true}}};
 vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../speech.js'),'utf8'),{Audio:AudioMock,document,window,MutationObserver:class{constructor(fn){observer=fn}observe(){}}});
 const speech=window.YanSpeech;
@@ -15,4 +15,15 @@ audio.onended();assert.equal(completed,1);assert.equal(speech.speaking,false);
 speech.speak('第三句');screen={};observer();assert.equal(audio.paused,true);assert.equal(speech.pending,false);
 window.YanClassicShared.state.voice=false;assert.equal(speech.speak('靜音'),false);
 assert.equal(audio.src,'');
+window.YanClassicShared.state.voice=true;
+for(const id of ['seek-voice','pretend-voice']){
+ const attributes={};retryButton={id,setAttribute:(name,value)=>attributes[name]=value};
+ let reason=null;speech.speak('失敗的語音',value=>reason=value);audio.onerror();
+ assert.equal(reason,'error');assert.equal(speech.pending,false);
+ assert(attributes['aria-label'].includes('重播語音'),id+' receives retry guidance');
+ speech.speak('重新播放');audio.onplaying();assert.equal(speech.speaking,true);
+ const staleError=audio.onerror;speech.cancel();retryButton.title='new screen';
+ staleError();assert.equal(retryButton.title,'new screen','cancelled error cannot modify a new screen');
+}
+console.log('Speech errors: both preschool retry buttons, retry playback and stale-error cancellation passed.');
 console.log('Speech: stale response, completion, navigation cancellation, mute passed.');
