@@ -20,7 +20,7 @@ for(const id of ['seek-voice','pretend-voice']){
  const attributes={};retryButton={id,setAttribute:(name,value)=>attributes[name]=value};
  let reason=null;speech.speak('失敗的語音',value=>reason=value);audio.onerror();
  assert.equal(reason,'error');assert.equal(speech.pending,false);
- assert(attributes['aria-label'].includes('重播語音'),id+' receives retry guidance');
+ assert(String(attributes['aria-label']||'').includes('重播語音'),id+' receives retry guidance');
  speech.speak('重新播放');audio.onplaying();assert.equal(speech.speaking,true);
  const staleError=audio.onerror;speech.cancel();retryButton.title='new screen';
  staleError();assert.equal(retryButton.title,'new screen','cancelled error cannot modify a new screen');
