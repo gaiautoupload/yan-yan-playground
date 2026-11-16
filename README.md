@@ -15,7 +15,7 @@ Production release 424 was played using browser pointer holds and viewport overr
 
 Hide-and-seek rounds also completed at all four sizes. Completed boards survived home/re-entry at each size. Leaving after replaying guidance paused and cleared that speech player. Baby-care activities and saved sleeping/food feedback were verified in releases 422–423.
 
-Outstanding: physical touch cancellation, mobile browser focus/background behavior, normal-speed full rounds at the three larger sizes, and coverage of later Woodman levels. The butterfly completion-guidance issue observed during this audit was fixed in release 425.
+Outstanding at this audit date: physical touch cancellation, mobile browser focus/background behavior, normal-speed full rounds at the three larger sizes, and coverage of later Woodman levels. See the release 426 follow-up below for later normal-speed results. The butterfly completion-guidance issue observed during this audit was fixed in release 425.
 
 This follow-up only records observed tests; it does not change deployed application files.
 
@@ -39,7 +39,8 @@ This follow-up only records observed tests; it does not change deployed applicat
 - Chrome completed feeding, bathing, hugging, sleeping and home return at all four requested viewport sizes with no horizontal overflow. A separate default-size Chrome session completed hide-and-seek and baby hugging.
 - A Chrome tab-switch experiment observed cleared/paused audio, but querying the old tab brought it back to visible state. This is incomplete evidence for background behavior and does not close the physical lock-screen/background test gap.
 - The live speech endpoint returned uncached `200 audio/mpeg` for a short Mandarin prompt; empty, whitespace-only and 241-character requests returned 400. Audio was not listened to during this endpoint check.
-- Next priorities: meaningful picture-led baby-care interactions beyond tapping; normal-speed Woodman full rounds at larger sizes; physical touch cancellation and lock-screen/background checks. Do not repeat unchanged deployment or count scheduled notifications as completed development.
+- Later Chrome normal-speed full rounds on release 426: 360×800 level 1 completed without a retry; 390×844 level 2 completed with one red-light retry; 844×390 level 3 completed without a retry. Next and category return worked. These were browser pointer holds, not physical phone input.
+- Next priorities: meaningful picture-led baby-care interactions beyond tapping; physical touch cancellation and lock-screen/background checks; later Woodman levels. Bathing currently alternates bubble/clean feedback on taps; a direct washing gesture is a future improvement, not an implemented feature. Do not repeat unchanged deployment or count scheduled notifications as completed development.
 
 ## Release 425
 
