@@ -48,7 +48,7 @@ function start(){
  });
  window.addEventListener('blur',cancelDrag,{signal:listeners.signal});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelDrag()},{signal:listeners.signal});
- baby.onpointerdown=e=>{suppressWashClick=false;if(!live()||activity!=='bath'||e.button!==0)return;wash={id:e.pointerId,x:e.clientX,y:e.clientY,distance:0,done:false};baby.setPointerCapture(e.pointerId)};
+ baby.onpointerdown=e=>{if(wash||drag)return;suppressWashClick=false;if(!live()||activity!=='bath'||e.button!==0)return;wash={id:e.pointerId,x:e.clientX,y:e.clientY,distance:0,done:false};baby.setPointerCapture(e.pointerId)};
  baby.onpointermove=e=>{
   if(!wash||wash.id!==e.pointerId||!live()||activity!=='bath')return;
   wash.distance+=Math.hypot(e.clientX-wash.x,e.clientY-wash.y);wash.x=e.clientX;wash.y=e.clientY;
