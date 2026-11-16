@@ -32,6 +32,15 @@ This follow-up only records observed tests; it does not change deployed applicat
 - Speech playback failure now attaches retry guidance to hide-and-seek and baby-care voice buttons as well as older game buttons.
 - Existing button actions remain available for retry. Automated speech lifecycle checks cover stale completion, navigation cancellation and mute. No new physical phone verification in this pass.
 
+### Follow-up evidence — 2026-11-16
+
+- `verification/speech.cjs` now checks playback errors for both preschool voice buttons, explicit replay and cancelled stale errors. Removing the preschool selector support in a temporary negative control causes the expected assertion failure.
+- Visibility-event tests cover cancelling both pending and playing speech, ignoring late callbacks, remaining stopped on return to foreground, and allowing explicit replay. These use mocked browser events, not a physical device.
+- Chrome completed feeding, bathing, hugging, sleeping and home return at all four requested viewport sizes with no horizontal overflow. A separate default-size Chrome session completed hide-and-seek and baby hugging.
+- A Chrome tab-switch experiment observed cleared/paused audio, but querying the old tab brought it back to visible state. This is incomplete evidence for background behavior and does not close the physical lock-screen/background test gap.
+- The live speech endpoint returned uncached `200 audio/mpeg` for a short Mandarin prompt; empty, whitespace-only and 241-character requests returned 400. Audio was not listened to during this endpoint check.
+- Next priorities: meaningful picture-led baby-care interactions beyond tapping; normal-speed Woodman full rounds at larger sizes; physical touch cancellation and lock-screen/background checks. Do not repeat unchanged deployment or count scheduled notifications as completed development.
+
 ## Release 425
 
 - Hide-and-seek keeps replay guidance when the butterfly is revealed after all animals, when found spots are tapped again, and when voice guidance is replayed.
