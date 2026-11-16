@@ -17,6 +17,7 @@ function start(){
  const tell=text=>{if(live()){screen.querySelector('.pretend-status').textContent=text;sh.say(text)}};
  function paint(){
   screen.dataset.activity=activity;screen.classList.toggle('is-asleep',sleeping);
+  screen.querySelector('.pretend-hand').textContent=activity==='bath'?'🖐️ ↔️':'👆';
   screen.querySelector('.pretend-window').textContent=sleeping?'🌙 ⭐':'☀️ ☁️';
   screen.querySelector('.pretend-face').textContent=sleeping?'😴':'👶';
   screen.querySelector('.pretend-food').hidden=activity!=='feed';

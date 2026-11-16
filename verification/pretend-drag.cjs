@@ -9,7 +9,7 @@ function fixture(){
  const baby=node(),effect=node(),status=node();
  const food=['🍌','🍓','🥣'].map(x=>Object.assign(node(),{dataset:{food:x}}));
  const modes=['feed','bath','hug','sleep'].map(x=>Object.assign(node(),{dataset:{activity:x}}));
- const map={'#pretend-baby':baby,'.pretend-effect':effect,'.pretend-status':status,'.pretend-window':node(),'.pretend-face':node(),'.pretend-food':node(),'#pretend-home':node(),'#pretend-voice':node()};
+ const map={'#pretend-baby':baby,'.pretend-effect':effect,'.pretend-status':status,'.pretend-window':node(),'.pretend-hand':node(),'.pretend-face':node(),'.pretend-food':node(),'#pretend-home':node(),'#pretend-voice':node()};
  screen=Object.assign(node(),{querySelector:q=>q==='.pretend-drag-food'?ghost:map[q],querySelectorAll:q=>q==='[data-food]'?food:modes,appendChild:g=>{ghost=g}});
  const listeners={};const document={hidden:false,createElement:node,addEventListener:(name,fn)=>listeners[name]=fn};
  const window={addEventListener:(name,fn)=>listeners[name]=fn,YanSpeech:{cancel(){}},YanClassicAudio:{unlock(){},play(){}},YanClassicShared:{state:{},persist(){},app:{querySelector:()=>screen},say:t=>spoken.push(t),renderHome(){screen.isConnected=false}}};
