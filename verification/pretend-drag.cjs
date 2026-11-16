@@ -56,3 +56,14 @@ repeat.window.YanPretendPlay.stop();repeat.window.YanPretendPlay.start();
 assert.equal(repeat.effect.textContent,'✨','clean feedback survives restart');
 repeat.modes[0].click();assert.equal(repeat.effect.textContent,'🍌','changing activities starts a new interaction');
 console.log('Repeated activity selection preserves feeding and bathing feedback; switching activities still works.');
+const wash=fixture();wash.modes[1].click();wash.baby.onpointerdown(wash.event(110,150));wash.baby.onpointermove(wash.event(195,150));wash.baby.onpointerup(wash.event(195,150));wash.baby.click();
+assert.equal(wash.effect.textContent,'✨','washing gesture stays clean after synthetic click');
+assert.equal(wash.spoken.filter(s=>s.startsWith('搓搓洗洗')).length,1);
+const cancelledWash=fixture();cancelledWash.modes[1].click();cancelledWash.baby.onpointerdown(cancelledWash.event(110,150));cancelledWash.baby.onpointercancel(cancelledWash.event(110,150));cancelledWash.baby.onpointermove(cancelledWash.event(195,150));cancelledWash.baby.onpointerup(cancelledWash.event(195,150));cancelledWash.baby.click();assert.equal(cancelledWash.effect.textContent,'🫧');
+console.log('Washing gesture: clean feedback once, synthetic-click suppression and cancellation passed.');
+for(const action of ['mode','blur','visibilitychange','stop']){
+ const f=fixture();f.modes[1].click();f.baby.onpointerdown(f.event(110,150));
+ if(action==='mode')f.modes[0].click();else if(action==='stop')f.window.YanPretendPlay.stop();else if(action==='visibilitychange'){f.document.hidden=true;f.listeners.visibilitychange()}else f.listeners.blur();
+ f.baby.onpointermove(f.event(195,150));f.baby.onpointerup(f.event(195,150));f.baby.click();
+ assert(!f.spoken.some(s=>s.startsWith('搓搓洗洗')||s.startsWith('啊嗚')),action+' blocks late washing/click');
+}

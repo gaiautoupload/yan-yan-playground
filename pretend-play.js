@@ -25,15 +25,15 @@ function start(){
   effect.textContent=activity==='feed'?(fed?'😋':food):activity==='bath'?(washed?'✨':'🫧'):activity==='sleep'?(sleeping?'💤':'🌙'):'💛';
   baby.setAttribute('aria-label',activity==='feed'?'餵娃娃吃東西':activity==='bath'?'幫娃娃洗泡泡':activity==='sleep'?(sleeping?'叫醒娃娃':'哄娃娃睡覺'):'抱抱娃娃');
  }
- let drag=null;const listeners=new AbortController();
- function cancelDrag(){const old=drag;drag=null;screen.querySelector('.pretend-drag-food')?.remove();baby.classList.remove('pretend-drop-ready');if(old&&old.button.hasPointerCapture(old.id))old.button.releasePointerCapture(old.id)}
+ let drag=null,wash=null,suppressWashClick=false;const listeners=new AbortController();
+ function cancelDrag(){if(wash){suppressWashClick=true;const id=wash.id;wash=null;if(baby.hasPointerCapture(id))baby.releasePointerCapture(id)}const old=drag;drag=null;screen.querySelector('.pretend-drag-food')?.remove();baby.classList.remove('pretend-drop-ready');if(old&&old.button.hasPointerCapture(old.id))old.button.releasePointerCapture(old.id)}
  cleanup=()=>{cancelDrag();listeners.abort()};
- const prompts={feed:'把食物拖給娃娃。也可以選食物，再點娃娃。',bath:'洗澡囉！點點娃娃，洗出香香的泡泡。',hug:'來抱抱！點點娃娃，給一個大抱抱。',sleep:'晚安。點點娃娃，陪他睡覺。'};
+ const prompts={feed:'把食物拖給娃娃。也可以選食物，再點娃娃。',bath:'洗澡囉！在娃娃身上搓搓，也可以點一下。',hug:'來抱抱！點點娃娃，給一個大抱抱。',sleep:'晚安。點點娃娃，陪他睡覺。'};
  screen.querySelectorAll('[data-activity]').forEach(b=>b.onclick=()=>{if(!live())return;cancelDrag();if(activity===b.dataset.activity){tell(prompt());return}activity=b.dataset.activity;if(activity!=='sleep')sleeping=false;washed=false;fed=false;paint();save();audio.play('tap');tell(prompt())});
  screen.querySelectorAll('[data-food]').forEach(b=>{
   let suppressClick=false;
   b.onclick=()=>{if(suppressClick){suppressClick=false;return}if(!live())return;food=b.dataset.food;fed=false;paint();save();tell(({ '🍌':'香蕉','🍓':'草莓','🥣':'粥'})[food]+'，拖給娃娃，或點娃娃餵一口。')};
-  b.onpointerdown=e=>{if(!live()||activity!=='feed'||drag||e.button!==0)return;suppressClick=false;drag={id:e.pointerId,button:b,x:e.clientX,y:e.clientY,moved:false};b.setPointerCapture(e.pointerId)};
+  b.onpointerdown=e=>{if(!live()||activity!=='feed'||drag||e.button!==0)return;suppressClick=false;suppressWashClick=false;drag={id:e.pointerId,button:b,x:e.clientX,y:e.clientY,moved:false};b.setPointerCapture(e.pointerId)};
   b.onpointermove=e=>{
    if(!drag||drag.id!==e.pointerId||drag.button!==b)return;
    if(!live()||activity!=='feed'){cancelDrag();return}
@@ -48,7 +48,19 @@ function start(){
  });
  window.addEventListener('blur',cancelDrag,{signal:listeners.signal});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelDrag()},{signal:listeners.signal});
+ baby.onpointerdown=e=>{suppressWashClick=false;if(!live()||activity!=='bath'||e.button!==0)return;wash={id:e.pointerId,x:e.clientX,y:e.clientY,distance:0,done:false};baby.setPointerCapture(e.pointerId)};
+ baby.onpointermove=e=>{
+  if(!wash||wash.id!==e.pointerId||!live()||activity!=='bath')return;
+  wash.distance+=Math.hypot(e.clientX-wash.x,e.clientY-wash.y);wash.x=e.clientX;wash.y=e.clientY;
+  if(wash.distance<24)return;e.preventDefault();suppressWashClick=true;
+  if(wash.done)return;
+  const r=baby.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)return;
+  if(wash.distance>=80){wash.done=true;washed=true;paint();save();audio.play('hit');tell('搓搓洗洗，娃娃洗乾淨了！')}
+ };
+ baby.onpointerup=e=>{if(!wash||wash.id!==e.pointerId)return;const id=wash.id;wash=null;if(baby.hasPointerCapture(id))baby.releasePointerCapture(id)};
+ baby.onpointercancel=baby.onlostpointercapture=e=>{if(wash&&wash.id===e.pointerId)cancelDrag()};
  baby.onclick=()=>{
+  if(suppressWashClick){suppressWashClick=false;return}
   if(!live())return;
   baby.classList.remove('pretend-bounce');void baby.offsetWidth;baby.classList.add('pretend-bounce');
   if(activity==='feed'){fed=true;tell('啊嗚！好好吃，謝謝你！')}
