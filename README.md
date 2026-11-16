@@ -31,6 +31,9 @@ This follow-up only records observed tests; it does not change deployed applicat
 
 - A second pointer cannot replace an active washing gesture or interfere with an active food drag. First-pointer ownership and capture cleanup are covered by the event harness.
 - This pass uses automated multi-pointer events; physical multi-touch remains unverified.
+- Follow-up on the production site: Chrome at 320×568, 360×800, 390×844 and 844×390 completed rub-to-clean, tap-to-bubbles and switching to feeding. Earlier release 428 production checks also retained clean feedback after reload at every size.
+- The event harness additionally verifies that a cancelled wash cannot feed on its late release, while the next intentional food drag feeds once. This does not substitute for physical multi-touch testing.
+- Chrome 320×568 completed Woodman level 4 entirely at normal speed without a recorded retry and returned to category. All four requested sizes now have an early-level normal-speed full-round result; later levels and physical devices remain outside that coverage.
 
 ## Release 428
 
@@ -56,7 +59,7 @@ This follow-up only records observed tests; it does not change deployed applicat
 - A Chrome tab-switch experiment observed cleared/paused audio, but querying the old tab brought it back to visible state. This is incomplete evidence for background behavior and does not close the physical lock-screen/background test gap.
 - The live speech endpoint returned uncached `200 audio/mpeg` for a short Mandarin prompt; empty, whitespace-only and 241-character requests returned 400. Audio was not listened to during this endpoint check.
 - Later Chrome normal-speed full rounds on release 426: 360×800 level 1 completed without a retry; 390×844 level 2 completed with one red-light retry; 844×390 level 3 completed without a retry. Next and category return worked. These were browser pointer holds, not physical phone input.
-- Next priorities: meaningful picture-led baby-care interactions beyond tapping; physical touch cancellation and lock-screen/background checks; later Woodman levels. Bathing currently alternates bubble/clean feedback on taps; a direct washing gesture is a future improvement, not an implemented feature. Do not repeat unchanged deployment or count scheduled notifications as completed development.
+- Next priorities: improve visual feedback during direct baby-care interactions; physical touch cancellation and lock-screen/background checks; later Woodman levels. Bathing gained direct washing gestures in release 428, with tap fallback retained. Do not repeat unchanged deployment or count scheduled notifications as completed development.
 
 ## Release 425
 
