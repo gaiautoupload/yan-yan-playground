@@ -58,7 +58,7 @@ function start(){
   paint();save();audio.play(activity==='sleep'?'tap':'hit');
  };
  screen.querySelector('#pretend-home').onclick=()=>{stop();sh.renderHome()};
- const prompt=()=>activity==='sleep'&&sleeping?'娃娃睡著了。點點娃娃，就可以叫他起床。':prompts[activity];
+ const prompt=()=>activity==='sleep'&&sleeping?'娃娃睡著了。點點娃娃，就可以叫他起床。':activity==='bath'&&washed?'娃娃洗乾淨了！再點娃娃，可以玩泡泡。':activity==='feed'&&fed?'好好吃！可以換一種食物，再餵一口。':prompts[activity];
  screen.querySelector('#pretend-voice').onclick=()=>tell(prompt());
  paint();save();tell(saved?prompt():'我們來照顧娃娃！餵飯、洗澡、抱抱，想玩哪一個都可以。');
 }
