@@ -45,3 +45,14 @@ for(const playing of [false,true]){
 }
 console.log('Speech visibility: pending/playing cancellation, ignored late callbacks, no automatic resume and explicit replay passed.');
 console.log('Speech: stale response, completion, navigation cancellation, mute passed.');
+(async()=>{
+ retryButton={id:'pretend-voice',title:'next prompt',setAttribute(){}};
+ const play=audio.play;let calls=0,failures=0;
+ audio.play=function(){if(calls++===0)return Promise.reject(new Error('playback rejected'));return play.call(this)};
+ speech.speak('被拒絕的舊句',reason=>{assert.equal(reason,'error');failures++;speech.speak('新的提示')});
+ await Promise.resolve();await Promise.resolve();
+ assert.equal(failures,1);assert.equal(retryButton.title,'next prompt','rejected old play cannot warn on the next prompt');
+ assert.equal(speech.pending,true);audio.onplaying();assert.equal(speech.speaking,true);
+ speech.cancel();audio.play=play;
+ console.log('Rejected playback: next-prompt ownership and successful subsequent playback passed.');
+})().catch(error=>{console.error(error);process.exitCode=1});
