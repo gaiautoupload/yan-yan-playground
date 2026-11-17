@@ -29,6 +29,7 @@ This follow-up only records observed tests; it does not change deployed applicat
 
 ## Release 432
 
+- Follow-up production browser checks: completed a fresh hide-and-seek board at 320×568, 360×800, 390×844 and 844×390. Home/re-entry retained completed boards at the three larger sizes. Screenshots at the smallest and landscape sizes showed the replay control. Final replay-guidance/home navigation left the speech player paused with no source. No physical phone or Woodman round was tested in this follow-up.
 - Washing counts only movement whose two sampled endpoints are inside the baby. Leaving and returning no longer washes clean using distance travelled outside. Total gesture travel still suppresses accidental tap fallback.
 - The outside-and-return regression fails before the fix and passes afterward. Existing cancellation, multi-pointer, feeding and save tests pass.
 - Local Chrome browser drags completed washing at 320×568, 360×800, 390×844 and 844×390. These are browser pointer checks, not physical phone touch tests.
