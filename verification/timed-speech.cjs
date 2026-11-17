@@ -39,4 +39,14 @@ function setup(voice=true){
  t.audio.speakTimed('靜音',()=>done++,3900,()=>started++);
  assert.equal(started,1);t.advance(3900);assert.equal(done,1);
 }
+for(const stage of ['playing','minimum-wait','silent-fallback']){
+ const t=setup();let done=0;
+ t.audio.speakTimed('暫停前口令',()=>done++,3900);const old=t.current;
+ if(stage==='silent-fallback')t.advance(8000);
+ else {old.start();if(stage==='minimum-wait'){t.advance(100);old.finish('ended')}}
+ t.audio.cancelTimed();t.speech.speak('返回後新口令',()=>{});const newer=t.speech.id;
+ old.finish('ended');old.start();t.advance(60000);
+ assert.equal(done,0,stage+' cancellation cannot advance the round');
+ assert.equal(t.speech.id,newer,stage+' stale callbacks cannot cancel the new prompt');
+}
 console.log('Timed speech: delayed loading, playback minimum, error fallback, load timeout, cancellation and mute passed.');
