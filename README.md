@@ -1,6 +1,6 @@
 # 彥彥配對樂園
 
-Release 431 — 2026-11-17 (Asia/Taipei).
+Release 432 — 2026-11-17 (Asia/Taipei).
 
 ## Follow-up browser verification — 2026-11-12
 
@@ -26,6 +26,12 @@ This follow-up only records observed tests; it does not change deployed applicat
 - At all four sizes, freely selected hugging, sleeping, bathing and feeding. Selected porridge and fed feedback survived reload; returning home paused and cleared speech.
 - Hide-and-seek Replay reset found badges to zero and restored four covered spots. Reloading the fresh round did not restore old found badges, and each size completed a new round. Completion reload and speech cancellation were also checked at every size.
 - Physical phone input, touch cancellation and background/focus behavior remain unverified by these browser drags. Automated cancellation tests are separate evidence.
+
+## Release 432
+
+- Washing counts only movement whose two sampled endpoints are inside the baby. Leaving and returning no longer washes clean using distance travelled outside. Total gesture travel still suppresses accidental tap fallback.
+- The outside-and-return regression fails before the fix and passes afterward. Existing cancellation, multi-pointer, feeding and save tests pass.
+- Local Chrome browser drags completed washing at 320×568, 360×800, 390×844 and 844×390. These are browser pointer checks, not physical phone touch tests.
 
 ## Release 431
 

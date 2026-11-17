@@ -52,10 +52,14 @@ function start(){
  baby.onpointerdown=e=>{if(wash||drag)return;suppressWashClick=false;if(!live()||activity!=='bath'||e.button!==0)return;wash={id:e.pointerId,x:e.clientX,y:e.clientY,distance:0,done:false};baby.setPointerCapture(e.pointerId)};
  baby.onpointermove=e=>{
   if(!wash||wash.id!==e.pointerId||!live()||activity!=='bath')return;
-  wash.distance+=Math.hypot(e.clientX-wash.x,e.clientY-wash.y);wash.x=e.clientX;wash.y=e.clientY;
-  if(wash.distance<24)return;e.preventDefault();suppressWashClick=true;
+  const r=baby.getBoundingClientRect(),inside=(x,y)=>x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom;
+  const distance=Math.hypot(e.clientX-wash.x,e.clientY-wash.y);
+  wash.travel=(wash.travel||0)+distance;
+  if(inside(wash.x,wash.y)&&inside(e.clientX,e.clientY))wash.distance+=distance;
+  wash.x=e.clientX;wash.y=e.clientY;
+  if(wash.travel<24)return;e.preventDefault();suppressWashClick=true;
   if(wash.done)return;
-  const r=baby.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)return;
+  if(!inside(e.clientX,e.clientY))return;
   if(wash.distance>=80){wash.done=true;washed=true;paint();save();audio.play('hit');tell('搓搓洗洗，娃娃洗乾淨了！')}
  };
  baby.onpointerup=e=>{if(!wash||wash.id!==e.pointerId)return;const id=wash.id;wash=null;if(baby.hasPointerCapture(id))baby.releasePointerCapture(id)};
