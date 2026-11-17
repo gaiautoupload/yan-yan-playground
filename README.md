@@ -29,6 +29,7 @@ This follow-up only records observed tests; it does not change deployed applicat
 
 ## Release 433
 
+- Additional production Chrome run at 360×800: level 6 completed at normal speed with no retry count. A paused 43% checkpoint survived reload and re-entry at 43%; the round then reached 100%. Next opened level 7 and back returned to the action-game category. No new physical device/background verification in this run.
 - Production Chrome follow-up: 320×568 completed level 5 at normal speed, including manual pause/resume, with the result showing 100% and no retry count. Next opened level 6. At 360×800, 390×844 and 844×390 the level-6 pause/resume controls worked, followed by return to the action-game category. Only the smallest size completed a full round in this follow-up; physical background transitions remain unverified.
 - Woodman pauses on window blur or a hidden document, cancels the current cue and timers, saves progress, and requires explicit resume. Leaving the game removes these listeners.
 - Mocked visibility/blur tests cover preserved progress, no retry penalty, stale cue callbacks, explicit resume and listener cleanup. The hidden-pause assertion failed before the fix. Existing timed speech checks pass.
