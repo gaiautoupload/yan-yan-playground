@@ -1,6 +1,6 @@
 # 彥彥配對樂園
 
-Release 432 — 2026-11-17 (Asia/Taipei).
+Release 433 — 2026-11-18 (Asia/Taipei).
 
 ## Follow-up browser verification — 2026-11-12
 
@@ -26,6 +26,12 @@ This follow-up only records observed tests; it does not change deployed applicat
 - At all four sizes, freely selected hugging, sleeping, bathing and feeding. Selected porridge and fed feedback survived reload; returning home paused and cleared speech.
 - Hide-and-seek Replay reset found badges to zero and restored four covered spots. Reloading the fresh round did not restore old found badges, and each size completed a new round. Completion reload and speech cancellation were also checked at every size.
 - Physical phone input, touch cancellation and background/focus behavior remain unverified by these browser drags. Automated cancellation tests are separate evidence.
+
+## Release 433
+
+- Woodman pauses on window blur or a hidden document, cancels the current cue and timers, saves progress, and requires explicit resume. Leaving the game removes these listeners.
+- Mocked visibility/blur tests cover preserved progress, no retry penalty, stale cue callbacks, explicit resume and listener cleanup. The hidden-pause assertion failed before the fix. Existing timed speech checks pass.
+- A local Chrome manual-pause check passed at 320×568. Opening another automated tab did not establish a real background transition; physical phone/background behavior and a new full round remain unverified in this pass.
 
 ## Release 432
 

@@ -3,9 +3,9 @@
 const {app,state,persist,say,fx,vib,bg,renderHome}=window.YanClassicShared;
 const audio=window.YanClassicAudio;
 if(!audio)throw Error('Classic sound engine missing');
-let timers=[],session=0;
+let timers=[],session=0,dispose=()=>{};
 const later=(fn,ms)=>{const id=setTimeout(()=>{timers=timers.filter(t=>t!==id);fn()},ms);timers.push(id);return id};
-function clean(){session++;timers.forEach(clearTimeout);timers=[];audio.cancelTimed();window.YanSpeech?.cancel()}
+function clean(){session++;dispose();dispose=()=>{};timers.forEach(clearTimeout);timers=[];audio.cancelTimed();window.YanSpeech?.cancel()}
 function menu(){
  clean();audio.unlock();audio.play('welcome');
  app.innerHTML='<section class="screen game classic-screen">'+bg('play')+'<header class="bar"><button class="iconbtn" id="classic-back">⌂</button><span class="chip">🎮 遊戲分類</span><span class="chip">👩‍👦</span></header><main class="classic-menu"><div class="classic-family"><img src="./assets/mom.webp"><span>🎈 一起來玩！</span><img src="./assets/kid.webp"></div><button class="classic-tile wood-tile" id="wood-entry"><span class="classic-big">🚦🏃</span><strong>123 木頭人</strong><span>🟢 👆 ➜ 🔴 ✋</span><small>⭐ '+state.woodLevel+' / 60</small></button><button class="classic-tile mole-tile" id="mole-entry"><span class="classic-big">🐹🌼</span><strong>打地鼠</strong><span>👀 👉 🐹 ⭐</span><small>⭐ '+state.moleLevel+' / 60</small></button><button class="classic-tile color-tile" id="color-entry"><span class="classic-big">🔴🟡🔵</span><strong>顏色分類</strong><span>🍎 ➜ 🧺</span><small>⭐ '+state.colorLevel+' / 60</small></button><button class="classic-tile meteor-tile" id="meteor-entry" aria-label="開始彥彥躲隕石"><span class="classic-big">☄️🏃</span><strong>躲隕石</strong><span>⬅️ 🏃 ➡️　❤️×5</span><small>🏆 '+(Number(state.meteorBest)||0)+' 次閃避</small></button><div class="classic-audio-controls"><button id="classic-sfx-toggle" aria-pressed="'+(audio.enabled()?'true':'false')+'">'+(audio.enabled()?'🔊 音效':'🔇 音效')+'</button><button id="classic-voice-toggle" aria-pressed="'+(state.voice?'true':'false')+'">'+(state.voice?'🗣️ 語音':'🔇 語音')+'</button><button class="classic-test-sound" id="classic-test-sound">🎧 試聲音</button></div></main></section>';
@@ -116,12 +116,19 @@ function wood(){
  button.addEventListener('keydown',e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat){e.preventDefault();down({preventDefault(){},pointerId:-1})}});
  button.addEventListener('keyup',()=>{hold=false;saveCheckpoint(true)});
  speed.onclick=()=>{hold=false;saveCheckpoint(true);state.woodPractice=!practice();persist();wood()};
+ function pauseRound(){
+  if(!live()||phase==='paused')return;hold=false;
+  phase='paused';round++;timers.forEach(clearTimeout);timers=[];audio.cancelTimed();window.YanSpeech?.cancel();
+  saveCheckpoint(true);paint();
+ }
  pause.onclick=()=>{
   if(!live())return;hold=false;
   if(phase==='paused'){phase='ready';paint();later(green,550);later(tick,95);return}
-  phase='paused';round++;timers.forEach(clearTimeout);timers=[];audio.cancelTimed();window.YanSpeech?.cancel();
-  saveCheckpoint(true);paint();
+  pauseRound();
  };
+ const background=new AbortController();dispose=()=>background.abort();
+ window.addEventListener('blur',pauseRound,{signal:background.signal});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseRound()},{signal:background.signal});
  restart.onclick=()=>{state.woodCheckpoint=null;persist();wood()};
  app.querySelector('#classic-speak').onclick=()=>{
   audio.unlock();state.voice=true;persist();
