@@ -27,6 +27,9 @@ for(const id of ['seek-voice','pretend-voice']){
  staleError();assert.equal(retryButton.title,'new screen','cancelled error cannot modify a new screen');
 }
 console.log('Speech errors: both preschool retry buttons, retry playback and stale-error cancellation passed.');
+retryButton={id:'seek-voice',title:'new prompt',setAttribute(){}};
+speech.speak('舊句失敗',()=>speech.speak('下一句'));audio.onerror();
+assert.equal(retryButton.title,'new prompt','old failure must not decorate the next speech');speech.cancel();
 for(const playing of [false,true]){
  let finished=0,started=0;
  speech.speak('切換到背景',()=>finished++,()=>started++);

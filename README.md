@@ -1,6 +1,6 @@
 # 彥彥配對樂園
 
-Release 430 — 2026-11-17 (Asia/Taipei).
+Release 431 — 2026-11-17 (Asia/Taipei).
 
 ## Follow-up browser verification — 2026-11-12
 
@@ -26,6 +26,11 @@ This follow-up only records observed tests; it does not change deployed applicat
 - At all four sizes, freely selected hugging, sleeping, bathing and feeding. Selected porridge and fed feedback survived reload; returning home paused and cleared speech.
 - Hide-and-seek Replay reset found badges to zero and restored four covered spots. Reloading the fresh round did not restore old found badges, and each size completed a new round. Completion reload and speech cancellation were also checked at every size.
 - Physical phone input, touch cancellation and background/focus behavior remain unverified by these browser drags. Automated cancellation tests are separate evidence.
+
+## Release 431
+
+- A failed speech callback that starts a new prompt no longer attaches the old retry warning to the new prompt. Both media errors and rejected play requests recheck ownership after completion callbacks.
+- A reproducing regression failed before the fix and passes afterward. No new manual phone run in this pass.
 
 ## Release 430
 
