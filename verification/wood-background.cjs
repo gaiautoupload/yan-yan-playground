@@ -24,4 +24,15 @@ for(const action of ['hidden','blur']){
  t.node('#wood-pause').onclick();t.run();t.cue.start();assert.equal(t.node('#wood-signal').className,'wood-signal green','explicit resume starts a new cue');
  t.window.YanClassics.clean();const count=t.cancelled;t.emit('window','blur');t.document.hidden=true;t.emit('document','visibilitychange');assert.equal(t.cancelled,count,'leaving removes background listeners');
 }
-console.log('Woodman background: hidden/blur pause, preserved progress, stale cue, explicit resume and listener cleanup passed.');
+for(const phase of ['intro','loading','red']){
+ const t=fixture();
+ if(phase!=='intro'){t.cue.finish();t.run()}
+ if(phase==='red'){t.cue.start();t.cue.finish();t.run();assert.equal(t.node('#wood-signal').className,'wood-signal red')}
+ const old=t.cue;t.document.hidden=true;t.emit('document','visibilitychange');const count=t.cancelled;
+ t.emit('window','blur');t.emit('document','visibilitychange');assert.equal(t.cancelled,count,phase+' repeated background events do not cancel twice');
+ old.start?.();old.finish();t.run();
+ assert.equal(t.node('#wood-signal').className,'wood-signal paused',phase+' stale cue cannot resume');
+ assert.equal(t.state.woodCheckpoint,null,phase+' at zero progress keeps checkpoint empty');
+ assert(!t.node('#wood-status').textContent.includes('再試'),phase+' background cannot add a retry');
+}
+console.log('Woodman background: intro/loading/green/red pause, repeated events, preserved progress, stale cue, explicit resume and listener cleanup passed.');
