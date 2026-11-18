@@ -29,6 +29,7 @@ This follow-up only records observed tests; it does not change deployed applicat
 
 ## Release 434
 
+- Follow-up production Chrome pointer checks: separately dragged strawberry onto the baby at 320×568, 360×800, 390×844 and 844×390. Each produced fed feedback and zero remaining drag ghosts. These replace an earlier long batch that timed out without usable results; the timeout was not an application failure. Physical phone touch/cancellation remains unverified.
 - Resuming a completed hide-and-seek board now names the monkey and circular-arrow replay picture, matching the completion and replay guidance. It no longer only asks whether the child wants another round.
 - A reproducing voice regression failed before the change and passes afterward. Restoring a board speaks once, does not replay celebration effects, and partial restoration still names the next animal and matching ear clue.
 
