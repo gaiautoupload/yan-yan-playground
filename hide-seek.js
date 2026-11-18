@@ -29,7 +29,7 @@ function start(reset=false){
  const hint=()=>{
   if(!live())return;
   const target=current(),i=target<0?-1:deck.indexOf(target);
-  if(i<0){speak('都找到了！要再玩一次嗎？');return}
+  if(i<0){speak(completedText);return}
   screen.querySelectorAll('.seek-spot').forEach(b=>b.classList.remove('seek-peek'));
   screen.querySelector('[data-spot="'+i+'"]').classList.add('seek-peek');
   speak('聽！'+friends[deck[i]][1]+'躲在'+places[i][1]+'後面。點點看！');
@@ -52,7 +52,7 @@ function start(reset=false){
  screen.querySelector('#seek-hint').onclick=hint;
  screen.querySelector('#seek-voice').onclick=()=>speak(targetText());
  restoring=true;for(const i of saved?.opened||[])screen.querySelector('[data-spot="'+i+'"]').onclick();restoring=false;save();
- speak(celebrated?'都找到了！要再玩一次嗎？':(saved?'我們繼續找！':'我們玩躲貓貓！')+targetText());
+ speak(celebrated?completedText:(saved?'我們繼續找！':'我們玩躲貓貓！')+targetText());
 }
 window.YanHideSeek={start,stop,checkpoint};
 })();
