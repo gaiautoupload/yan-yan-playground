@@ -29,6 +29,7 @@ This follow-up only records observed tests; it does not change deployed applicat
 
 ## Release 435
 
+- Production Chrome follow-up: at 320×568, 360×800, 390×844 and 844×390, a short rub left bubbles and a longer rub washed clean; the scrubbing effect was absent after release/completion. The 320-size check occurred during release validation and the other three in a follow-up. In-motion animation and reduced-motion appearance were not visually captured; event tests cover the active class and cleanup. No physical phone coverage is implied.
 - Valid short rubbing now moves the bubbles before washing completes, giving visual feedback without text. Releasing, moving outside, cancellation, activity changes and leaving stop the effect. Reduced-motion preferences use a static glow.
 - Event checks cover early feedback and its cleanup; existing washing completion, feeding, cancellation and save tests still pass. This does not establish physical phone input coverage.
 
