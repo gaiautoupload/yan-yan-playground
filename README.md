@@ -1,6 +1,6 @@
 # 彥彥配對樂園
 
-Release 434 — 2026-11-18 (Asia/Taipei).
+Release 435 — 2026-11-18 (Asia/Taipei).
 
 ## Follow-up browser verification — 2026-11-12
 
@@ -26,6 +26,11 @@ This follow-up only records observed tests; it does not change deployed applicat
 - At all four sizes, freely selected hugging, sleeping, bathing and feeding. Selected porridge and fed feedback survived reload; returning home paused and cleared speech.
 - Hide-and-seek Replay reset found badges to zero and restored four covered spots. Reloading the fresh round did not restore old found badges, and each size completed a new round. Completion reload and speech cancellation were also checked at every size.
 - Physical phone input, touch cancellation and background/focus behavior remain unverified by these browser drags. Automated cancellation tests are separate evidence.
+
+## Release 435
+
+- Valid short rubbing now moves the bubbles before washing completes, giving visual feedback without text. Releasing, moving outside, cancellation, activity changes and leaving stop the effect. Reduced-motion preferences use a static glow.
+- Event checks cover early feedback and its cleanup; existing washing completion, feeding, cancellation and save tests still pass. This does not establish physical phone input coverage.
 
 ## Release 434
 

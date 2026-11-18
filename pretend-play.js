@@ -16,6 +16,7 @@ function start(){
  const baby=screen.querySelector('#pretend-baby'),effect=screen.querySelector('.pretend-effect');
  const tell=text=>{if(live()){screen.querySelector('.pretend-status').textContent=text;sh.say(text)}};
  function paint(){
+  baby.classList.remove('pretend-scrubbing');
   screen.dataset.activity=activity;screen.classList.toggle('is-asleep',sleeping);
   screen.querySelector('.pretend-hand').textContent=activity==='bath'?'🖐️ ↔️':'👆';
   screen.querySelector('.pretend-window').textContent=sleeping?'🌙 ⭐':'☀️ ☁️';
@@ -27,7 +28,7 @@ function start(){
   baby.setAttribute('aria-label',activity==='feed'?'餵娃娃吃東西':activity==='bath'?'幫娃娃洗泡泡':activity==='sleep'?(sleeping?'叫醒娃娃':'哄娃娃睡覺'):'抱抱娃娃');
  }
  let drag=null,wash=null,suppressWashClick=false;const listeners=new AbortController();
- function cancelDrag(){if(wash){suppressWashClick=true;const id=wash.id;wash=null;if(baby.hasPointerCapture(id))baby.releasePointerCapture(id)}const old=drag;drag=null;screen.querySelector('.pretend-drag-food')?.remove();baby.classList.remove('pretend-drop-ready');if(old&&old.button.hasPointerCapture(old.id))old.button.releasePointerCapture(old.id)}
+ function cancelDrag(){baby.classList.remove('pretend-scrubbing');if(wash){suppressWashClick=true;const id=wash.id;wash=null;if(baby.hasPointerCapture(id))baby.releasePointerCapture(id)}const old=drag;drag=null;screen.querySelector('.pretend-drag-food')?.remove();baby.classList.remove('pretend-drop-ready');if(old&&old.button.hasPointerCapture(old.id))old.button.releasePointerCapture(old.id)}
  cleanup=()=>{cancelDrag();listeners.abort()};
  const prompts={feed:'把食物拖給娃娃。也可以選食物，再點娃娃。',bath:'洗澡囉！在娃娃身上搓搓，也可以點一下。',hug:'來抱抱！點點娃娃，給一個大抱抱。',sleep:'晚安。點點娃娃，陪他睡覺。'};
  screen.querySelectorAll('[data-activity]').forEach(b=>b.onclick=()=>{if(!live())return;cancelDrag();if(activity===b.dataset.activity){tell(prompt());return}activity=b.dataset.activity;if(activity!=='sleep')sleeping=false;washed=false;fed=false;paint();save();audio.play('tap');tell(prompt())});
@@ -58,11 +59,12 @@ function start(){
   if(inside(wash.x,wash.y)&&inside(e.clientX,e.clientY))wash.distance+=distance;
   wash.x=e.clientX;wash.y=e.clientY;
   if(wash.travel<24)return;e.preventDefault();suppressWashClick=true;
+  baby.classList.toggle('pretend-scrubbing',!wash.done&&wash.distance>=24&&inside(e.clientX,e.clientY));
   if(wash.done)return;
   if(!inside(e.clientX,e.clientY))return;
   if(wash.distance>=80){wash.done=true;washed=true;paint();save();audio.play('hit');tell('搓搓洗洗，娃娃洗乾淨了！')}
  };
- baby.onpointerup=e=>{if(!wash||wash.id!==e.pointerId)return;const id=wash.id;wash=null;if(baby.hasPointerCapture(id))baby.releasePointerCapture(id)};
+ baby.onpointerup=e=>{if(!wash||wash.id!==e.pointerId)return;baby.classList.remove('pretend-scrubbing');const id=wash.id;wash=null;if(baby.hasPointerCapture(id))baby.releasePointerCapture(id)};
  baby.onpointercancel=baby.onlostpointercapture=e=>{if(wash&&wash.id===e.pointerId)cancelDrag()};
  baby.onclick=()=>{
   if(suppressWashClick){suppressWashClick=false;return}

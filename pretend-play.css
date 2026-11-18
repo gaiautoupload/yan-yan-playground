@@ -1,5 +1,8 @@
 .pretend-screen{background:#fff0dc!important;gap:8px;color:#664c42}
 .pretend-screen[data-activity=bath] .pretend-baby{touch-action:none}
+.pretend-scrubbing .pretend-effect{animation:pretend-scrub .3s ease-in-out infinite alternate}
+@keyframes pretend-scrub{from{transform:translateX(-7px) rotate(-8deg)}to{transform:translateX(7px) rotate(8deg)}}
+@media(prefers-reduced-motion:reduce){.pretend-scrubbing .pretend-effect{animation:none;filter:drop-shadow(0 0 6px white)}}
 .pretend-room{flex:1;min-height:0;border:4px solid white;border-radius:28px;position:relative;display:flex;flex-direction:column;align-items:center;background:linear-gradient(#ffe5df 0 72%,#e8cda6 72%);overflow:hidden}
 .pretend-window{position:absolute;top:14px;left:14px;background:#c7edff;border:5px solid white;border-radius:15px;padding:8px;font-size:24px}
 .pretend-hearts{position:absolute;right:15px;top:24px;font-size:20px;max-width:40px;line-height:1.5}
