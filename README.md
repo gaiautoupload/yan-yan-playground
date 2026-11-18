@@ -29,6 +29,7 @@ This follow-up only records observed tests; it does not change deployed applicat
 
 ## Release 433
 
+- Additional production Chrome run at 844×390: level 8 completed at normal speed with 100% progress and no retry count. The win dialog scrolled to expose both Next and Other Games; Other Games returned to the action-game category. Release 433 now has full early-level normal-speed rounds at all four requested sizes (levels 5–8 across sizes), not all 60 levels or physical phone coverage.
 - Additional production Chrome run at 390×844: level 7 completed at normal speed with 100% progress and no retry count. Next opened level 8; back returned to the action-game category. This run did not verify a physical phone or background transition.
 - Additional production Chrome run at 360×800: level 6 completed at normal speed with no retry count. A paused 43% checkpoint survived reload and re-entry at 43%; the round then reached 100%. Next opened level 7 and back returned to the action-game category. No new physical device/background verification in this run.
 - Production Chrome follow-up: 320×568 completed level 5 at normal speed, including manual pause/resume, with the result showing 100% and no retry count. Next opened level 6. At 360×800, 390×844 and 844×390 the level-6 pause/resume controls worked, followed by return to the action-game category. Only the smallest size completed a full round in this follow-up; physical background transitions remain unverified.
