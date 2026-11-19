@@ -14,3 +14,5 @@
 #wood-words{font-size:clamp(19px,6vw,37px);white-space:nowrap}
 @media(max-width:340px){#wood-words{font-size:19px}.wood-signal{font-size:clamp(21px,6.8vw,30px)}}
 @media(max-height:600px){.wood-signal{padding:4px}.wood-hold{min-height:66px}}
+[data-speech-retry]{position:relative;outline:3px solid #d77b22!important;outline-offset:1px}
+[data-speech-retry]::after{content:'↻';position:absolute;right:-3px;bottom:-3px;width:23px;height:23px;display:grid;place-items:center;border:2px solid white;border-radius:50%;background:#fff1be;color:#71451a;font:bold 21px/1 sans-serif;pointer-events:none}

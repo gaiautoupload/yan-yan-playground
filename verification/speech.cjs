@@ -18,11 +18,13 @@ window.YanClassicShared.state.voice=false;assert.equal(speech.speak('靜音'),fa
 assert.equal(audio.src,'');
 window.YanClassicShared.state.voice=true;
 for(const id of ['seek-voice','pretend-voice']){
- const attributes={};retryButton={id,setAttribute:(name,value)=>attributes[name]=value};
+ const attributes={'aria-label':'再聽一次'};retryButton={id,title:'原本提示',setAttribute(name,value){attributes[name]=value;if(name==='title')this.title=value},getAttribute(name){return name==='title'?this.title??null:attributes[name]??null},removeAttribute(name){delete attributes[name];if(name==='title')delete this.title}};
  let reason=null;speech.speak('失敗的語音',value=>reason=value);audio.onerror();
  assert.equal(reason,'error');assert.equal(speech.pending,false);
  assert(String(attributes['aria-label']||'').includes('重播語音'),id+' receives retry guidance');
+ assert.equal(attributes['data-speech-retry'],'',id+' exposes a visible retry marker');
  speech.speak('重新播放');audio.onplaying();assert.equal(speech.speaking,true);
+ assert.equal(attributes['data-speech-retry'],undefined,'replay clears retry marker');assert.equal(retryButton.title,'原本提示');assert.equal(attributes['aria-label'],'再聽一次','replay restores original accessible label');
  const staleError=audio.onerror;speech.cancel();retryButton.title='new screen';
  staleError();assert.equal(retryButton.title,'new screen','cancelled error cannot modify a new screen');
 }

@@ -1,6 +1,6 @@
 # 彥彥配對樂園
 
-Release 435 — 2026-11-18 (Asia/Taipei).
+Release 436 — 2026-11-19 (Asia/Taipei).
 
 ## Follow-up browser verification — 2026-11-12
 
@@ -26,6 +26,11 @@ This follow-up only records observed tests; it does not change deployed applicat
 - At all four sizes, freely selected hugging, sleeping, bathing and feeding. Selected porridge and fed feedback survived reload; returning home paused and cleared speech.
 - Hide-and-seek Replay reset found badges to zero and restored four covered spots. Reloading the fresh round did not restore old found badges, and each size completed a new round. Completion reload and speech cancellation were also checked at every size.
 - Physical phone input, touch cancellation and background/focus behavior remain unverified by these browser drags. Automated cancellation tests are separate evidence.
+
+## Release 436
+
+- Failed speech now marks its existing replay button with a visible circular arrow and outline, instead of relying only on title/accessibility text. Explicit replay or cancellation removes the marker and restores the original title and accessible label.
+- A regression requiring the marker failed before the change; speech cancellation, stale callback, rejected playback and label-restoration checks pass afterward.
 
 ## Release 435
 
