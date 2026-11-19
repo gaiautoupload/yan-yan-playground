@@ -29,6 +29,7 @@ This follow-up only records observed tests; it does not change deployed applicat
 
 ## Release 436
 
+- Additional normal-path production run at 360×800: Woodman level 10 completed at normal speed, 100% progress and no retry count. Next opened level 11; back returned to the action-game category. Browser pointer holds were used, not a physical phone.
 - Normal-path production follow-up at 320×568: Woodman level 9 completed at normal speed with 100% progress and no retry count after the shared speech changes. Next opened level 10; back returned to the action-game category. This run used browser pointer holds and did not establish physical phone coverage or full rounds at the other three sizes for release 436.
 - Production browser failure simulation: blocking speech requests showed the circular-arrow marker in hide-and-seek at 320×568, 360×800, 390×844 and 844×390; each replay button remained within the viewport. Unblocking and replaying removed the marker and restored the original label. Baby-care passed the same marker/replay checks at all four sizes across release and follow-up runs. A landscape screenshot captured the marker. Request blocking, cache override and viewport were restored. These checks did not include full game rounds or physical phones.
 - Failed speech now marks its existing replay button with a visible circular arrow and outline, instead of relying only on title/accessibility text. Explicit replay or cancellation removes the marker and restores the original title and accessible label.
