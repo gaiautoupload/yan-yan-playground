@@ -29,6 +29,7 @@ This follow-up only records observed tests; it does not change deployed applicat
 
 ## Release 436
 
+- Additional normal-path production run at 844×390: Woodman level 12 completed at normal speed, 100% progress and no retry count. Scrolling the win popup exposed Next and Other Games; Other Games returned to the action-game category. Release 436 now has an early normal-speed full-round result at each requested size (levels 9–12 across sizes), not all 60 levels or physical phone coverage.
 - Additional normal-path production run at 390×844: Woodman level 11 completed at normal speed, 100% progress and no retry count. Next opened level 12; back returned to the action-game category. Browser pointer holds were used, not a physical phone.
 - Additional normal-path production run at 360×800: Woodman level 10 completed at normal speed, 100% progress and no retry count. Next opened level 11; back returned to the action-game category. Browser pointer holds were used, not a physical phone.
 - Normal-path production follow-up at 320×568: Woodman level 9 completed at normal speed with 100% progress and no retry count after the shared speech changes. Next opened level 10; back returned to the action-game category. This run used browser pointer holds and did not establish physical phone coverage or full rounds at the other three sizes for release 436.
