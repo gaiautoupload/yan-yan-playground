@@ -27,6 +27,15 @@ for(const id of ['seek-voice','pretend-voice']){
  assert.equal(attributes['data-speech-retry'],undefined,'replay clears retry marker');assert.equal(retryButton.title,'原本提示');assert.equal(attributes['aria-label'],'再聽一次','replay restores original accessible label');
  const staleError=audio.onerror;speech.cancel();retryButton.title='new screen';
  staleError();assert.equal(retryButton.title,'new screen','cancelled error cannot modify a new screen');
+ for(const action of ['cancel','navigation']){
+  speech.speak('顯示重試後離開');audio.onerror();const late=audio.onerror;
+  assert.equal(attributes['data-speech-retry'],'');
+  if(action==='cancel')speech.cancel();else{screen={};observer()}
+  assert.equal(attributes['data-speech-retry'],undefined,action+' clears failure marker');
+  assert.equal(attributes['aria-label'],'再聽一次',action+' restores original label');
+  assert.equal(retryButton.title,'new screen',action+' restores original title');
+  late();assert.equal(attributes['data-speech-retry'],undefined,'late error cannot restore removed marker');
+ }
 }
 console.log('Speech errors: both preschool retry buttons, retry playback and stale-error cancellation passed.');
 retryButton={id:'seek-voice',title:'new prompt',setAttribute(){}};
