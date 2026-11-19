@@ -29,6 +29,7 @@ This follow-up only records observed tests; it does not change deployed applicat
 
 ## Release 436
 
+- Production browser failure simulation: blocking speech requests showed the circular-arrow marker in hide-and-seek at 320×568, 360×800, 390×844 and 844×390; each replay button remained within the viewport. Unblocking and replaying removed the marker and restored the original label. Baby-care passed the same marker/replay checks at all four sizes across release and follow-up runs. A landscape screenshot captured the marker. Request blocking, cache override and viewport were restored. These checks did not include full game rounds or physical phones.
 - Failed speech now marks its existing replay button with a visible circular arrow and outline, instead of relying only on title/accessibility text. Explicit replay or cancellation removes the marker and restores the original title and accessible label.
 - A regression requiring the marker failed before the change; speech cancellation, stale callback, rejected playback and label-restoration checks pass afterward.
 
