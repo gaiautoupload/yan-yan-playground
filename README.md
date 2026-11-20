@@ -29,6 +29,7 @@ This follow-up only records observed tests; it does not change deployed applicat
 
 ## Release 438
 
+- Additional production flows at 360×800, 390×844 and 844×390 completed simulated-touch hug/release followed by pointer-click porridge feeding, bathing, sleeping, waking and home return. Each cleared the hug class and left audio paused without a source. Together with the earlier 320×568 flow, all four sizes have this free-care transition check. This does not cover every action order, all-touch input or physical devices.
 - Production browser follow-up: simulated touch activated the enlarged heart and cancellation restored it at all four requested sizes during release validation. A later 320×568 flow completed touch hug/release, porridge feeding, tap bathing, sleeping, waking and home return; the hug class cleared and the speech player ended paused with no source. This is browser simulation, not physical phone coverage.
 - Replaced CSS-only pressed-state hugging with an owned pointer gesture. Release 437 passed mouse checks but simulated touch at all four sizes did not activate the effect. Pointer down now explicitly starts feedback; release, cancellation, blur, hidden page, mode change and leaving remove it and release capture. A second pointer cannot replace or end the first hug.
 - The pointer-feedback regression failed before the fix and passes afterward, along with existing feeding, washing, cancellation and save checks. Physical phone coverage remains unverified.
