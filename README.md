@@ -1,6 +1,6 @@
 # 彥彥配對樂園
 
-Release 436 — 2026-11-19 (Asia/Taipei).
+Release 437 — 2026-11-20 (Asia/Taipei).
 
 ## Follow-up browser verification — 2026-11-12
 
@@ -26,6 +26,11 @@ This follow-up only records observed tests; it does not change deployed applicat
 - At all four sizes, freely selected hugging, sleeping, bathing and feeding. Selected porridge and fed feedback survived reload; returning home paused and cleared speech.
 - Hide-and-seek Replay reset found badges to zero and restored four covered spots. Reloading the fresh round did not restore old found badges, and each size completed a new round. Completion reload and speech cancellation were also checked at every size.
 - Physical phone input, touch cancellation and background/focus behavior remain unverified by these browser drags. Automated cancellation tests are separate evidence.
+
+## Release 437
+
+- Holding the baby in hug mode gently squeezes the face and enlarges/glows the heart. Releasing restores the appearance through the native pressed state; the short Taiwan Mandarin prompt explains holding and releasing. No task order, score or timer is added.
+- Existing free-care, drag/cancellation and save checks pass. The effect has no looping animation.
 
 ## Release 436
 

@@ -30,7 +30,7 @@ function start(){
  let drag=null,wash=null,suppressWashClick=false;const listeners=new AbortController();
  function cancelDrag(){baby.classList.remove('pretend-scrubbing');if(wash){suppressWashClick=true;const id=wash.id;wash=null;if(baby.hasPointerCapture(id))baby.releasePointerCapture(id)}const old=drag;drag=null;screen.querySelector('.pretend-drag-food')?.remove();baby.classList.remove('pretend-drop-ready');if(old&&old.button.hasPointerCapture(old.id))old.button.releasePointerCapture(old.id)}
  cleanup=()=>{cancelDrag();listeners.abort()};
- const prompts={feed:'把食物拖給娃娃。也可以選食物，再點娃娃。',bath:'洗澡囉！在娃娃身上搓搓，也可以點一下。',hug:'來抱抱！點點娃娃，給一個大抱抱。',sleep:'晚安。點點娃娃，陪他睡覺。'};
+ const prompts={feed:'把食物拖給娃娃。也可以選食物，再點娃娃。',bath:'洗澡囉！在娃娃身上搓搓，也可以點一下。',hug:'按住娃娃，抱緊緊！放開再抱一次。',sleep:'晚安。點點娃娃，陪他睡覺。'};
  screen.querySelectorAll('[data-activity]').forEach(b=>b.onclick=()=>{if(!live())return;cancelDrag();if(activity===b.dataset.activity){tell(prompt());return}activity=b.dataset.activity;if(activity!=='sleep')sleeping=false;washed=false;fed=false;paint();save();audio.play('tap');tell(prompt())});
  screen.querySelectorAll('[data-food]').forEach(b=>{
   let suppressClick=false;
