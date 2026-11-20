@@ -27,8 +27,8 @@ function start(){
   effect.textContent=activity==='feed'?(fed?'😋':food):activity==='bath'?(washed?'✨':'🫧'):activity==='sleep'?(sleeping?'💤':'🌙'):'💛';
   baby.setAttribute('aria-label',activity==='feed'?'餵娃娃吃東西':activity==='bath'?'幫娃娃洗泡泡':activity==='sleep'?(sleeping?'叫醒娃娃':'哄娃娃睡覺'):'抱抱娃娃');
  }
- let drag=null,wash=null,suppressWashClick=false;const listeners=new AbortController();
- function cancelDrag(){baby.classList.remove('pretend-scrubbing');if(wash){suppressWashClick=true;const id=wash.id;wash=null;if(baby.hasPointerCapture(id))baby.releasePointerCapture(id)}const old=drag;drag=null;screen.querySelector('.pretend-drag-food')?.remove();baby.classList.remove('pretend-drop-ready');if(old&&old.button.hasPointerCapture(old.id))old.button.releasePointerCapture(old.id)}
+ let drag=null,wash=null,hugging=null,suppressWashClick=false;const listeners=new AbortController();
+ function cancelDrag(){baby.classList.remove('pretend-scrubbing','pretend-hugging');if(hugging!==null){suppressWashClick=true;const id=hugging;hugging=null;if(baby.hasPointerCapture(id))baby.releasePointerCapture(id)}if(wash){suppressWashClick=true;const id=wash.id;wash=null;if(baby.hasPointerCapture(id))baby.releasePointerCapture(id)}const old=drag;drag=null;screen.querySelector('.pretend-drag-food')?.remove();baby.classList.remove('pretend-drop-ready');if(old&&old.button.hasPointerCapture(old.id))old.button.releasePointerCapture(old.id)}
  cleanup=()=>{cancelDrag();listeners.abort()};
  const prompts={feed:'把食物拖給娃娃。也可以選食物，再點娃娃。',bath:'洗澡囉！在娃娃身上搓搓，也可以點一下。',hug:'按住娃娃，抱緊緊！放開再抱一次。',sleep:'晚安。點點娃娃，陪他睡覺。'};
  screen.querySelectorAll('[data-activity]').forEach(b=>b.onclick=()=>{if(!live())return;cancelDrag();if(activity===b.dataset.activity){tell(prompt());return}activity=b.dataset.activity;if(activity!=='sleep')sleeping=false;washed=false;fed=false;paint();save();audio.play('tap');tell(prompt())});
@@ -50,7 +50,7 @@ function start(){
  });
  window.addEventListener('blur',cancelDrag,{signal:listeners.signal});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelDrag()},{signal:listeners.signal});
- baby.onpointerdown=e=>{if(wash||drag)return;suppressWashClick=false;if(!live()||activity!=='bath'||e.button!==0)return;wash={id:e.pointerId,x:e.clientX,y:e.clientY,distance:0,done:false};baby.setPointerCapture(e.pointerId)};
+ baby.onpointerdown=e=>{if(wash||drag||hugging!==null)return;suppressWashClick=false;if(!live()||e.button!==0)return;if(activity==='hug'){hugging=e.pointerId;baby.classList.add('pretend-hugging');baby.setPointerCapture(e.pointerId);return}if(activity!=='bath')return;wash={id:e.pointerId,x:e.clientX,y:e.clientY,distance:0,done:false};baby.setPointerCapture(e.pointerId)};
  baby.onpointermove=e=>{
   if(!wash||wash.id!==e.pointerId||!live()||activity!=='bath')return;
   const r=baby.getBoundingClientRect(),inside=(x,y)=>x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom;
@@ -64,8 +64,8 @@ function start(){
   if(!inside(e.clientX,e.clientY))return;
   if(wash.distance>=80){wash.done=true;washed=true;paint();save();audio.play('hit');tell('搓搓洗洗，娃娃洗乾淨了！')}
  };
- baby.onpointerup=e=>{if(!wash||wash.id!==e.pointerId)return;baby.classList.remove('pretend-scrubbing');const id=wash.id;wash=null;if(baby.hasPointerCapture(id))baby.releasePointerCapture(id)};
- baby.onpointercancel=baby.onlostpointercapture=e=>{if(wash&&wash.id===e.pointerId)cancelDrag()};
+ baby.onpointerup=e=>{if(hugging===e.pointerId){hugging=null;baby.classList.remove('pretend-hugging');if(baby.hasPointerCapture(e.pointerId))baby.releasePointerCapture(e.pointerId);return}if(!wash||wash.id!==e.pointerId)return;baby.classList.remove('pretend-scrubbing');const id=wash.id;wash=null;if(baby.hasPointerCapture(id))baby.releasePointerCapture(id)};
+ baby.onpointercancel=baby.onlostpointercapture=e=>{if(hugging===e.pointerId||wash&&wash.id===e.pointerId)cancelDrag()};
  baby.onclick=()=>{
   if(suppressWashClick){suppressWashClick=false;return}
   if(!live())return;

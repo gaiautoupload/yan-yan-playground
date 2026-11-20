@@ -8,8 +8,8 @@
 .pretend-hearts{position:absolute;right:15px;top:24px;font-size:20px;max-width:40px;line-height:1.5}
 .pretend-baby{position:relative;margin:auto 0;min-height:150px;width:64%;flex:1;max-height:330px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;touch-action:manipulation;z-index:1}
 .pretend-face{font-size:clamp(100px,32vw,160px);filter:drop-shadow(0 8px 0 #c0927133)}
-.pretend-screen[data-activity=hug] .pretend-baby:active .pretend-face{animation:none;transform:scale(.96)}
-.pretend-screen[data-activity=hug] .pretend-baby:active .pretend-effect{transform:scale(1.3);filter:drop-shadow(0 0 8px #ffeaa2)}
+.pretend-screen[data-activity=hug] .pretend-hugging .pretend-face{animation:none;transform:scale(.96)}
+.pretend-screen[data-activity=hug] .pretend-hugging .pretend-effect{transform:scale(1.3);filter:drop-shadow(0 0 8px #ffeaa2)}
 .pretend-effect{position:absolute;bottom:12%;right:0;font-size:55px}.pretend-hand{position:absolute;bottom:5%;left:15%;font-size:28px}
 .pretend-bed{position:absolute;bottom:15%;font-size:100px;opacity:.3}.pretend-food{display:flex;gap:16px;padding:8px;z-index:2;flex:none}.pretend-food[hidden]{display:none}
 .pretend-food button{min-width:65px;min-height:60px;border:3px solid white;background:#fff8d3;border-radius:18px;font-size:36px;touch-action:manipulation}

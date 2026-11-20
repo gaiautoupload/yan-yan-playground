@@ -56,6 +56,12 @@ repeat.window.YanPretendPlay.stop();repeat.window.YanPretendPlay.start();
 assert.equal(repeat.effect.textContent,'✨','clean feedback survives restart');
 repeat.modes[0].click();assert.equal(repeat.effect.textContent,'🍌','changing activities starts a new interaction');
 console.log('Repeated activity selection preserves feeding and bathing feedback; switching activities still works.');
+for(const action of ['up','cancel','blur','hidden','mode','stop']){
+ const h=fixture();h.modes[2].click();h.baby.onpointerdown(h.event(150,150,1));assert(h.baby.classList.contains('pretend-hugging'),'pointer press starts hug feedback');
+ h.baby.onpointerdown(h.event(150,150,2));h.baby.onpointerup(h.event(150,150,2));assert(h.baby.classList.contains('pretend-hugging'),'second pointer cannot end the first hug');
+ if(action==='up')h.baby.onpointerup(h.event(150,150,1));else if(action==='cancel')h.baby.onpointercancel(h.event(150,150,1));else if(action==='blur')h.listeners.blur();else if(action==='hidden'){h.document.hidden=true;h.listeners.visibilitychange()}else if(action==='mode')h.modes[0].click();else h.window.YanPretendPlay.stop();
+ assert(!h.baby.classList.contains('pretend-hugging'),action+' clears hug feedback');assert(!h.baby.hasPointerCapture(1),action+' releases hug capture');
+}
 const wash=fixture();wash.modes[1].click();wash.baby.onpointerdown(wash.event(110,150));wash.baby.onpointermove(wash.event(195,150));wash.baby.onpointerup(wash.event(195,150));wash.baby.click();
 assert.equal(wash.effect.textContent,'✨','washing gesture stays clean after synthetic click');
 assert.equal(wash.spoken.filter(s=>s.startsWith('搓搓洗洗')).length,1);
