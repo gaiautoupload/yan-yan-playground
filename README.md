@@ -29,6 +29,7 @@ This follow-up only records observed tests; it does not change deployed applicat
 
 ## Release 438
 
+- Production browser follow-up on 2026-11-21 at 320×568: Woodman level 13 completed at normal speed with 100% progress and no retry count shown. Next opened level 14 and Back returned to the action-game category. Browser pointer holds were used; this does not cover all later levels, other sizes or physical-phone background transitions. Application files are unchanged.
 - Follow-up on 2026-11-21: event-harness checks cover interrupted hugs (pointer cancellation, lost capture, blur and hidden page), ignored late clicks, and one successful response to the next deliberate hug. These are mocked events, not physical phone tests; application files are unchanged.
 - Safe-area browser follow-up on 2026-11-21: baby-care and completed hide-and-seek controls stayed inside the safe area at 320×568, 360×800 and 390×844 with top/bottom insets of 44/34 px, and 844×390 with side/bottom insets of 44/21 px. Landscape sleeping and home return worked. This was a layout/navigation check, not new full rounds or physical-device coverage.
 - Additional production flows at 360×800, 390×844 and 844×390 completed simulated-touch hug/release followed by pointer-click porridge feeding, bathing, sleeping, waking and home return. Each cleared the hug class and left audio paused without a source. Together with the earlier 320×568 flow, all four sizes have this free-care transition check. This does not cover every action order, all-touch input or physical devices.
