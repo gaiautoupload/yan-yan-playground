@@ -4,6 +4,7 @@ Release 439 — 2026-11-22 (Asia/Taipei).
 
 ## Release 439
 
+- Production follow-up: at 360×800, 390×844 and 844×390, browser clicks completed feeding, tap bathing, hugging, sleeping and waking. Final Home return left speech paused without a source. This supplements the release-time 320×568 production tap-bath/return smoke check; it does not establish physical multi-touch, drag or rubbing coverage for this release.
 - Baby clicks are ignored while a wash, hug or food drag owns an active pointer. A secondary click can no longer complete washing or speak a completed hug before the owning gesture releases. The owner's release and tap fallback remain available.
 - The secondary-click event regression failed before the fix and passed afterward, together with existing drag/cancellation/save checks. Local browser clicks completed feeding, bathing, hugging, sleeping and waking at all four requested sizes. A two-touch browser experiment cancelled the hug instead of maintaining it, so it does not establish physical multi-touch coverage.
 
