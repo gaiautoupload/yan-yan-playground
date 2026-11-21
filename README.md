@@ -29,6 +29,7 @@ This follow-up only records observed tests; it does not change deployed applicat
 
 ## Release 438
 
+- Production browser follow-up at 390×844: Woodman level 15 completed at normal speed with 100% progress and no retry count shown. Next opened level 16 and Back returned to the action-game category. This used browser pointer holds, not physical phone input; application files are unchanged.
 - Production browser follow-up at 360×800: Woodman level 14 completed at normal speed, 100% progress and no retry count shown. Next opened level 15; Back returned to the action-game category. The active audio source after return contained the category's new game-selection prompt, not the Woodman cue. This used browser pointer holds, not physical phone input; application files are unchanged.
 - Production browser follow-up on 2026-11-21 at 320×568: Woodman level 13 completed at normal speed with 100% progress and no retry count shown. Next opened level 14 and Back returned to the action-game category. Browser pointer holds were used; this does not cover all later levels, other sizes or physical-phone background transitions. Application files are unchanged.
 - Follow-up on 2026-11-21: event-harness checks cover interrupted hugs (pointer cancellation, lost capture, blur and hidden page), ignored late clicks, and one successful response to the next deliberate hug. These are mocked events, not physical phone tests; application files are unchanged.
