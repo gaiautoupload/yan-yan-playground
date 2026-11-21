@@ -4,6 +4,7 @@ Release 439 — 2026-11-22 (Asia/Taipei).
 
 ## Release 439
 
+- Production washing follow-up: browser drags of 110 px inside the baby completed washing at 320×568, 360×800, 390×844 and 844×390. Release retained the clean sparkle and removed the active scrubbing class. Activity switching reset the three later checks to bubbles first. These are pointer drags, not physical touch/cancellation tests; application files are unchanged.
 - Production pointer-drag follow-up: strawberry dropped onto the baby produced fed feedback and zero remaining drag ghosts at 320×568, 360×800, 390×844 and 844×390. The three larger checks first selected banana to clear previous fed feedback. These are browser drags, not physical touch/cancellation tests; application files are unchanged.
 - Production follow-up: at 360×800, 390×844 and 844×390, browser clicks completed feeding, tap bathing, hugging, sleeping and waking. Final Home return left speech paused without a source. This supplements the release-time 320×568 production tap-bath/return smoke check; it does not establish physical multi-touch, drag or rubbing coverage for this release.
 - Baby clicks are ignored while a wash, hug or food drag owns an active pointer. A secondary click can no longer complete washing or speak a completed hug before the owning gesture releases. The owner's release and tap fallback remain available.
