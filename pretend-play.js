@@ -67,6 +67,7 @@ function start(){
  baby.onpointerup=e=>{if(hugging===e.pointerId){hugging=null;baby.classList.remove('pretend-hugging');if(baby.hasPointerCapture(e.pointerId))baby.releasePointerCapture(e.pointerId);return}if(!wash||wash.id!==e.pointerId)return;baby.classList.remove('pretend-scrubbing');const id=wash.id;wash=null;if(baby.hasPointerCapture(id))baby.releasePointerCapture(id)};
  baby.onpointercancel=baby.onlostpointercapture=e=>{if(hugging===e.pointerId||wash&&wash.id===e.pointerId)cancelDrag()};
  baby.onclick=()=>{
+  if(wash||drag||hugging!==null)return;
   if(suppressWashClick){suppressWashClick=false;return}
   if(!live())return;
   baby.classList.remove('pretend-bounce');void baby.offsetWidth;baby.classList.add('pretend-bounce');

@@ -1,6 +1,11 @@
 # 彥彥配對樂園
 
-Release 438 — 2026-11-20 (Asia/Taipei).
+Release 439 — 2026-11-22 (Asia/Taipei).
+
+## Release 439
+
+- Baby clicks are ignored while a wash, hug or food drag owns an active pointer. A secondary click can no longer complete washing or speak a completed hug before the owning gesture releases. The owner's release and tap fallback remain available.
+- The secondary-click event regression failed before the fix and passed afterward, together with existing drag/cancellation/save checks. Local browser clicks completed feeding, bathing, hugging, sleeping and waking at all four requested sizes. A two-touch browser experiment cancelled the hug instead of maintaining it, so it does not establish physical multi-touch coverage.
 
 ## Follow-up browser verification — 2026-11-12
 

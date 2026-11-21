@@ -77,6 +77,15 @@ for(const action of ['cancel','lostcapture','blur','hidden']){
  assert.equal(h.spoken.filter(s=>s.startsWith('抱緊緊')).length,1,action+' new hug responds once');assert(!h.baby.hasPointerCapture(3));
 }
 console.log('Hug interruption: cancelled late clicks ignored; deliberate new hugs recover once.');
+for(const mode of [1,2]){
+ const t=fixture();t.modes[mode].click();t.baby.onpointerdown(t.event(110,150,1));
+ const before=t.spoken.length;
+ t.baby.onpointerdown(t.event(150,150,2));t.baby.onpointerup(t.event(150,150,2));t.baby.click();
+ assert.equal(t.spoken.length,before,'secondary click cannot complete an owned baby gesture');
+ assert.equal(t.effect.textContent,mode===1?'🫧':'💛');
+ t.baby.onpointerup(t.event(110,150,1));t.baby.click();
+ assert.equal(t.spoken.length,before+1,'owner release still responds once');
+}
 const shortWash=fixture();shortWash.modes[1].click();shortWash.baby.onpointerdown(shortWash.event(110,150));shortWash.baby.onpointermove(shortWash.event(140,150));shortWash.baby.onpointerup(shortWash.event(140,150));shortWash.baby.click();assert.equal(shortWash.effect.textContent,'🫧','short rub does not complete or fall through to tap');
 const outsideWash=fixture();outsideWash.modes[1].click();outsideWash.baby.onpointerdown(outsideWash.event(110,150));outsideWash.baby.onpointermove(outsideWash.event(400,150));outsideWash.baby.onpointerup(outsideWash.event(400,150));outsideWash.baby.click();assert.equal(outsideWash.effect.textContent,'🫧','outside movement does not wash clean');
 const returnWash=fixture();returnWash.modes[1].click();returnWash.baby.onpointerdown(returnWash.event(110,150));returnWash.baby.onpointermove(returnWash.event(400,150));returnWash.baby.onpointermove(returnWash.event(110,150));assert.equal(returnWash.effect.textContent,'🫧','leaving and returning does not count outside travel as rubbing');returnWash.baby.onpointermove(returnWash.event(195,150));assert.equal(returnWash.effect.textContent,'✨','rubbing inside still completes after returning');
