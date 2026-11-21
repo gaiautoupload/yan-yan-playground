@@ -67,6 +67,16 @@ assert.equal(wash.effect.textContent,'✨','washing gesture stays clean after sy
 assert.equal(wash.spoken.filter(s=>s.startsWith('搓搓洗洗')).length,1);
 const cancelledWash=fixture();cancelledWash.modes[1].click();cancelledWash.baby.onpointerdown(cancelledWash.event(110,150));cancelledWash.baby.onpointercancel(cancelledWash.event(110,150));cancelledWash.baby.onpointermove(cancelledWash.event(195,150));cancelledWash.baby.onpointerup(cancelledWash.event(195,150));cancelledWash.baby.click();assert.equal(cancelledWash.effect.textContent,'🫧');
 console.log('Washing gesture: clean feedback once, synthetic-click suppression and cancellation passed.');
+for(const action of ['cancel','lostcapture','blur','hidden']){
+ const h=fixture();h.modes[2].click();h.baby.onpointerdown(h.event(150,150,1));
+ if(action==='cancel')h.baby.onpointercancel(h.event(150,150,1));else if(action==='lostcapture')h.baby.onlostpointercapture(h.event(150,150,1));else if(action==='blur')h.listeners.blur();else {h.document.hidden=true;h.listeners.visibilitychange();h.document.hidden=false;}
+ h.baby.onpointerup(h.event(150,150,1));h.baby.click();
+ assert(!h.baby.classList.contains('pretend-hugging'),action+' late events keep hug released');assert(!h.baby.hasPointerCapture(1));
+ assert(!h.spoken.some(s=>s.startsWith('抱緊緊')),action+' ignores the interrupted click');
+ h.baby.onpointerdown(h.event(150,150,3));assert(h.baby.classList.contains('pretend-hugging'),action+' allows a new hug');h.baby.onpointerup(h.event(150,150,3));h.baby.click();
+ assert.equal(h.spoken.filter(s=>s.startsWith('抱緊緊')).length,1,action+' new hug responds once');assert(!h.baby.hasPointerCapture(3));
+}
+console.log('Hug interruption: cancelled late clicks ignored; deliberate new hugs recover once.');
 const shortWash=fixture();shortWash.modes[1].click();shortWash.baby.onpointerdown(shortWash.event(110,150));shortWash.baby.onpointermove(shortWash.event(140,150));shortWash.baby.onpointerup(shortWash.event(140,150));shortWash.baby.click();assert.equal(shortWash.effect.textContent,'🫧','short rub does not complete or fall through to tap');
 const outsideWash=fixture();outsideWash.modes[1].click();outsideWash.baby.onpointerdown(outsideWash.event(110,150));outsideWash.baby.onpointermove(outsideWash.event(400,150));outsideWash.baby.onpointerup(outsideWash.event(400,150));outsideWash.baby.click();assert.equal(outsideWash.effect.textContent,'🫧','outside movement does not wash clean');
 const returnWash=fixture();returnWash.modes[1].click();returnWash.baby.onpointerdown(returnWash.event(110,150));returnWash.baby.onpointermove(returnWash.event(400,150));returnWash.baby.onpointermove(returnWash.event(110,150));assert.equal(returnWash.effect.textContent,'🫧','leaving and returning does not count outside travel as rubbing');returnWash.baby.onpointermove(returnWash.event(195,150));assert.equal(returnWash.effect.textContent,'✨','rubbing inside still completes after returning');
