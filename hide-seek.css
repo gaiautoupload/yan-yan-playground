@@ -23,3 +23,7 @@
 /* Ear clues stay visible without a timer or written instructions. */
  .seek-spot{--cover-size:clamp(54px,15vw,100px)}.seek-clue{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:65px;height:var(--cover-size);pointer-events:none}.seek-clue i{position:absolute;bottom:75%;width:17px;height:35px;border-radius:60% 60% 30% 30%;background:#edb4c5;border:4px solid #fff4ef;transform:rotate(-12deg);left:10px}.seek-clue i+i{left:auto;right:10px;transform:rotate(12deg)}.ears-1 i{height:25px;width:24px;border-radius:2px;background:#f2bd69;clip-path:polygon(50% 0,100% 100%,0 100%);border:0}.ears-2 i{height:29px;width:19px;background:#895c45;border:0;border-radius:60% 60% 40% 40%;transform:rotate(-35deg)}.ears-2 i+i{transform:rotate(35deg)}.ears--1{display:none}.seek-cover{position:relative;z-index:1}.seek-friends>span{border:3px solid transparent;border-radius:18px;padding:0 4px}.seek-friends .seek-target{filter:none;border-color:#d28c24;background:#fff6be;box-shadow:0 0 0 3px #fff}.seek-target:before{content:"👇";position:absolute;left:-17px;top:2px;font-size:22px}
 @media(orientation:landscape) and (max-height:500px){.seek-spot{--cover-size:65px}}
+
+/* Pointed ears must read as animal clues, including above cardboard flaps. */
+.seek-clue.ears-1 i{bottom:95%;height:30px;width:25px;background:#98612f}
+.seek-clue.ears-1 i:after{content:"";position:absolute;inset:7px 6px 3px;background:#f4b2c6;clip-path:polygon(50% 0,100% 100%,0 100%)}
