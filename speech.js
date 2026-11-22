@@ -16,7 +16,7 @@ function speak(message,onFinish,onStart){
  let finished=false;
  let started=false;
  const finish=reason=>{if(token!==generation||finished)return;finished=true;pending=false;playing=false;if(typeof onFinish==='function')onFinish(reason)};
- audio.onplaying=()=>{if(token===generation){pending=false;playing=true;if(!started){started=true;onStart?.()}}};
+ audio.onplaying=()=>{if(token===generation&&!finished){pending=false;playing=true;if(!started){started=true;onStart?.()}}};
  audio.onended=()=>finish('ended');
  audio.onerror=()=>{if(token!==generation)return;finish('error');if(token===generation)showRetry()};
  audio.src='/api/speech?text='+encodeURIComponent(text.slice(0,240));

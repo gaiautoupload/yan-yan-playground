@@ -1,6 +1,11 @@
 # 彥彥配對樂園
 
-Release 439 — 2026-11-22 (Asia/Taipei).
+Release 440 — 2026-11-22 (Asia/Taipei).
+
+## Release 440
+
+- A completed or failed speech request ignores subsequent playing callbacks from the same request. It can no longer become marked as speaking again or call its start callback after completion. Explicit replay still starts a new request.
+- The terminal-event regression failed before the fix and passed afterward. Speech cancellation, timed-cue and Woodman background checks pass. Local 320×568 browser pointer holds completed Woodman level 1 at normal speed with 100% progress and no retry count shown, followed by category return. The unusual delayed-event sequence was tested in the event harness, not reproduced in a physical browser; the other three sizes have no new full Woodman run for this release.
 
 ## Release 439
 

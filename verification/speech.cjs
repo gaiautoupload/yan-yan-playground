@@ -17,6 +17,16 @@ speech.speak('第三句');screen={};observer();assert.equal(audio.paused,true);a
 window.YanClassicShared.state.voice=false;assert.equal(speech.speak('靜音'),false);
 assert.equal(audio.src,'');
 window.YanClassicShared.state.voice=true;
+for(const terminal of ['ended','error']){
+ let starts=0,finishes=0;
+ speech.speak('完成後不可重新啟動',()=>finishes++,()=>starts++);
+ const latePlaying=audio.onplaying;
+ if(terminal==='ended'){audio.onplaying();audio.onended()}else audio.onerror();
+ const expectedStarts=starts;latePlaying();
+ assert.equal(speech.speaking,false,terminal+' ignores playing after completion');
+ assert.equal(speech.pending,false);assert.equal(starts,expectedStarts,'late playing cannot call onStart');
+ assert.equal(finishes,1);speech.cancel();
+}
 for(const id of ['seek-voice','pretend-voice']){
  const attributes={'aria-label':'再聽一次'};retryButton={id,title:'原本提示',setAttribute(name,value){attributes[name]=value;if(name==='title')this.title=value},getAttribute(name){return name==='title'?this.title??null:attributes[name]??null},removeAttribute(name){delete attributes[name];if(name==='title')delete this.title}};
  let reason=null;speech.speak('失敗的語音',value=>reason=value);audio.onerror();
