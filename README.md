@@ -4,6 +4,7 @@ Release 440 — 2026-11-22 (Asia/Taipei).
 
 ## Release 440
 
+- Production hide-and-seek follow-up at all four requested sizes: each fresh replay opened four spots, displayed three found friends and showed Replay again. Guidance replay followed by Home at each size left speech paused without a source. These are browser-click checks, not physical touch or audio listening; application files are unchanged.
 - Production care follow-up at all four requested sizes: browser clicks selected feeding, bathing, hugging and sleeping, then woke the baby. Replaying guidance and returning Home at each size left audio paused with no source. These checks do not establish physical touch, audio listening or every free-care action order; application files are unchanged.
 - Production follow-up at 320×568: Woodman level 20 completed at normal speed with 100% progress and one red-light retry. Next opened level 21 and Back returned to the action-game category. Together with levels 17–19 below, all four sizes now have sampled full production rounds for this release, not all 60 levels or physical phones.
 - Production follow-up at 844×390: Woodman level 19 completed at normal speed with 100% progress and one red-light retry. Scrolling the win dialog made Next and Other Games fully visible; Other Games returned to the action-game category. This is browser pointer input, not physical phone testing.
