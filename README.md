@@ -4,14 +4,19 @@ Release 439 — 2026-11-22 (Asia/Taipei).
 
 ## Release 439
 
-- Production simulated-touch cancellation follow-up: at all four requested sizes, cancelling a strawberry drag left the selected banana feedback and zero ghosts; a new strawberry drag/release then fed successfully with zero ghosts. These were Chrome touch events, not physical phone input. Application files are unchanged.
-- Production 320×568 follow-up completed browser-click sleeping → hugging → feeding → bathing, then sleeping and waking again. Switching directly from sleeping to hugging woke the baby; final Home return left speech paused without a source. Together with the three larger flows below, all four sizes have full click-care samples for release 439. This does not cover physical touch or every action order; application files are unchanged.
-- Production washing follow-up: browser drags of 110 px inside the baby completed washing at 320×568, 360×800, 390×844 and 844×390. Release retained the clean sparkle and removed the active scrubbing class. Activity switching reset the three later checks to bubbles first. These are pointer drags, not physical touch/cancellation tests; application files are unchanged.
-- Production pointer-drag follow-up: strawberry dropped onto the baby produced fed feedback and zero remaining drag ghosts at 320×568, 360×800, 390×844 and 844×390. The three larger checks first selected banana to clear previous fed feedback. These are browser drags, not physical touch/cancellation tests; application files are unchanged.
-- Production follow-up: at 360×800, 390×844 and 844×390, browser clicks completed feeding, tap bathing, hugging, sleeping and waking. Final Home return left speech paused without a source. This supplements the release-time 320×568 production tap-bath/return smoke check; it does not establish physical multi-touch, drag or rubbing coverage for this release.
 - Baby clicks are ignored while a wash, hug or food drag owns an active pointer. A secondary click can no longer complete washing or speak a completed hug before the owning gesture releases. The owner's release and tap fallback remain available.
 - The secondary-click event regression failed before the fix and passed afterward, together with existing drag/cancellation/save checks. Local browser clicks completed feeding, bathing, hugging, sleeping and waking at all four requested sizes. A two-touch browser experiment cancelled the hug instead of maintaining it, so it does not establish physical multi-touch coverage.
 
+Production follow-ups below use 320×568, 360×800, 390×844 and 844×390. They record observed browser behavior and do not change application files.
+
+| Interaction | Observed result | Input and scope |
+| --- | --- | --- |
+| Free care | All four sizes completed feeding, tap bathing, hugging, sleeping and waking. The 320-size order was sleep → hug → feed → bath, then sleep/wake; direct sleep-to-hug woke the baby. Final Home returns cleared and paused speech. | Browser clicks; sampled orders, not every permutation |
+| Food drop | Strawberry dropped onto the baby produced fed feedback and zero ghosts at all four sizes. The three larger checks selected banana first to clear prior fed feedback. | Browser pointer drags |
+| Washing | A 110 px rub inside the baby produced clean sparkle at all four sizes; release retained it and removed the scrubbing class. Later checks reset to bubbles by switching activities first. | Browser pointer drags |
+| Cancel and recover | Cancelling a strawberry drag retained selected banana feedback with zero ghosts; a new drag/release fed successfully with zero ghosts at all four sizes. | Chrome simulated touch events |
+
+Physical phone input, physical multi-touch, lock-screen/background behavior and actual audio listening remain unverified. The release-time 320-size tap-bath/return smoke check was later extended by the full click-care flow above.
 ## Follow-up browser verification — 2026-11-12
 
 Production release 424 was played using browser pointer holds and viewport overrides. These checks are not physical iOS/Android touch tests.
