@@ -4,6 +4,7 @@ Release 440 — 2026-11-22 (Asia/Taipei).
 
 ## Release 440
 
+- Production follow-up at 844×390: Woodman level 19 completed at normal speed with 100% progress and one red-light retry. Scrolling the win dialog made Next and Other Games fully visible; Other Games returned to the action-game category. This is browser pointer input, not physical phone testing.
 - Production follow-up at 390×844: Woodman level 18 completed at normal speed with 100% progress and no retry count shown. Next opened level 19 and Back returned to the action-game category. Browser pointer input was used, not a physical phone.
 - Production follow-up at 360×800: Woodman level 17 completed at normal speed with 100% progress and one red-light retry. Next opened level 18 and Back returned to the action-game category. This is browser pointer input, not physical phone or background-transition coverage.
 - A completed or failed speech request ignores subsequent playing callbacks from the same request. It can no longer become marked as speaking again or call its start callback after completion. Explicit replay still starts a new request.
