@@ -4,6 +4,7 @@ Release 441 — 2026-11-23 (Asia/Taipei).
 
 ## Release 441
 
+- Production viewport-transition sample: sleeping at 320×568 remained sleeping after resizing to 844×390, with no horizontal overflow or offscreen care/navigation controls. Waking, resizing to 390×844 for hugging, then 360×800 for feeding succeeded; Home cleared speech. This used viewport overrides, not a physical rotation sensor or an active-gesture rotation test. Application files are unchanged.
 - Production follow-up at 360×800, 390×844 and 844×390 completed full rounds with three found friends and Replay visible; computed styles confirmed the new raised dark/pink ears. A fresh landscape screenshot showed the clue above flowers. Final replay guidance/Home cleared speech. Together with the release-time 320×568 production round and box-clue screenshot, all four sizes have sampled production flows. Physical device input and child recognition remain unverified.
 - Cat ear clues sit higher and have a dark outer triangle with pink inner ears, making them easier to distinguish from cardboard flaps and yellow scenery. Rabbit and dog clues, free discovery order and speech prompts are unchanged.
 - Local screenshots were inspected at all four requested sizes, and a full hide-and-seek round completed at each size with three found friends and Replay visible. Final guidance replay/Home cleared speech. This is browser pointer and visual coverage, not evidence that a child can reliably identify the clue, every animal/location combination, physical touch or audio listening.
