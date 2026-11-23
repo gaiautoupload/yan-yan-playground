@@ -4,6 +4,7 @@ Release 443 — 2026-11-23 (Asia/Taipei).
 
 ## Release 443
 
+- Production 844×390 full-round follow-up: level 25 started at 0%, completed at normal speed with 100% and no retry count shown. Scrolling the win dialog fully exposed Next/Other Games; Other Games returned to category. Alongside levels 22–24 at the portrait sizes, all four requested sizes now have sampled from-zero production rounds for this release, not all 60 levels or physical phone coverage. Application files are unchanged.
 - Production 390×844 full-round follow-up: level 24 started at 0%, completed at normal speed with 100% and no retry count shown. Next opened level 25; Back returned to category. This is browser pointer input, not physical-phone or all-level coverage; application files are unchanged.
 - Production 360×800 full-round follow-up: level 23 started at 0%, completed at normal speed with 100% and no retry count shown. Next opened level 24 and Back returned to category. The browser connection was restored before the run; its initial unavailable-browser error was not treated as an application failure. This is browser pointer coverage, not physical phone testing; application files are unchanged.
 - Production 320×568 full-round follow-up: level 22 started at 0%, completed at normal speed with 100% progress and no retry count shown. Next opened level 23; Back returned to the action-game category. This used browser pointer holds, not a physical phone or all-level coverage; application files are unchanged.
