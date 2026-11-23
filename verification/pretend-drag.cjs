@@ -77,6 +77,17 @@ for(const action of ['cancel','lostcapture','blur','hidden']){
  assert.equal(h.spoken.filter(s=>s.startsWith('抱緊緊')).length,1,action+' new hug responds once');assert(!h.baby.hasPointerCapture(3));
 }
 console.log('Hug interruption: cancelled late clicks ignored; deliberate new hugs recover once.');
+for(const mode of [0,1,2]){
+ const t=fixture();t.modes[mode].click();
+ if(mode===0)t.begin();else {t.baby.onpointerdown(t.event(110,150));if(mode===1)t.baby.onpointermove(t.event(140,150));}
+ const before=t.spoken.length;
+ assert.equal(typeof t.listeners.resize,'function','viewport resize must cancel gestures');t.listeners.resize();
+ assert.equal(t.ghost(),null);assert(!t.baby.classList.contains('pretend-drop-ready'));assert(!t.baby.classList.contains('pretend-scrubbing'));assert(!t.baby.classList.contains('pretend-hugging'));
+ assert(!t.baby.hasPointerCapture(1));assert(!t.food[1].hasPointerCapture(1));
+ if(mode===0){t.food[1].onpointerup(t.event(140,140));t.food[1].click();}else {t.baby.onpointerup(t.event(140,150));t.baby.click();}
+ assert.equal(t.spoken.length,before,'late release after resize cannot perform the old gesture');
+ t.modes[0].click();t.begin();t.food[1].onpointerup(t.event(140,140));assert.equal(t.effect.textContent,'😋','new food drag works after resize');
+}
 for(const mode of [1,2]){
  const t=fixture();t.modes[mode].click();t.baby.onpointerdown(t.event(110,150,1));
  const before=t.spoken.length;

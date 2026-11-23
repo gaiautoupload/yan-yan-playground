@@ -1,6 +1,12 @@
 # 彥彥配對樂園
 
-Release 441 — 2026-11-23 (Asia/Taipei).
+Release 442 — 2026-11-23 (Asia/Taipei).
+
+## Release 442
+
+- Resizing the window cancels active food dragging, washing and hugging, releasing capture and clearing temporary feedback. The resize listener is removed with the existing room cleanup. Completed care state remains intact.
+- Production release 441 reproduced a food ghost and stale drop highlight after a 390×844 → 844×390 change. The resize event regression failed before the fix and passes afterward for food, wash and hug interruption, ignored late releases and new-drag recovery.
+- Local Chrome simulated-touch checks passed with target sizes 844×390, 320×568, 360×800 and 390×844: after waiting for the asynchronous resize event, ghosts/highlight disappeared, a late release did not feed, and a new drag fed successfully. An initial immediate read occurred before event delivery and still saw the ghost; the completed checks waited for removal. Washing/hug resizing is event-harness coverage, not new manual gesture coverage. No physical rotation sensor, phone input or all-browser coverage is implied.
 
 ## Release 441
 

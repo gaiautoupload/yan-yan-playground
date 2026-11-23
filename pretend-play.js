@@ -49,6 +49,7 @@ function start(){
   b.onpointercancel=b.onlostpointercapture=e=>{if(drag&&drag.id===e.pointerId){suppressClick=true;cancelDrag()}};
  });
  window.addEventListener('blur',cancelDrag,{signal:listeners.signal});
+ window.addEventListener('resize',cancelDrag,{signal:listeners.signal});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelDrag()},{signal:listeners.signal});
  baby.onpointerdown=e=>{if(wash||drag||hugging!==null)return;suppressWashClick=false;if(!live()||e.button!==0)return;if(activity==='hug'){hugging=e.pointerId;baby.classList.add('pretend-hugging');baby.setPointerCapture(e.pointerId);return}if(activity!=='bath')return;wash={id:e.pointerId,x:e.clientX,y:e.clientY,distance:0,done:false};baby.setPointerCapture(e.pointerId)};
  baby.onpointermove=e=>{
