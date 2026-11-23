@@ -1,6 +1,12 @@
 # 彥彥配對樂園
 
-Release 442 — 2026-11-23 (Asia/Taipei).
+Release 443 — 2026-11-23 (Asia/Taipei).
+
+## Release 443
+
+- Woodman now pauses on window resize, using the existing blur/background pause path: stop holding, cancel cue/timers, save progress and require explicit resume. Leaving removes the resize listener too.
+- Production release 442 reproduced continued movement and a retry while holding through 390×844 → 844×390. The resize regression failed before the fix; green/intro/loading/red interruption, stale cues, progress, resume and cleanup tests pass afterward.
+- Local browser checks used a fresh green cue for changes to 844×390, 320×568, 360×800 and 390×844. Each paused without adding a retry and cleared speech, preserving 15/30/45/60% progress. The 60% checkpoint stayed stopped until explicit resume; level 2 then completed at normal speed with 100% and no retry shown, followed by category return. An earlier sample started near red and incurred a retry before reset; it is not counted as a clean pass. Input mixed simulated touch holds with pointer clicks, not physical rotation.
 
 ## Release 442
 

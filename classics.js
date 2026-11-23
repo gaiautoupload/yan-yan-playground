@@ -128,6 +128,7 @@ function wood(){
  };
  const background=new AbortController();dispose=()=>background.abort();
  window.addEventListener('blur',pauseRound,{signal:background.signal});
+ window.addEventListener('resize',pauseRound,{signal:background.signal});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseRound()},{signal:background.signal});
  restart.onclick=()=>{state.woodCheckpoint=null;persist();wood()};
  app.querySelector('#classic-speak').onclick=()=>{

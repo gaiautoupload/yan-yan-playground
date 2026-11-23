@@ -12,23 +12,23 @@ function fixture(){
  window.YanClassics.wood();
  return {node,state,document,window,get cue(){return cue},get cancelled(){return cancelled},emit(target,name){for(const x of events[target+name]||[])if(!x.signal?.aborted)x.fn()},run(){const batch=[...jobs];jobs.clear();for(const [,fn]of batch)fn()}};
 }
-for(const action of ['hidden','blur']){
+for(const action of ['hidden','blur','resize']){
  const t=fixture();t.cue.finish();t.run();t.cue.start();
  t.node('#wood-hold').pointerdown({preventDefault(){},pointerId:1});
  const progress=parseFloat(t.node('#wood-progress').style.width),old=t.cue;
- if(action==='hidden'){t.document.hidden=true;t.emit('document','visibilitychange')}else t.emit('window','blur');
+ if(action==='hidden'){t.document.hidden=true;t.emit('document','visibilitychange')}else t.emit('window',action);
  assert.equal(t.node('#wood-pause')['aria-label'],'繼續遊戲',action+' pauses automatically');
  old.finish();t.run();assert.equal(t.state.woodCheckpoint.progress,progress,action+' preserves progress');
  assert(!t.node('#wood-status').textContent.includes('再試'),action+' does not penalize');
  t.document.hidden=false;t.emit('document','visibilitychange');assert.equal(t.node('#wood-pause')['aria-label'],'繼續遊戲','return does not auto-resume');
  t.node('#wood-pause').onclick();t.run();t.cue.start();assert.equal(t.node('#wood-signal').className,'wood-signal green','explicit resume starts a new cue');
- t.window.YanClassics.clean();const count=t.cancelled;t.emit('window','blur');t.document.hidden=true;t.emit('document','visibilitychange');assert.equal(t.cancelled,count,'leaving removes background listeners');
+ t.window.YanClassics.clean();const count=t.cancelled;t.emit('window','blur');t.emit('window','resize');t.document.hidden=true;t.emit('document','visibilitychange');assert.equal(t.cancelled,count,'leaving removes background and resize listeners');
 }
-for(const phase of ['intro','loading','red']){
+for(const action of ['hidden','resize'])for(const phase of ['intro','loading','red']){
  const t=fixture();
  if(phase!=='intro'){t.cue.finish();t.run()}
  if(phase==='red'){t.cue.start();t.cue.finish();t.run();assert.equal(t.node('#wood-signal').className,'wood-signal red')}
- const old=t.cue;t.document.hidden=true;t.emit('document','visibilitychange');const count=t.cancelled;
+ const old=t.cue;if(action==='hidden'){t.document.hidden=true;t.emit('document','visibilitychange')}else t.emit('window','resize');const count=t.cancelled;
  t.emit('window','blur');t.emit('document','visibilitychange');assert.equal(t.cancelled,count,phase+' repeated background events do not cancel twice');
  old.start?.();old.finish();t.run();
  assert.equal(t.node('#wood-signal').className,'wood-signal paused',phase+' stale cue cannot resume');
