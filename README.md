@@ -4,6 +4,7 @@ Release 442 — 2026-11-23 (Asia/Taipei).
 
 ## Release 442
 
+- Production washing resize follow-up at all four target sizes: a simulated-touch 35 px rub activated scrubbing; resizing removed the active class, and late touch end retained bubbles. A new 110 px rub completed washing with sparkle and no active scrubbing class. This extends the prior event-harness washing coverage with Chrome simulated touch, not physical rotation; application files are unchanged.
 - Production follow-up: simulated-touch food drags interrupted by changes to 320×568, 360×800 and 390×844 cleared ghosts/highlight, ignored the late release and allowed a successful new drag. Together with the release-time 390×844 → 844×390 production check, all four target sizes have recovery samples. This remains browser emulation, not physical rotation, washing or hugging gesture coverage; application files are unchanged.
 - Resizing the window cancels active food dragging, washing and hugging, releasing capture and clearing temporary feedback. The resize listener is removed with the existing room cleanup. Completed care state remains intact.
 - Production release 441 reproduced a food ghost and stale drop highlight after a 390×844 → 844×390 change. The resize event regression failed before the fix and passes afterward for food, wash and hug interruption, ignored late releases and new-drag recovery.
