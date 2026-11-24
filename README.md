@@ -4,6 +4,17 @@ Release 443 — 2026-11-23 (Asia/Taipei).
 
 ## Release 443
 
+### In-app browser follow-up — 2026-11-24–25 (Asia/Taipei)
+
+These production checks used the ChatGPT in-app browser after its connection recovered. Application files and deployment were unchanged. They do not establish physical-phone input or actual audio listening.
+
+- At 320×568, 360×800, 390×844 and 844×390, point-and-click care completed sleep → hug → feed → bath. Switching directly from sleep to hug worked. Replaying guidance and returning Home left speech paused with no source at each size.
+- At all four sizes, fresh hide-and-seek rounds found the three friends and exposed Replay. Early discoveries counted even when they differed from the highlighted friend; the optional butterfly did not block completion. Guidance replay followed by Home cleared speech. A fresh 320×568 screenshot showed the rabbit, cat and dog ear clues.
+- At all four sizes, dragging strawberry onto the baby produced the fed status and 😋 feedback, with zero food ghosts after release. The larger samples selected banana first to clear the previous fed feedback. The final return reached Home.
+- At all four sizes, a 110 px drag within the baby completed washing, retained ✨ feedback after release and removed the active scrubbing class. Switching through hug reset bubbles before subsequent samples. The final return reached Home.
+- Woodman level 5 at 320×568 resumed its saved 20% checkpoint in slow practice and reached 100% using pause/resume between short holds. The completion dialog and Next were visible; Next opened level 6, and category/Home returns worked. This is a saved-round completion with deliberate interruptions, not a full normal-speed cue-timing check. Earlier paused samples at the other three sizes retained 20%; the pause cleared speech, and the final Home return cleared it again.
+- Active-gesture cancellation, held hugging, normal-speed Woodman timing and physical-device behavior were not newly verified by these samples. Temporary viewport overrides were reset after testing. Browser availability failures earlier on November 24 were tooling failures, not application test passes.
+
 - Production 844×390 full-round follow-up: level 25 started at 0%, completed at normal speed with 100% and no retry count shown. Scrolling the win dialog fully exposed Next/Other Games; Other Games returned to category. Alongside levels 22–24 at the portrait sizes, all four requested sizes now have sampled from-zero production rounds for this release, not all 60 levels or physical phone coverage. Application files are unchanged.
 - Production 390×844 full-round follow-up: level 24 started at 0%, completed at normal speed with 100% and no retry count shown. Next opened level 25; Back returned to category. This is browser pointer input, not physical-phone or all-level coverage; application files are unchanged.
 - Production 360×800 full-round follow-up: level 23 started at 0%, completed at normal speed with 100% and no retry count shown. Next opened level 24 and Back returned to category. The browser connection was restored before the run; its initial unavailable-browser error was not treated as an application failure. This is browser pointer coverage, not physical phone testing; application files are unchanged.
