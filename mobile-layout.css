@@ -52,4 +52,13 @@
  .wood-signal{font-size:22px;padding:4px}
  .wood-field{min-height:64px;padding:5px}
  .wood-hold{min-height:54px}
+ .wood-game~.overlay .popup{width:min(100%,600px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 14px;padding:12px 16px}
+ .wood-game~.overlay .faces{grid-column:1;grid-row:1/4;align-items:center}
+ .wood-game~.overlay .stars{grid-column:2;grid-row:1;font-size:26px;margin:0}
+ .wood-game~.overlay h2{grid-column:2;grid-row:2;font-size:20px;margin:0}
+ .wood-game~.overlay .passport-win{grid-column:2;grid-row:3;font-size:16px;padding:6px;margin:0}
+ .wood-game~.overlay p{display:none}
+ .wood-game~.overlay #classic-next,.wood-game~.overlay #classic-return{grid-row:4;width:100%;min-height:64px;margin:4px 0 0;padding:10px;font-size:24px}
+ .wood-game~.overlay #classic-next{grid-column:1}
+ .wood-game~.overlay #classic-return{grid-column:2}
 }

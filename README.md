@@ -1,6 +1,12 @@
 # 彥彥配對樂園
 
-Release 444 — 2026-11-25 (Asia/Taipei).
+Release 445 — 2026-11-26 (Asia/Taipei).
+
+## Release 445
+
+- On short landscape screens, Woodman's completion card puts Next and Other Games side by side with 64 px minimum button heights. Family pictures, stars, completion heading and passport feedback remain above the actions; the parent-facing congratulatory paragraph is omitted in this layout. Portrait completion cards retain their existing layout.
+
+- Local in-app browser verification completed Woodman levels 1 and 2 from 0% to 100%. The 844×390 card measured 600×221 px with both actions fully visible and 64 px high. The same completed card fit 320×568, 360×800 and 390×844 without scrolling; these portrait checks were layout resizes, not separate full rounds. Next reached level 2, and Other Games returned to category/Home; Home cleared speech. A timed-out batch was excluded and checks were rerun with returned results. Local static hosting has no speech API, so these samples do not verify successful voice playback or audio synchronization.
 
 ## Release 444
 
