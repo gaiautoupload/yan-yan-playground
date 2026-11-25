@@ -10,6 +10,8 @@ Release 445 — 2026-11-26 (Asia/Taipei).
 
 - Production release 445 (deployment dpl_41m6py3q5uzz1fDYiYT4BrcAouxJ) was READY on the specified pioter project. The formal URL served release 445 and mobile-layout.css?v=445. In-app browser at 844×390 completed normal-speed level 15 from 0% to 100%, showed both 272×64 px actions without scroll overflow, and Next opened level 16 at 0%. Category/Home navigation cleared speech and the viewport was reset. This is a pointer sample following visible signals, not physical-phone or audio-listening coverage.
 
+- November 26 follow-up on unchanged release 445 used only the in-app browser: fresh hide-and-seek rounds completed at 320×568, 360×800, 390×844 and 844×390, with Replay then Home clearing speech at every size. The smallest viewport screenshot showed rabbit long ears, cat pointed ears and dog hanging ears; early cat/dog discoveries counted before the requested rabbit. Optional butterfly discoveries preserved completion. Speech, timed-speech, Woodman background interruption, seek-save and seek-resume-voice harnesses passed. These were pointer samples, without physical touch or actual audio listening; no application change or redeployment was needed.
+
 ## Release 444
 
 - Speech that already finished ignores subsequent error callbacks and rejected playback promises. Successful guidance can no longer acquire a misleading retry marker from these late events. Genuine failures still expose replay guidance.
