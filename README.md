@@ -8,6 +8,8 @@ Release 445 — 2026-11-26 (Asia/Taipei).
 
 - Local in-app browser verification completed Woodman levels 1 and 2 from 0% to 100%. The 844×390 card measured 600×221 px with both actions fully visible and 64 px high. The same completed card fit 320×568, 360×800 and 390×844 without scrolling; these portrait checks were layout resizes, not separate full rounds. Next reached level 2, and Other Games returned to category/Home; Home cleared speech. A timed-out batch was excluded and checks were rerun with returned results. Local static hosting has no speech API, so these samples do not verify successful voice playback or audio synchronization.
 
+- Production release 445 (deployment dpl_41m6py3q5uzz1fDYiYT4BrcAouxJ) was READY on the specified pioter project. The formal URL served release 445 and mobile-layout.css?v=445. In-app browser at 844×390 completed normal-speed level 15 from 0% to 100%, showed both 272×64 px actions without scroll overflow, and Next opened level 16 at 0%. Category/Home navigation cleared speech and the viewport was reset. This is a pointer sample following visible signals, not physical-phone or audio-listening coverage.
+
 ## Release 444
 
 - Speech that already finished ignores subsequent error callbacks and rejected playback promises. Successful guidance can no longer acquire a misleading retry marker from these late events. Genuine failures still expose replay guidance.
