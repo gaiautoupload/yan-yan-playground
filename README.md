@@ -1,6 +1,11 @@
 # 彥彥配對樂園
 
-Release 443 — 2026-11-23 (Asia/Taipei).
+Release 444 — 2026-11-25 (Asia/Taipei).
+
+## Release 444
+
+- Speech that already finished ignores subsequent error callbacks and rejected playback promises. Successful guidance can no longer acquire a misleading retry marker from these late events. Genuine failures still expose replay guidance.
+- The late-error regression failed before the fix. Speech, timed-cue and Woodman interruption tests validate the fix; this unusual callback order is covered by the event harness, not a reproduced browser audio failure.
 
 ## Release 443
 

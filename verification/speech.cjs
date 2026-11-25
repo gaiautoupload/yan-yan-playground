@@ -46,6 +46,9 @@ for(const id of ['seek-voice','pretend-voice']){
   assert.equal(retryButton.title,'new screen',action+' restores original title');
   late();assert.equal(attributes['data-speech-retry'],undefined,'late error cannot restore removed marker');
  }
+ speech.speak('成功播放後忽略錯誤');audio.onplaying();const lateAfterEnd=audio.onerror;audio.onended();
+ lateAfterEnd();assert.equal(attributes['data-speech-retry'],undefined,'late error after successful completion cannot show retry');
+ speech.cancel();
 }
 console.log('Speech errors: both preschool retry buttons, retry playback and stale-error cancellation passed.');
 retryButton={id:'seek-voice',title:'new prompt',setAttribute(){}};
@@ -67,6 +70,13 @@ for(const playing of [false,true]){
 console.log('Speech visibility: pending/playing cancellation, ignored late callbacks, no automatic resume and explicit replay passed.');
 console.log('Speech: stale response, completion, navigation cancellation, mute passed.');
 (async()=>{
+ const attributes={};retryButton={id:'pretend-voice',setAttribute(name,value){attributes[name]=value},getAttribute(name){return attributes[name]??null},removeAttribute(name){delete attributes[name]}};
+ const originalPlay=audio.play;let rejectLate;
+ audio.play=()=>new Promise((resolve,reject)=>{rejectLate=reject});
+ speech.speak('成功後才拒絕的播放請求');audio.onplaying();audio.onended();rejectLate(new Error('late rejection'));
+ await Promise.resolve();await Promise.resolve();
+ assert.equal(attributes['data-speech-retry'],undefined,'late play rejection after completion cannot show retry');
+ speech.cancel();audio.play=originalPlay;
  retryButton={id:'pretend-voice',title:'next prompt',setAttribute(){}};
  const play=audio.play;let calls=0,failures=0;
  audio.play=function(){if(calls++===0)return Promise.reject(new Error('playback rejected'));return play.call(this)};
