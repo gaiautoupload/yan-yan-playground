@@ -13,7 +13,18 @@ These production checks used the ChatGPT in-app browser after its connection rec
 - At all four sizes, dragging strawberry onto the baby produced the fed status and 😋 feedback, with zero food ghosts after release. The larger samples selected banana first to clear the previous fed feedback. The final return reached Home.
 - At all four sizes, a 110 px drag within the baby completed washing, retained ✨ feedback after release and removed the active scrubbing class. Switching through hug reset bubbles before subsequent samples. The final return reached Home.
 - Woodman level 5 at 320×568 resumed its saved 20% checkpoint in slow practice and reached 100% using pause/resume between short holds. The completion dialog and Next were visible; Next opened level 6, and category/Home returns worked. This is a saved-round completion with deliberate interruptions, not a full normal-speed cue-timing check. Earlier paused samples at the other three sizes retained 20%; the pause cleared speech, and the final Home return cleared it again.
-- Active-gesture cancellation, held hugging, normal-speed Woodman timing and physical-device behavior were not newly verified by these samples. Temporary viewport overrides were reset after testing. Browser availability failures earlier on November 24 were tooling failures, not application test passes.
+- Active-gesture cancellation, held hugging and physical-device behavior were not newly verified by these samples. Temporary viewport overrides were reset after testing. Browser availability failures earlier on November 24 were tooling failures, not application test passes.
+
+Subsequent in-app browser Woodman samples on November 25 used normal speed, starting at 0% and reaching 100% without pause/resume segmentation. Input followed visible red/green signals; this does not verify spoken cue audibility or audio/visual synchronization by listening.
+
+| Viewport | Level | Observed result and navigation |
+| --- | --- | --- |
+| 360×800 | 6 | One initial hold crossed red and produced one retry; subsequent cycles added none. Next opened level 7; category and Home returns worked. |
+| 390×844 | 7 | No retry count shown. Next opened level 8; category and Home returns worked. |
+| 844×390 | 8 | No retry count shown. Scrolling the completion dialog fully exposed Next and Other Games. Other Games returned to category, followed by Home; Next was not clicked in this sample. |
+| 320×568 | 9 | No retry count shown. Next opened level 10; category and Home returns worked. |
+
+These are four sampled rounds, not all 60 levels or physical-phone coverage. Viewport overrides were reset, and no application deployment was needed.
 
 - Production 844×390 full-round follow-up: level 25 started at 0%, completed at normal speed with 100% and no retry count shown. Scrolling the win dialog fully exposed Next/Other Games; Other Games returned to category. Alongside levels 22–24 at the portrait sizes, all four requested sizes now have sampled from-zero production rounds for this release, not all 60 levels or physical phone coverage. Application files are unchanged.
 - Production 390×844 full-round follow-up: level 24 started at 0%, completed at normal speed with 100% and no retry count shown. Next opened level 25; Back returned to category. This is browser pointer input, not physical-phone or all-level coverage; application files are unchanged.
