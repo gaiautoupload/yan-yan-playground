@@ -14,6 +14,8 @@ Release 445 — 2026-11-26 (Asia/Taipei).
 
 - A later November 26 care follow-up verified 320×568 with returned in-app browser results: sleep, direct switch to hug, feeding, bathing, and Home speech cancellation. Two larger batched calls timed out (one at 320×568, one at 360×800); their missing results were excluded. Recovery confirmed Home with paused/source-free audio and reset the viewport. The 360×800 full flow was not confirmed in this follow-up; 390×844 and landscape were not rerun. The pretend-drag harness passed drop/miss/tap, cancellation, capture loss, blur/hidden, mode switches, washing and hug interruption checks; this does not replace browser gesture or physical-touch testing. No application files changed or deployment was repeated.
 
+- The next care follow-up recovered the previously missing browser coverage using short calls: 360×800, 390×844 and 844×390 each completed sleep, direct switch to hug, feeding, bathing, guidance replay and Home. Every action returned the expected status, and Home paused/cleared audio at each size. The viewport was reset. These click-based in-app browser samples supplement the earlier 320×568 result; gestures, physical touch and actual audio listening were not tested in this follow-up. Application code and deployment remained unchanged.
+
 ## Release 444
 
 - Speech that already finished ignores subsequent error callbacks and rejected playback promises. Successful guidance can no longer acquire a misleading retry marker from these late events. Genuine failures still expose replay guidance.
